@@ -1,0 +1,240 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MissionProject",
+  "description": "COTS Architect MissionProject schema v2.0.0. Shared JSON contract across Mission, Node, UxS, Mesh, and KitSmith planners.",
+  "type": "object",
+  "required": ["schemaVersion", "meta", "mission", "environment"],
+  "properties": {
+    "schemaVersion": { "type": "string", "description": "Semantic version of the MissionProject schema" },
+    "projectId": { "type": "string" },
+    "meta": {
+      "type": "object",
+      "required": ["name", "durationHours", "origin_tool"],
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "durationHours": { "type": "number" },
+        "scenario": { "type": "string" },
+        "inventoryReference": { "type": "string" },
+        "origin_tool": { "type": "string" },
+        "accessCode": { "type": "string" },
+        "team": {
+          "type": "object",
+          "properties": {
+            "size": { "type": "number" },
+            "roles": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "mission": {
+      "type": "object",
+      "required": ["tasks", "phases", "assignments"],
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "priority": { "type": "string" },
+              "assignedPlatforms": { "type": "array", "items": { "type": "string" } },
+              "origin_tool": { "type": "string" }
+            }
+          }
+        },
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "durationHours": { "type": "number" },
+              "focus": { "type": "string" },
+              "origin_tool": { "type": "string" }
+            }
+          }
+        },
+        "assignments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["phaseId"],
+            "properties": {
+              "phaseId": { "type": "string" },
+              "nodeIds": { "type": "array", "items": { "type": "string" } },
+              "platformIds": { "type": "array", "items": { "type": "string" } },
+              "origin_tool": { "type": "string" }
+            }
+          }
+        },
+        "mission_cards": { "type": "array", "items": { "type": "object" } }
+      }
+    },
+    "environment": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "altitudeBand", "temperatureBand"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "altitudeBand": { "type": "string" },
+          "temperatureBand": { "type": "string" },
+          "weather": { "type": "string" },
+          "elevationM": { "type": "number" },
+          "terrain": { "type": "string" },
+          "notes": { "type": "string" },
+          "origin_tool": { "type": "string" }
+        }
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "type": "string" },
+          "description": { "type": "string" },
+          "severity": { "type": "string" },
+          "notes": { "type": "string" },
+          "origin_tool": { "type": "string" }
+        }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "role"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "rf": {
+            "type": "object",
+            "properties": {
+              "band": { "type": "string" },
+              "powerW": { "type": "number" }
+            }
+          },
+          "power": { "type": "string" },
+          "battery": { "type": "object" },
+          "geo": {
+            "type": "object",
+            "properties": {
+              "lat": { "type": "number" },
+              "lon": { "type": "number" },
+              "elevationM": { "type": "number" }
+            }
+          },
+          "origin_tool": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "type"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "role": { "type": "string" },
+          "rf_bands": { "type": "array", "items": { "type": "string" } },
+          "power": { "type": "string" },
+          "battery": { "type": "object" },
+          "payloadKg": { "type": "number" },
+          "enduranceMin": { "type": "number" },
+          "geo": {
+            "type": "object",
+            "properties": {
+              "lat": { "type": "number" },
+              "lon": { "type": "number" },
+              "elevationM": { "type": "number" }
+            }
+          },
+          "origin_tool": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "mesh_links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "from", "to"],
+        "properties": {
+          "id": { "type": "string" },
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "band": { "type": "string" },
+          "throughputMbps": { "type": "number" },
+          "role": { "type": "string" },
+          "notes": { "type": "string" },
+          "origin_tool": { "type": "string" }
+        }
+      }
+    },
+    "kits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "items": { "type": "array", "items": { "type": "string" } },
+          "weightKg": { "type": "number" },
+          "powerSupportWh": { "type": "number" },
+          "origin_tool": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "sustainment": {
+      "type": "object",
+      "properties": {
+        "sustainmentHours": { "type": "number" },
+        "batteryCounts": { "type": "number" },
+        "feasibility": { "type": "object" },
+        "notes": { "type": "string" },
+        "power_plan": { "type": "string" },
+        "packing_lists": { "type": "array", "items": { "type": "object" } }
+      }
+    },
+    "meshPlan": {
+      "type": "object",
+      "properties": {
+        "relayCount": { "type": "number" },
+        "criticalLinks": { "type": "number" },
+        "rf_bands": { "type": "array", "items": { "type": "string" } },
+        "ew_profile": { "type": "string" }
+      }
+    },
+    "kitsSummary": {
+      "type": "object",
+      "properties": {
+        "perOperatorLoads": { "type": "array", "items": { "type": "object" } },
+        "perOperatorLoadKg": { "type": "number" },
+        "perOperatorLimitKg": { "type": "number" }
+      }
+    },
+    "exports": {
+      "type": "object",
+      "properties": {
+        "links": { "type": "array", "items": { "type": "object" } },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

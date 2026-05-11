@@ -1,0 +1,33 @@
+{
+  "environmentBands": [
+    { "value": "indoor", "label": "Indoor" },
+    { "value": "dense_urban", "label": "Dense urban" },
+    { "value": "urban", "label": "Urban" },
+    { "value": "suburban", "label": "Suburban" },
+    { "value": "rural", "label": "Rural" },
+    { "value": "open", "label": "Open / sparsely settled" }
+  ],
+  "altitudeBands": [
+    { "value": "0-500m", "label": "0–500m" },
+    { "value": "500-1500m", "label": "500–1500m" },
+    { "value": "1500-2500m", "label": "1500–2500m" },
+    { "value": ">2500m", "label": ">2500m" }
+  ],
+  "temperatureBands": [
+    { "value": "-30--10C", "label": "-30 to -10°C" },
+    { "value": "-10-10C", "label": "-10 to 10°C" },
+    { "value": "10-25C", "label": "10 to 25°C" },
+    { "value": "25-40C", "label": "25 to 40°C" }
+  ],
+  "ewLevels": [
+    { "value": "permissive", "label": "Permissive" },
+    { "value": "contested", "label": "Contested" },
+    { "value": "high-ew", "label": "High-EW" }
+  ],
+  "missionTypes": [
+    { "value": "mesh_recon", "label": "Mesh reconnaissance" },
+    { "value": "urban_lane", "label": "Urban mesh lane" },
+    { "value": "sustainment", "label": "Partner sustainment" },
+    { "value": "low_infrastructure", "label": "Low-infrastructure mesh" }
+  ]
+}

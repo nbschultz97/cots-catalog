@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectId": "mission-low-infra",
+  "meta": {
+    "name": "Low-infrastructure UxS + node mesh",
+    "description": "Sparse infrastructure mesh across open terrain and high-altitude routes.",
+    "durationHours": 120,
+    "origin_tool": "hub",
+    "scenario": "Low infrastructure range",
+    "inventoryReference": "DEMO-MESH-LITE",
+    "missionType": "low_infrastructure",
+    "team": { "size": 7, "roles": ["Team lead", "Mesh lead", "UxS pilot", "Node tech", "Power lead", "Navigator", "Safety"] }
+  },
+  "environment": [
+    {
+      "id": "env-steppe",
+      "name": "High steppe",
+      "band": "open",
+      "altitudeBand": "1500-2500m",
+      "temperatureBand": "10-25C",
+      "weather": "Dry, high winds",
+      "terrain": "steppe",
+      "origin_tool": "hub",
+      "notes": "Long-range hops between sparse nodes"
+    }
+  ],
+  "constraints": [
+    { "id": "c-power", "type": "Power", "description": "Limited grid access along routes", "severity": "medium", "origin_tool": "mission" }
+  ],
+  "nodes": [
+    { "id": "node-steppe", "name": "Steppe node", "role": "sensor node", "rf": { "band": "UHF", "powerW": 4 }, "origin_tool": "node" }
+  ],
+  "platforms": [
+    { "id": "platform-uxs", "name": "Fixed-wing UAS", "role": "Long-haul lift", "origin_tool": "uxs" }
+  ],
+  "mesh_links": [
+    { "id": "mesh-steppe", "name": "Steppe mesh", "role": "backhaul", "origin_tool": "mesh" }
+  ],
+  "kits": [],
+  "mission": {
+    "tasks": [
+      { "id": "task-survey", "name": "Route survey", "description": "Confirm routes and relay points", "origin_tool": "mission" }
+    ],
+    "phases": [
+      { "id": "phase-survey-steppe", "name": "Survey", "durationHours": 24, "focus": "Scout routes", "origin_tool": "mission" },
+      { "id": "phase-operate", "name": "Operations", "durationHours": 72, "focus": "Mesh sustainment", "origin_tool": "mission" }
+    ],
+    "assignments": [
+      { "phaseId": "phase-operate", "nodeIds": ["node-steppe"], "platformIds": ["platform-uxs"] }
+    ],
+    "mission_cards": []
+  },
+  "sustainment": {
+    "sustainmentHours": 144,
+    "batteryCounts": 12,
+    "feasibility": {},
+    "notes": "Solar assist planned for long holds",
+    "power_plan": "",
+    "packing_lists": []
+  },
+  "meshPlan": {
+    "relayCount": 6,
+    "criticalLinks": 4,
+    "rf_bands": ["UHF", "L-band"],
+    "ew_profile": "permissive"
+  },
+  "kitsSummary": {
+    "perOperatorLoads": [],
+    "perOperatorLoadKg": 15,
+    "perOperatorLimitKg": 21
+  },
+  "exports": { "links": [], "notes": "" }
+}

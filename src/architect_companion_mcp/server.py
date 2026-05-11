@@ -1,4 +1,4 @@
-"""MCP server entrypoint for Architect MCP — COTS robotics mission planning."""
+"""MCP server entrypoint — Architect Companion for COTS robotics."""
 
 from __future__ import annotations
 
@@ -8,126 +8,167 @@ from typing import Any, Dict, List, Optional
 
 try:
     from mcp.server.fastmcp import FastMCP
-except ImportError:  # pragma: no cover - offline test fallback
-    class FastMCP:
+except ImportError:  # pragma: no cover — offline test fallback
+    class FastMCP:  # type: ignore[no-redef]
         def __init__(self, _name: str) -> None:
-            self._tools = []
+            self._tools: List = []
 
         def tool(self):
             def decorator(func):
                 self._tools.append(func)
                 return func
-
             return decorator
 
         def run(self, transport: str = "stdio") -> None:
             raise RuntimeError(f"mcp package missing; cannot run transport={transport}")
 
-from .catalog import check_compatibility, get_blueprint, list_components
+from . import __version__
+from .blueprints import (
+    generate_mission_blueprint as _generate_blueprint,
+    list_operation_types,
+    list_presets,
+)
+from .catalog import (
+    catalog_stats,
+    data_dir,
+    list_components as _list_components,
+    part_by_id,
+)
+from .compatibility import check_compatibility as _check_compatibility
+from .physics import estimate_flight_time as _estimate_flight_time
+from .recommend import recommend_configuration as _recommend_configuration
 from .storage import EventStore
 
-mcp = FastMCP("architect-mcp")
+mcp = FastMCP("architect-companion-mcp")
 store = EventStore(Path(os.environ.get("ARCHITECT_COMPANION_DATA_DIR", "./runtime_data")))
 
 
 @mcp.tool()
-def health() -> Dict[str, str]:
-    """Return server health and mission profile."""
+def health() -> Dict[str, Any]:
+    """Server health, schema versions, and catalog stats."""
+    stats = catalog_stats()
     return {
         "status": "ok",
         "mode": "offline-first",
         "profile": "ceradon-cots-architect",
+        "version": __version__,
+        "data_dir": str(data_dir()),
+        "catalog": stats,
+        "operation_types": list_operation_types(),
+        "presets": list_presets(),
     }
 
 
 @mcp.tool()
-def list_cots_components(category: Optional[str] = None) -> List[Dict[str, Any]]:
-    """Browse the COTS component catalog. Optionally filter by category
-    (flight_controller, gps, power, telemetry, datalink, sensor, companion_computer)."""
-    return list_components(category)
+def list_components(
+    category: Optional[str] = None,
+    manufacturer: Optional[str] = None,
+    tag: Optional[str] = None,
+    availability: Optional[str] = None,
+    max_weight_g: Optional[float] = None,
+    max_cost_usd: Optional[float] = None,
+    frequency_band: Optional[str] = None,
+    limit: Optional[int] = 50,
+) -> List[Dict[str, Any]]:
+    """Browse the COTS parts library.
+
+    Categories: airframes, motors, escs, batteries, flight_controllers,
+    radios, sensors, accessories. All filters are AND-combined. ``limit``
+    defaults to 50 to keep MCP responses small.
+    """
+    return _list_components(
+        category=category,
+        manufacturer=manufacturer,
+        tag=tag,
+        availability=availability,
+        max_weight_g=max_weight_g,
+        max_cost_usd=max_cost_usd,
+        frequency_band=frequency_band,
+        limit=limit,
+    )
 
 
 @mcp.tool()
-def check_component_compatibility(component_slugs: List[str]) -> Dict[str, Any]:
-    """Check whether a set of COTS components are mutually compatible.
-    Pass a list of component slugs from the catalog."""
-    return check_compatibility(component_slugs)
+def get_part(part_id: str) -> Dict[str, Any]:
+    """Fetch a single part by its catalog ID (across all categories)."""
+    part = part_by_id(part_id)
+    if part is None:
+        raise KeyError(f"Part '{part_id}' not found in catalog")
+    return part
 
 
 @mcp.tool()
-def generate_mission_blueprint(mission_type: str = "recon-multirotor") -> Dict[str, Any]:
-    """Generate a mission blueprint for a UxS operation.
-    Available types: recon-multirotor, perimeter-patrol, mapping-survey."""
-    return get_blueprint(mission_type)
+def check_compatibility(part_ids: List[str]) -> Dict[str, Any]:
+    """Run engineering checks (voltage chain, weight budget, RF bands, ESC
+    current vs motor draw) over a list of catalog part IDs."""
+    return _check_compatibility(part_ids)
+
+
+@mcp.tool()
+def generate_mission_blueprint(
+    operation_type: str = "recon",
+    duration_hours: float = 24.0,
+    environment_id: Optional[str] = None,
+    team_size: int = 4,
+) -> Dict[str, Any]:
+    """Generate a MissionProject v2 stub for a given operation type.
+
+    ``operation_type``: recon, mesh_recon, low_infrastructure, sustainment,
+    partner_sustainment, urban_lane, urban_high_ew, winter, cold_weather.
+
+    ``environment_id`` is one of the environmentBands values
+    (indoor, dense_urban, urban, suburban, rural, open).
+    """
+    return _generate_blueprint(
+        operation_type=operation_type,
+        duration_hours=duration_hours,
+        environment_id=environment_id,
+        team_size=team_size,
+    )
 
 
 @mcp.tool()
 def estimate_flight_time(
-    battery_mah: int,
-    platform_weight_g: int,
-    payload_weight_g: int = 0,
+    airframe_id: Optional[str] = None,
+    battery_id: Optional[str] = None,
+    platform_weight_g: Optional[float] = None,
+    battery_mah: Optional[float] = None,
+    battery_v: Optional[float] = None,
+    payload_weight_g: float = 0.0,
     avg_current_draw_a: float = 15.0,
+    reserve_pct: float = 0.2,
 ) -> Dict[str, Any]:
-    """Estimate flight time based on battery capacity, platform weight, and payload.
-    Returns estimated endurance in minutes with safety margins."""
-    total_weight_g = platform_weight_g + payload_weight_g
-    # Simple endurance model: capacity / draw, with weight penalty
-    weight_factor = 1.0 + (payload_weight_g / max(platform_weight_g, 1)) * 0.3
-    effective_draw = avg_current_draw_a * weight_factor
-    raw_minutes = (battery_mah / 1000.0) / effective_draw * 60.0
-    safe_minutes = raw_minutes * 0.8  # 20% reserve
-
-    return {
-        "total_weight_g": total_weight_g,
-        "battery_mah": battery_mah,
-        "avg_current_draw_a": round(effective_draw, 2),
-        "raw_endurance_min": round(raw_minutes, 1),
-        "safe_endurance_min": round(safe_minutes, 1),
-        "reserve_pct": 20,
-        "note": "Estimates assume hover; forward flight may vary ±15%.",
-    }
+    """Estimate hover endurance for a build. Pass catalog IDs OR raw
+    numbers. Not a flight simulator — sanity check only."""
+    return _estimate_flight_time(
+        airframe_id=airframe_id,
+        battery_id=battery_id,
+        platform_weight_g=platform_weight_g,
+        battery_mah=battery_mah,
+        battery_v=battery_v,
+        payload_weight_g=payload_weight_g,
+        avg_current_draw_a=avg_current_draw_a,
+        reserve_pct=reserve_pct,
+    )
 
 
 @mcp.tool()
 def recommend_configuration(
-    compute_tier: str = "rpi5",
-    mission_type: str = "recon-multirotor",
+    compute_tier: str = "pi5",
+    mission_type: str = "recon",
+    budget_usd: Optional[float] = None,
 ) -> Dict[str, Any]:
-    """Recommend a COTS system configuration for a target compute tier and mission type.
-    Compute tiers: rpi4, rpi5, jetson-nano."""
-    if compute_tier not in {"rpi4", "rpi5", "jetson-nano"}:
-        raise ValueError("compute_tier must be one of: rpi4, rpi5, jetson-nano")
+    """Pick a candidate kit (airframe, motor, ESC, battery, FC, radio) for
+    a compute tier and mission type.
 
-    # Base recommendations by tier
-    configs = {
-        "rpi4": {
-            "companion": "Raspberry Pi 4 (4GB)",
-            "flight_controller": "Pixhawk 6C",
-            "recommended_components": ["pixhawk6c", "here3_gps", "holybro_pm02", "rfd900x"],
-            "vision_capable": False,
-            "notes": "Limited compute — best for telemetry relay and basic scripting.",
-        },
-        "rpi5": {
-            "companion": "Raspberry Pi 5 (8GB)",
-            "flight_controller": "Pixhawk 6C",
-            "recommended_components": ["pixhawk6c", "here3_gps", "holybro_pm02", "rfd900x", "rpi5_companion", "oak_d_lite"],
-            "vision_capable": True,
-            "notes": "Full onboard vision pipeline with OAK-D. Good balance of compute and power.",
-        },
-        "jetson-nano": {
-            "companion": "NVIDIA Jetson Nano",
-            "flight_controller": "CubePilot Orange+",
-            "recommended_components": ["cube_orange", "here3_gps", "holybro_pm02", "herelink"],
-            "vision_capable": True,
-            "notes": "GPU-accelerated inference for real-time object detection and tracking.",
-        },
-    }
-
-    config = configs[compute_tier]
-    config["compute_tier"] = compute_tier
-    config["mission_type"] = mission_type
-
-    return config
+    Compute tiers: pi-zero, pi4, pi5, jetson-nano, jetson-orin-nano, x86.
+    Mission types: recon, strike, relay, sustainment.
+    """
+    return _recommend_configuration(
+        compute_tier=compute_tier,
+        mission_type=mission_type,
+        budget_usd=budget_usd,
+    )
 
 
 @mcp.tool()

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectId": "mission-urban-ew",
+  "meta": {
+    "name": "Urban mesh lane under high EW",
+    "description": "Dense-urban mesh lane with aggressive EW, hardened relays, and short sorties.",
+    "durationHours": 36,
+    "origin_tool": "hub",
+    "scenario": "High-EW lane demo",
+    "inventoryReference": "URBAN-EW-STACK",
+    "missionType": "urban_lane",
+    "team": { "size": 5, "roles": ["Mesh lead", "EW watch", "UxS pilot", "Relay tech", "Safety lead"] }
+  },
+  "environment": [
+    {
+      "id": "env-urban",
+      "name": "Dense urban core",
+      "band": "dense_urban",
+      "altitudeBand": "0-500m",
+      "temperatureBand": "25-40C",
+      "weather": "Humid, intermittent rain",
+      "terrain": "dense urban",
+      "origin_tool": "hub",
+      "notes": "Antenna clutter and canyon effects"
+    }
+  ],
+  "constraints": [
+    { "id": "c-elevation", "type": "LOS", "description": "Line-of-sight breaks at intersections", "severity": "high", "origin_tool": "mission" }
+  ],
+  "nodes": [
+    { "id": "node-street-relay", "name": "Street-level relay", "role": "mesh relay", "rf": { "band": "C-band", "powerW": 6 }, "origin_tool": "node" }
+  ],
+  "platforms": [
+    { "id": "platform-quad", "name": "Quad w/ shielded radios", "role": "UxS", "origin_tool": "uxs" }
+  ],
+  "mesh_links": [
+    { "id": "mesh-lane", "name": "Urban lane mesh", "role": "lane coverage", "origin_tool": "mesh" }
+  ],
+  "kits": [],
+  "mission": {
+    "tasks": [
+      { "id": "task-lane", "name": "Secure lane coverage", "description": "Maintain link despite jamming", "origin_tool": "mission" }
+    ],
+    "phases": [
+      { "id": "phase-survey", "name": "Survey", "durationHours": 6, "focus": "Find LOS gaps", "origin_tool": "mission" },
+      { "id": "phase-lane", "name": "Lane operation", "durationHours": 24, "focus": "Hold relays", "origin_tool": "mission" }
+    ],
+    "assignments": [
+      { "phaseId": "phase-lane", "nodeIds": ["node-street-relay"], "platformIds": ["platform-quad"] }
+    ],
+    "mission_cards": []
+  },
+  "sustainment": {
+    "sustainmentHours": 48,
+    "batteryCounts": 10,
+    "feasibility": {},
+    "notes": "Hot-weather spare battery rotation",
+    "power_plan": "",
+    "packing_lists": []
+  },
+  "meshPlan": {
+    "relayCount": 4,
+    "criticalLinks": 3,
+    "rf_bands": ["C-band", "L-band"],
+    "ew_profile": "high-ew"
+  },
+  "kitsSummary": {
+    "perOperatorLoads": [],
+    "perOperatorLoadKg": 16,
+    "perOperatorLimitKg": 21
+  },
+  "exports": { "links": [], "notes": "" }
+}

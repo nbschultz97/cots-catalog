@@ -1,0 +1,2008 @@
+{
+  "schemaVersion": "1.1.0",
+  "catalogId": "sample-fpv-001",
+  "meta": {
+    "name": "Sample COTS FPV Catalog",
+    "description": "Realistic off-the-shelf FPV / small-UAS hardware catalog. Flight controllers, ESCs, motors, batteries, VTXes with switchable power levels, ELRS TX/RX, goggles, and GPS modules that operators actually field. Demonstrates the full engine stack: physics and compatibility validation, operator-drone link budget, EMCON footprint, density-altitude derating, and sustainment math.",
+    "unit": "Sample / Demo",
+    "lastUpdated": "2026-04-21T04:40:36.153848+00:00",
+    "inventoryReference": "SAMPLE-FPV-001"
+  },
+  "airframes": [
+    {
+      "id": "airframe-5in-true-x",
+      "name": "5\" True-X Freestyle Frame (TBS Source One / Armattan / equivalent)",
+      "type": "multi-rotor",
+      "weight_g": 95,
+      "max_payload_g": 800,
+      "dimensions_mm": {
+        "length": 220,
+        "width": 220,
+        "height": 45
+      },
+      "motor_count": 4,
+      "motor_size": "2207",
+      "prop_size": "5x4.3",
+      "material": "carbon fiber",
+      "printable": false,
+      "manufacturer": "TBS / Armattan / ImpulseRC (generic spec)",
+      "part_number": "FRAME-5IN-TRUEX",
+      "cost_usd": 45.0,
+      "availability": "in-stock",
+      "notes": "Workhorse 5\" true-X frame with 4mm carbon arms and 30.5×30.5 FC mount.",
+      "tags": [
+        "5-inch",
+        "freestyle",
+        "race",
+        "true-x"
+      ]
+    },
+    {
+      "id": "airframe-7in-longrange",
+      "name": "7\" Long-Range Frame (iFlight Chimera7 / equivalent)",
+      "type": "multi-rotor",
+      "weight_g": 180,
+      "max_payload_g": 1500,
+      "dimensions_mm": {
+        "length": 300,
+        "width": 300,
+        "height": 50
+      },
+      "motor_count": 4,
+      "motor_size": "2806",
+      "prop_size": "7x3.5",
+      "material": "carbon fiber",
+      "printable": false,
+      "manufacturer": "iFlight / GEPRC",
+      "part_number": "FRAME-7IN-LR",
+      "cost_usd": 89.0,
+      "availability": "in-stock",
+      "notes": "Long-range 7\" with room for HD VTX, GPS, and higher-capacity packs.",
+      "tags": [
+        "7-inch",
+        "long-range",
+        "cruise"
+      ]
+    },
+    {
+      "id": "airframe-10in-isr",
+      "name": "10\" ISR/Cargo X-Frame (MultiRotorMania Dragonfly / equivalent)",
+      "type": "multi-rotor",
+      "weight_g": 340,
+      "max_payload_g": 3000,
+      "dimensions_mm": {
+        "length": 440,
+        "width": 440,
+        "height": 70
+      },
+      "motor_count": 4,
+      "motor_size": "3110",
+      "prop_size": "10x5x3",
+      "material": "carbon fiber",
+      "printable": false,
+      "manufacturer": "MultiRotorMania / iFlight / Armattan",
+      "part_number": "FRAME-10IN-ISR",
+      "cost_usd": 135.0,
+      "availability": "in-stock",
+      "notes": "10\" X-frame for ISR / thermal / heavy-lift builds. Supports long-range link and higher-capacity packs.",
+      "tags": [
+        "10-inch",
+        "isr",
+        "cargo",
+        "cruise"
+      ]
+    },
+    {
+      "id": "airframe-fw-660",
+      "name": "Fixed-Wing 660mm Pusher (Volantex Raptor / Sonicmodell / equivalent)",
+      "type": "fixed-wing",
+      "weight_g": 420,
+      "max_payload_g": 800,
+      "dimensions_mm": {
+        "length": 760,
+        "width": 660,
+        "height": 190
+      },
+      "motor_count": 1,
+      "motor_size": "2212",
+      "prop_size": "9x6",
+      "material": "EPO foam",
+      "printable": false,
+      "manufacturer": "Volantex / Sonicmodell",
+      "part_number": "FRAME-FW-660",
+      "cost_usd": 95.0,
+      "availability": "in-stock",
+      "notes": "Compact fixed-wing with pusher config — 60+ min endurance on Li-ion.",
+      "tags": [
+        "fixed-wing",
+        "endurance",
+        "foam",
+        "pusher"
+      ]
+    },
+    {
+      "id": "airframe-fw-flying-wing",
+      "name": "1900mm Flying-Wing (Skywalker X8 / Z84 / equivalent)",
+      "type": "fixed-wing",
+      "weight_g": 880,
+      "max_payload_g": 2000,
+      "dimensions_mm": {
+        "length": 1200,
+        "width": 2120,
+        "height": 210
+      },
+      "motor_count": 1,
+      "motor_size": "3536",
+      "prop_size": "13x8",
+      "material": "EPO foam",
+      "printable": false,
+      "manufacturer": "Skywalker / Sonicmodell",
+      "part_number": "FRAME-FW-FLYING-WING",
+      "cost_usd": 185.0,
+      "availability": "in-stock",
+      "notes": "Flying-wing platform for 2+ hour ISR endurance with Li-ion.",
+      "tags": [
+        "fixed-wing",
+        "flying-wing",
+        "long-endurance",
+        "isr"
+      ]
+    }
+  ],
+  "motors": [
+    {
+      "id": "motor-emax-eco-ii-2807-1300kv",
+      "name": "EMAX ECO II 2807 1300KV",
+      "size": "2807",
+      "kv": 1300,
+      "weight_g": 34,
+      "max_current_a": 36,
+      "max_power_w": 800,
+      "max_thrust_g": 2200,
+      "voltage_range": {
+        "min_v": 11.1,
+        "max_v": 22.2
+      },
+      "prop_size_range": "7 inch",
+      "manufacturer": "EMAX",
+      "part_number": "ECO-II-2807-1300KV",
+      "cost_usd": 18.99,
+      "availability": "in-stock",
+      "notes": "1300KV is low for 5\" 6S; best matched to 7\" cruise or fixed-wing pusher/puller configurations.",
+      "tags": [
+        "multi-rotor",
+        "7-inch",
+        "fixed-wing-pusher",
+        "overstocked"
+      ]
+    },
+    {
+      "id": "motor-rcinpower-gts-v4-2207-1960kv",
+      "name": "RCInPower GTS V4 2207 1960KV",
+      "size": "2207",
+      "kv": 1960,
+      "weight_g": 32,
+      "max_current_a": 40,
+      "max_power_w": 880,
+      "max_thrust_g": 1900,
+      "voltage_range": {
+        "min_v": 14.8,
+        "max_v": 25.2
+      },
+      "prop_size_range": "5 inch",
+      "manufacturer": "RCInPower",
+      "part_number": "GTS-V4-2207-1960KV",
+      "cost_usd": 29.99,
+      "availability": "in-stock",
+      "notes": "Limited stock; substitute Axisflying AF227 (on order) required for full 5\" fleet build.",
+      "tags": [
+        "multi-rotor",
+        "5-inch",
+        "6s",
+        "low-stock"
+      ]
+    },
+    {
+      "id": "motor-avenger-3110-730kv",
+      "name": "Avenger 3110 730KV (generic)",
+      "size": "3110",
+      "kv": 730,
+      "weight_g": 85,
+      "max_current_a": 45,
+      "max_power_w": 1000,
+      "max_thrust_g": 3500,
+      "voltage_range": {
+        "min_v": 14.8,
+        "max_v": 25.2
+      },
+      "prop_size_range": "10 inch",
+      "manufacturer": "Generic (Amazon YJhGFqS)",
+      "part_number": "AVENGER-3110-730KV",
+      "cost_usd": 24.99,
+      "availability": "in-stock",
+      "notes": "Generic Amazon rebrand, no official datasheet. QC varies unit-to-unit — inspect for smooth rotation and bell balance before install.",
+      "tags": [
+        "multi-rotor",
+        "10-inch",
+        "6s",
+        "generic-amazon"
+      ]
+    }
+  ],
+  "escs": [
+    {
+      "id": "esc-holybro-tekko32-f4-metal-65a",
+      "name": "Holybro Tekko32 F4 Metal 65A 4-in-1 ESC",
+      "max_current_a": 65,
+      "weight_g": 18,
+      "voltage_range": {
+        "min_v": 11.1,
+        "max_v": 25.2
+      },
+      "firmware": "AM32 (or BLHeli_32 on older units)",
+      "protocols": [
+        "DShot600",
+        "DShot300",
+        "BLHeli_32"
+      ],
+      "integrated": true,
+      "manufacturer": "Holybro",
+      "part_number": "31097",
+      "cost_usd": 112.0,
+      "availability": "in-stock",
+      "notes": "65A continuous, 80A burst 10s. Pairs with Kakute H7 V2 via 8-pin JST-SH factory ribbon.",
+      "tags": [
+        "multi-rotor",
+        "10-inch",
+        "4-in-1",
+        "am32",
+        "stack-pair-kakute-h7"
+      ],
+      "firmware_family": "BetaFlight",
+      "connectors": [
+        {
+          "type": "JST-SH",
+          "pins": 8,
+          "label": "FC Signal",
+          "notes": "Motor signals + telemetry to Kakute H7 BT"
+        },
+        {
+          "type": "Solder Pad",
+          "pins": 4,
+          "label": "Motor Out"
+        },
+        {
+          "type": "Battery",
+          "pins": 2,
+          "label": "VBAT",
+          "notes": "Solder pads, 3S-6S input"
+        }
+      ]
+    },
+    {
+      "id": "esc-speedybee-60a-blheli-s",
+      "name": "SpeedyBee 60A BLHeli_S 4-in-1 ESC (30x30)",
+      "max_current_a": 60,
+      "weight_g": 14,
+      "voltage_range": {
+        "min_v": 11.1,
+        "max_v": 25.2
+      },
+      "firmware": "BLHeli_S J-H-40",
+      "protocols": [
+        "DShot600",
+        "DShot300"
+      ],
+      "integrated": true,
+      "manufacturer": "SpeedyBee",
+      "part_number": "SB-F405V4-60A-ESC",
+      "cost_usd": 55.0,
+      "availability": "in-stock",
+      "notes": "BLHeli_S = no bidirectional DShot out-of-box; reflash with BlueJay for RPM filtering.",
+      "tags": [
+        "multi-rotor",
+        "5-inch",
+        "4-in-1",
+        "blheli-s",
+        "stack-pair-speedybee-f405"
+      ],
+      "firmware_family": "BetaFlight",
+      "connectors": [
+        {
+          "type": "JST-SH",
+          "pins": 8,
+          "label": "FC Signal",
+          "notes": "Motor signals to SpeedyBee F405 V4"
+        },
+        {
+          "type": "Solder Pad",
+          "pins": 4,
+          "label": "Motor Out"
+        }
+      ]
+    },
+    {
+      "id": "esc-lumenier-51a-blheli-32",
+      "name": "Lumenier 51A BLHeli_32 Single ESC (w/ Telemetry)",
+      "max_current_a": 51,
+      "weight_g": 15,
+      "voltage_range": {
+        "min_v": 7.4,
+        "max_v": 25.2
+      },
+      "firmware": "BLHeli_32 (locked, post-EOL)",
+      "protocols": [
+        "DShot1200",
+        "DShot600",
+        "PWM",
+        "OneShot"
+      ],
+      "integrated": false,
+      "manufacturer": "Lumenier",
+      "part_number": "680138770916",
+      "cost_usd": 32.0,
+      "availability": "in-stock",
+      "notes": "Single ESC for fixed-wing use with F405-WING V2. BLHeli_32 is locked/unflashable post-EOL — stock settings work for fixed-wing.",
+      "tags": [
+        "fixed-wing",
+        "single-motor",
+        "blheli-32",
+        "with-telemetry"
+      ],
+      "firmware_family": "BetaFlight",
+      "connectors": [
+        {
+          "type": "Bullet",
+          "pins": 3,
+          "label": "Motor",
+          "notes": "3.5mm bullet connectors"
+        },
+        {
+          "type": "Wire",
+          "pins": 1,
+          "label": "Signal"
+        },
+        {
+          "type": "Wire",
+          "pins": 1,
+          "label": "Telemetry",
+          "notes": "Half-duplex to FC UART"
+        },
+        {
+          "type": "Battery",
+          "pins": 2,
+          "label": "VBAT"
+        }
+      ]
+    }
+  ],
+  "batteries": [
+    {
+      "id": "battery-6s-1300mah-100c",
+      "name": "6S 1300mAh 100C (5\" race pack)",
+      "chemistry": "LiPo",
+      "cells": 6,
+      "voltage_nominal_v": 22.2,
+      "capacity_mah": 1300,
+      "capacity_wh": 28.86,
+      "weight_g": 215,
+      "c_rating": 100,
+      "max_discharge_a": 130,
+      "connector_type": "XT60",
+      "dimensions_mm": {
+        "length": 77,
+        "width": 38,
+        "height": 35
+      },
+      "temperature_range_c": {
+        "min": -10,
+        "max": 60
+      },
+      "manufacturer": "CNHL / Tattu / any (standard spec)",
+      "part_number": "LiPo-6S-1300-100C",
+      "cost_usd": 32.0,
+      "availability": "in-stock",
+      "notes": "Standard 5\" quad race pack. Pairs with SpeedyBee F4 V4 stack (60A ESC) + RCInPower 1960KV motors. Expect ~4-6 min flight.",
+      "tags": [
+        "race",
+        "5-inch",
+        "high-discharge",
+        "lipo"
+      ]
+    },
+    {
+      "id": "battery-6s-1500mah-100c",
+      "name": "6S 1500mAh 100C (5\" freestyle pack)",
+      "chemistry": "LiPo",
+      "cells": 6,
+      "voltage_nominal_v": 22.2,
+      "capacity_mah": 1500,
+      "capacity_wh": 33.3,
+      "weight_g": 240,
+      "c_rating": 100,
+      "max_discharge_a": 150,
+      "connector_type": "XT60",
+      "dimensions_mm": {
+        "length": 80,
+        "width": 38,
+        "height": 36
+      },
+      "temperature_range_c": {
+        "min": -10,
+        "max": 60
+      },
+      "manufacturer": "CNHL / Tattu / any (standard spec)",
+      "part_number": "LiPo-6S-1500-100C",
+      "cost_usd": 38.0,
+      "availability": "in-stock",
+      "notes": "Good balance of power and endurance for 5\" training. ~5-7 min flight.",
+      "tags": [
+        "freestyle",
+        "5-inch",
+        "lipo"
+      ]
+    },
+    {
+      "id": "battery-6s-3000mah-35c",
+      "name": "6S 3000mAh 35C (10\" ISR endurance pack)",
+      "chemistry": "LiPo",
+      "cells": 6,
+      "voltage_nominal_v": 22.2,
+      "capacity_mah": 3000,
+      "capacity_wh": 66.6,
+      "weight_g": 425,
+      "c_rating": 35,
+      "max_discharge_a": 105,
+      "connector_type": "XT60",
+      "dimensions_mm": {
+        "length": 135,
+        "width": 42,
+        "height": 30
+      },
+      "temperature_range_c": {
+        "min": -10,
+        "max": 60
+      },
+      "manufacturer": "CNHL / Tattu / Gens Ace",
+      "part_number": "LiPo-6S-3000-35C",
+      "cost_usd": 62.0,
+      "availability": "in-stock",
+      "notes": "Endurance pack for 10\" ISR platforms with Avenger 3110 motors. ~15-20 min cruise.",
+      "tags": [
+        "endurance",
+        "10-inch",
+        "isr",
+        "lipo"
+      ]
+    },
+    {
+      "id": "battery-4s-5200mah-li-ion",
+      "name": "4S 5200mAh Li-ion (long-range / fixed-wing)",
+      "chemistry": "Li-ion",
+      "cells": 4,
+      "voltage_nominal_v": 14.8,
+      "capacity_mah": 5200,
+      "capacity_wh": 76.96,
+      "weight_g": 345,
+      "c_rating": 10,
+      "max_discharge_a": 52,
+      "connector_type": "XT60",
+      "dimensions_mm": {
+        "length": 144,
+        "width": 58,
+        "height": 22
+      },
+      "temperature_range_c": {
+        "min": -20,
+        "max": 60
+      },
+      "manufacturer": "Samsung 21700 cells (any reputable assembler)",
+      "part_number": "Li-Ion-4S-5200",
+      "cost_usd": 58.0,
+      "availability": "in-stock",
+      "notes": "Li-ion endurance pack for fixed-wing. Better cold-weather performance than LiPo — matters for ~45-60 min cruise.",
+      "tags": [
+        "endurance",
+        "fixed-wing",
+        "li-ion",
+        "cold-weather"
+      ]
+    }
+  ],
+  "flight_controllers": [
+    {
+      "id": "fc-holybro-kakute-h7-v2-bt",
+      "name": "Holybro Kakute H7 V2 (BT)",
+      "weight_g": 7,
+      "processor": "STM32H743 (480 MHz)",
+      "firmware": [
+        "Betaflight",
+        "INAV",
+        "ArduPilot"
+      ],
+      "gyro": "ICM42688-P",
+      "voltage_input_v": {
+        "min": 7.4,
+        "max": 36
+      },
+      "current_draw_ma": 200,
+      "uart_ports": 6,
+      "features": [
+        "OSD",
+        "Barometer",
+        "Blackbox (16MB)",
+        "Bluetooth Config",
+        "BEC 5V/10V",
+        "SD Card"
+      ],
+      "manufacturer": "Holybro",
+      "part_number": "31099 (V2)",
+      "cost_usd": 100.0,
+      "availability": "in-stock",
+      "notes": "Factory 8-pin ribbon pairs FC-ESC plug-and-play.",
+      "tags": [
+        "10-inch",
+        "h7",
+        "bluetooth",
+        "stack-with-tekko32-65a"
+      ],
+      "hardware_revision": "V2",
+      "firmware_family": "BetaFlight",
+      "firmware_version": "4.5.1",
+      "pinout": {
+        "VBAT": "Battery voltage 2-8S",
+        "G": "Ground",
+        "5V": "5V BEC output 2A",
+        "10V": "10V BEC output 2A for HD VTX",
+        "M1-M4": "Motor signals to ESC",
+        "TX1-TX6": "UART transmit pads",
+        "RX1-RX6": "UART receive pads",
+        "SDA/SCL": "I2C for GPS compass/mag",
+        "Cam": "Analog camera in",
+        "VTX": "Analog video out",
+        "RSSI": "RSSI input analog",
+        "LED": "WS2812 LED strip",
+        "Buzzer": "Piezo buzzer"
+      },
+      "connectors": [
+        {
+          "type": "JST-SH",
+          "pins": 8,
+          "label": "ESC",
+          "notes": "Pairs with Tekko32 65A ribbon"
+        },
+        {
+          "type": "JST-SH",
+          "pins": 4,
+          "label": "Receiver",
+          "notes": "CRSF/SBUS"
+        },
+        {
+          "type": "JST-SH",
+          "pins": 6,
+          "label": "HD VTX",
+          "notes": "HDZero/Walksnail config"
+        },
+        {
+          "type": "JST-GH",
+          "pins": 6,
+          "label": "GPS",
+          "notes": "UART + I2C for M10Q-5883"
+        },
+        {
+          "type": "USB-C",
+          "pins": 1,
+          "label": "Config"
+        }
+      ]
+    },
+    {
+      "id": "fc-speedybee-f405-v4",
+      "name": "SpeedyBee F405 V4 Flight Controller",
+      "weight_g": 7,
+      "processor": "STM32F405 (168 MHz)",
+      "firmware": [
+        "Betaflight",
+        "INAV"
+      ],
+      "gyro": "ICM-42688-P",
+      "voltage_input_v": {
+        "min": 7.4,
+        "max": 25.2
+      },
+      "current_draw_ma": 180,
+      "uart_ports": 5,
+      "features": [
+        "OSD",
+        "Barometer SPL06",
+        "Blackbox (16MB)",
+        "Bluetooth Config",
+        "BEC 5V/9V"
+      ],
+      "manufacturer": "SpeedyBee",
+      "part_number": "F405V4-FC",
+      "cost_usd": 50.0,
+      "availability": "in-stock",
+      "notes": "8-pin ribbon to paired ESC. App-based BT config.",
+      "tags": [
+        "5-inch",
+        "f4",
+        "bluetooth",
+        "stack-with-60a-bls"
+      ],
+      "hardware_revision": "V4",
+      "firmware_family": "BetaFlight",
+      "firmware_version": "4.5.1",
+      "connectors": [
+        {
+          "type": "JST-SH",
+          "pins": 8,
+          "label": "ESC",
+          "notes": "Pairs with SpeedyBee 60A BLS ribbon"
+        },
+        {
+          "type": "JST-SH",
+          "pins": 6,
+          "label": "HD VTX"
+        },
+        {
+          "type": "JST-SH",
+          "pins": 4,
+          "label": "Receiver"
+        },
+        {
+          "type": "USB-C",
+          "pins": 1,
+          "label": "Config"
+        }
+      ]
+    },
+    {
+      "id": "fc-matek-f405-wing-v2",
+      "name": "Matek F405-WING V2 (Fixed Wing FC)",
+      "weight_g": 11,
+      "processor": "STM32F405RGT6 (168 MHz)",
+      "firmware": [
+        "INAV",
+        "ArduPilot"
+      ],
+      "gyro": "ICM42688-P",
+      "voltage_input_v": {
+        "min": 7.0,
+        "max": 30.0
+      },
+      "current_draw_ma": 200,
+      "uart_ports": 5,
+      "features": [
+        "PDB integrated",
+        "Current Sensor 184A",
+        "BEC 5V/9V",
+        "Barometer DPS310",
+        "OSD AT7456E"
+      ],
+      "manufacturer": "Matek",
+      "part_number": "F405-WING-V2",
+      "cost_usd": 64.0,
+      "availability": "in-stock",
+      "notes": "Fixed-wing only (INAV/ArduPilot, not Betaflight). Pair with Matek M10Q-5883 GPS/compass.",
+      "tags": [
+        "fixed-wing",
+        "plane",
+        "inav",
+        "ardupilot",
+        "pdb-integrated"
+      ],
+      "hardware_revision": "V2",
+      "firmware_family": "INAV",
+      "connectors": [
+        {
+          "type": "JST-GH",
+          "pins": 6,
+          "label": "GPS",
+          "notes": "UART + I2C for M10Q-5883"
+        },
+        {
+          "type": "JST-GH",
+          "pins": 4,
+          "label": "Receiver",
+          "notes": "CRSF for Solkin R24-S"
+        },
+        {
+          "type": "Solder Pad",
+          "pins": 8,
+          "label": "Servos",
+          "notes": "S3-S8 servo outputs + M1-M2 ESC"
+        },
+        {
+          "type": "USB-C",
+          "pins": 1,
+          "label": "Config"
+        }
+      ]
+    }
+  ],
+  "radios": [
+    {
+      "id": "radio-hglrc-gemini-rx-24g",
+      "name": "HGLRC ELRS Gemini RX Dual Diversity (2.4GHz)",
+      "type": "control",
+      "frequency_band": "2.4GHz",
+      "frequency_range_mhz": {
+        "min": 2400,
+        "max": 2483
+      },
+      "weight_g": 1.4,
+      "power_output_mw": 100,
+      "power_consumption_w": 0.5,
+      "range_m": 30000,
+      "data_rate_kbps": 250,
+      "antenna_connector": "U.FL (dual)",
+      "protocols": [
+        "CRSF",
+        "ELRS"
+      ],
+      "voltage_input_v": {
+        "min": 3.6,
+        "max": 5.5
+      },
+      "rx_sensitivity_dbm": -108,
+      "rx_gain_dbi": 2,
+      "manufacturer": "HGLRC",
+      "part_number": "Gemini-24G-RX",
+      "cost_usd": 20.0,
+      "availability": "in-stock",
+      "notes": "4G variant). Dual SX1281 + TCXO, refresh 50-1000Hz. Sensitivity -108dBm @ 50Hz, -104dBm @ 500Hz. 3x power-cycle to bind.",
+      "tags": [
+        "elrs",
+        "2.4ghz",
+        "diversity"
+      ],
+      "hardware_revision": "V1",
+      "firmware_family": "ELRS",
+      "firmware_version": "3.x"
+    },
+    {
+      "id": "radio-hglrc-gemini-rx-915mhz",
+      "name": "HGLRC ELRS Gemini RX Dual Diversity (915MHz)",
+      "type": "control",
+      "frequency_band": "915MHz",
+      "frequency_range_mhz": {
+        "min": 902,
+        "max": 928
+      },
+      "weight_g": 1.5,
+      "power_output_mw": 50,
+      "power_consumption_w": 0.4,
+      "range_m": 60000,
+      "data_rate_kbps": 100,
+      "antenna_connector": "U.FL (dual)",
+      "protocols": [
+        "CRSF",
+        "ELRS"
+      ],
+      "voltage_input_v": {
+        "min": 3.6,
+        "max": 5.5
+      },
+      "rx_sensitivity_dbm": -115,
+      "rx_gain_dbi": 2,
+      "manufacturer": "HGLRC",
+      "part_number": "Gemini-915-RX",
+      "cost_usd": 22.0,
+      "availability": "in-stock",
+      "notes": "Dual SX1276 + ESP32-PICO-D4, refresh 25-200Hz. Long-range variant.",
+      "tags": [
+        "elrs",
+        "915mhz",
+        "diversity",
+        "long-range"
+      ],
+      "hardware_revision": "V1",
+      "firmware_family": "ELRS",
+      "firmware_version": "3.x"
+    },
+    {
+      "id": "radio-solkin-r24-s",
+      "name": "Solkin R24-S ELRS 2.4GHz Receiver",
+      "type": "control",
+      "frequency_band": "2.4GHz",
+      "frequency_range_mhz": {
+        "min": 2400,
+        "max": 2483
+      },
+      "weight_g": 1,
+      "power_output_mw": 100,
+      "power_consumption_w": 0.4,
+      "range_m": 15000,
+      "data_rate_kbps": 250,
+      "antenna_connector": "integrated",
+      "protocols": [
+        "CRSF",
+        "ELRS"
+      ],
+      "voltage_input_v": {
+        "min": 4.5,
+        "max": 5.5
+      },
+      "rx_sensitivity_dbm": -105,
+      "rx_gain_dbi": 1,
+      "manufacturer": "Solkin (Matek R24-D equivalent)",
+      "part_number": "R24-S",
+      "cost_usd": 16.0,
+      "availability": "in-stock",
+      "notes": "Single SX1280 (no diversity). Fixed-wing LOS use with F405-WING V2.",
+      "tags": [
+        "elrs",
+        "2.4ghz",
+        "single-antenna",
+        "fixed-wing"
+      ],
+      "firmware_family": "ELRS",
+      "firmware_version": "3.x"
+    },
+    {
+      "id": "radio-happymodel-es24tx-pro",
+      "name": "HappyModel ES24TX Pro Micro — 1000mW ELRS TX Module",
+      "type": "control",
+      "frequency_band": "2.4GHz",
+      "frequency_range_mhz": {
+        "min": 2400,
+        "max": 2500
+      },
+      "weight_g": 51,
+      "power_output_mw": 1000,
+      "power_levels_mw": [
+        10,
+        25,
+        50,
+        100,
+        250,
+        500,
+        1000
+      ],
+      "power_consumption_w": 3.5,
+      "range_m": 40000,
+      "data_rate_kbps": 500,
+      "antenna_connector": "SMA",
+      "protocols": [
+        "CRSF",
+        "ELRS"
+      ],
+      "voltage_input_v": {
+        "min": 5,
+        "max": 10
+      },
+      "tx_gain_dbi": 4.18,
+      "tx_cable_loss_db": 0.3,
+      "manufacturer": "HappyModel",
+      "part_number": "ES24TX-Pro",
+      "cost_usd": 70.0,
+      "availability": "in-stock",
+      "notes": "Micro JR bay TX module for TX16S Mk II. 25Hz-500Hz refresh. Active cooling fan + RGB. Antenna gain 4.18dBi.",
+      "tags": [
+        "elrs-tx",
+        "jr-module",
+        "1000mw"
+      ],
+      "hardware_revision": "Pro",
+      "firmware_family": "ELRS",
+      "firmware_version": "3.x"
+    },
+    {
+      "id": "radio-holybro-atlatl-hv-v2",
+      "name": "Holybro Atlatl HV V2 — Analog VTX",
+      "type": "video",
+      "frequency_band": "5.8GHz",
+      "frequency_range_mhz": {
+        "min": 5650,
+        "max": 5945
+      },
+      "weight_g": 9,
+      "power_output_mw": 800,
+      "power_levels_mw": [
+        25,
+        200,
+        500,
+        800
+      ],
+      "power_consumption_w": 4.5,
+      "range_m": 4000,
+      "data_rate_kbps": 0,
+      "antenna_connector": "MMCX",
+      "protocols": [
+        "Analog Video PAL/NTSC",
+        "SmartAudio V2"
+      ],
+      "voltage_input_v": {
+        "min": 7.0,
+        "max": 28.0
+      },
+      "tx_gain_dbi": 1.6,
+      "tx_cable_loss_db": 0.5,
+      "manufacturer": "Holybro",
+      "part_number": "ATLATL-HV-V2",
+      "cost_usd": 45.0,
+      "availability": "in-stock",
+      "notes": "SmartAudio V2 selectable: 25/200/500/800mW.",
+      "tags": [
+        "vtx",
+        "analog",
+        "5.8ghz",
+        "smartaudio",
+        "stack-kakute-h7"
+      ],
+      "firmware_family": "Other"
+    },
+    {
+      "id": "radio-hdzero-freestyle-v2-vtx",
+      "name": "HDZero Freestyle V2 VTX (digital HD)",
+      "type": "video",
+      "frequency_band": "5.8GHz",
+      "frequency_range_mhz": {
+        "min": 5658,
+        "max": 5917
+      },
+      "weight_g": 8,
+      "power_output_mw": 1000,
+      "power_levels_mw": [
+        25,
+        200,
+        500,
+        1000
+      ],
+      "power_consumption_w": 15,
+      "range_m": 5000,
+      "data_rate_kbps": 0,
+      "antenna_connector": "MMCX",
+      "protocols": [
+        "HDZero OFDM 2048-FEC",
+        "MSP"
+      ],
+      "voltage_input_v": {
+        "min": 7.4,
+        "max": 25.2
+      },
+      "tx_gain_dbi": 1.6,
+      "tx_cable_loss_db": 0.5,
+      "manufacturer": "HDZero",
+      "part_number": "HDZ3132-VTX",
+      "cost_usd": 139.0,
+      "availability": "in-stock",
+      "notes": "Power: 25/200/500/1000mW. 720p60, <13ms latency. Pairs with HDZero Goggle.",
+      "tags": [
+        "vtx",
+        "digital-hd",
+        "hdzero",
+        "5.8ghz"
+      ],
+      "hardware_revision": "V2",
+      "firmware_family": "HDZero"
+    },
+    {
+      "id": "radio-walksnail-avatar-v2-vtx",
+      "name": "Walksnail Avatar HD VTX V2 (Moonlight)",
+      "type": "video",
+      "frequency_band": "5.8GHz",
+      "frequency_range_mhz": {
+        "min": 5725,
+        "max": 5875
+      },
+      "weight_g": 6,
+      "power_output_mw": 1200,
+      "power_levels_mw": [
+        25,
+        200,
+        500,
+        700,
+        1000,
+        1200
+      ],
+      "power_consumption_w": 8,
+      "range_m": 5000,
+      "data_rate_kbps": 0,
+      "antenna_connector": "IPEX/MMCX",
+      "protocols": [
+        "Walksnail OFDM",
+        "MSP"
+      ],
+      "voltage_input_v": {
+        "min": 6.0,
+        "max": 25.2
+      },
+      "tx_gain_dbi": 1.6,
+      "tx_cable_loss_db": 0.5,
+      "manufacturer": "Walksnail / CaddxFPV",
+      "part_number": "WN02-V2-VTX",
+      "cost_usd": 135.0,
+      "availability": "in-stock",
+      "notes": "Power: 25/200/500/700/1000/1200mW. 1080p DVR, 720p broadcast, 22ms latency.",
+      "tags": [
+        "vtx",
+        "digital-hd",
+        "walksnail",
+        "5.8ghz",
+        "gyroflow"
+      ],
+      "hardware_revision": "V2",
+      "firmware_family": "Walksnail"
+    },
+    {
+      "id": "radio-reaper-extreme-v2-vtx",
+      "name": "Rotor Riot Reaper Extreme V2 — Analog VTX 1.6W",
+      "type": "video",
+      "frequency_band": "5.8GHz",
+      "frequency_range_mhz": {
+        "min": 5650,
+        "max": 5945
+      },
+      "weight_g": 9,
+      "power_output_mw": 1600,
+      "power_levels_mw": [
+        25,
+        200,
+        500,
+        1000,
+        1600
+      ],
+      "power_consumption_w": 8,
+      "range_m": 8000,
+      "data_rate_kbps": 0,
+      "antenna_connector": "MMCX",
+      "protocols": [
+        "Analog Video PAL/NTSC",
+        "SmartAudio V2"
+      ],
+      "voltage_input_v": {
+        "min": 7.0,
+        "max": 28.0
+      },
+      "tx_gain_dbi": 1.6,
+      "tx_cable_loss_db": 0.5,
+      "manufacturer": "Rotor Riot",
+      "part_number": "17553",
+      "cost_usd": 60.0,
+      "availability": "in-stock",
+      "notes": "Power: 25/200/500/1000/1600mW. Specialty long-range/range-extender use. Not for routine training (exceeds FCC/CE limits in some regions).",
+      "tags": [
+        "vtx",
+        "analog",
+        "5.8ghz",
+        "high-power",
+        "1.6w",
+        "specialty"
+      ],
+      "firmware_family": "Other"
+    }
+  ],
+  "sensors": [
+    {
+      "id": "sensor-hdzero-freestyle-v2-cam",
+      "name": "HDZero Freestyle V2 Camera",
+      "type": "camera",
+      "weight_g": 4,
+      "power_consumption_w": 0.5,
+      "voltage_input_v": {
+        "min": 4.5,
+        "max": 5.5
+      },
+      "resolution": "1280x720",
+      "fov_degrees": 120,
+      "interface": "MIPI (HDZero)",
+      "data_rate_mbps": 60,
+      "manufacturer": "HDZero",
+      "part_number": "HDZ3132-CAM",
+      "cost_usd": 59.0,
+      "availability": "in-stock",
+      "notes": "Pairs only with HDZero Freestyle V2 VTX. 1/1.8\" CMOS, WDR.",
+      "tags": [
+        "camera",
+        "digital-hd",
+        "hdzero"
+      ]
+    },
+    {
+      "id": "sensor-walksnail-camera-v2",
+      "name": "Walksnail Camera V2 with Gyroflow",
+      "type": "camera",
+      "weight_g": 6,
+      "power_consumption_w": 0.6,
+      "voltage_input_v": {
+        "min": 4.5,
+        "max": 5.5
+      },
+      "resolution": "1920x1080",
+      "fov_degrees": 160,
+      "interface": "MIPI (Walksnail proprietary)",
+      "data_rate_mbps": 60,
+      "manufacturer": "Walksnail / CaddxFPV",
+      "part_number": "WN02-CAM-V2",
+      "cost_usd": 65.0,
+      "availability": "in-stock",
+      "notes": "Pairs only with Walksnail Avatar V2 VTX. Gyroflow support for post-flight stabilization. Includes 32GB microSD.",
+      "tags": [
+        "camera",
+        "digital-hd",
+        "walksnail",
+        "gyroflow"
+      ]
+    },
+    {
+      "id": "sensor-caddx-infra-thermal",
+      "name": "Caddx Infra Thermal Camera",
+      "type": "camera",
+      "weight_g": 10,
+      "power_consumption_w": 0.8,
+      "voltage_input_v": {
+        "min": 4.5,
+        "max": 5.5
+      },
+      "resolution": "256x192",
+      "fov_degrees": 56,
+      "interface": "Analog NTSC/PAL",
+      "data_rate_mbps": 1,
+      "manufacturer": "Caddx",
+      "part_number": "TR1-211SL",
+      "cost_usd": 250.0,
+      "availability": "in-stock",
+      "notes": "Thermal imaging for night ISR. Analog output; pair with Atlatl HV V2 or Reaper Extreme V2 VTX. ITAR/EAR 6A003 considerations on int'l transfer.",
+      "tags": [
+        "camera",
+        "thermal",
+        "infra",
+        "night-ops",
+        "export-controlled"
+      ]
+    },
+    {
+      "id": "sensor-matek-m10q-5883",
+      "name": "Matek M10Q-5883 GNSS + Compass",
+      "type": "gps",
+      "weight_g": 9,
+      "power_consumption_w": 0.05,
+      "voltage_input_v": {
+        "min": 4.0,
+        "max": 9.0
+      },
+      "interface": "UART + I2C",
+      "manufacturer": "Matek",
+      "part_number": "M10Q-5883",
+      "cost_usd": 45.0,
+      "availability": "in-stock",
+      "notes": "u-blox SAM-M10Q + QMC5883L. Multi-constellation (GPS+GLONASS+Galileo+BeiDou). Primary pairing: F405-WING V2.",
+      "tags": [
+        "gps",
+        "compass",
+        "m10",
+        "ublox",
+        "pair-matek-f405-wing"
+      ]
+    }
+  ],
+  "accessories": [
+    {
+      "id": "acc-radiomaster-tx16s-mk2",
+      "name": "RadioMaster TX16S Mark II (EdgeTX Radio Controller)",
+      "category": "transmitter-radio",
+      "weight_g": 900,
+      "dimensions_mm": {
+        "length": 265,
+        "width": 195,
+        "height": 95
+      },
+      "material": "ABS + Hall Effect Gimbals",
+      "manufacturer": "RadioMaster",
+      "part_number": "TX16S-MK2-V4-M2",
+      "cost_usd": 260.0,
+      "availability": "in-stock",
+      "notes": "Mode 2. EdgeTX firmware preinstalled. JR module bay accepts HappyModel ES24TX Pro. 2x 18650 Li-Ion battery (included).",
+      "tags": [
+        "transmitter",
+        "edgetx",
+        "radiomaster",
+        "mode-2"
+      ]
+    },
+    {
+      "id": "acc-hdzero-goggle-v1",
+      "name": "HDZero Goggle V1 (HDZ3510)",
+      "category": "goggle",
+      "weight_g": 580,
+      "dimensions_mm": {
+        "length": 175,
+        "width": 85,
+        "height": 85
+      },
+      "material": "Plastic + OLED",
+      "frequency_band": "5.8GHz",
+      "frequency_range_mhz": {
+        "min": 5658,
+        "max": 5917
+      },
+      "rx_sensitivity_dbm": -96,
+      "rx_gain_dbi": 2,
+      "manufacturer": "HDZero",
+      "part_number": "HDZ3510",
+      "cost_usd": 600.0,
+      "availability": "in-stock",
+      "notes": "Dual HDZero receivers. Analog reception requires Expansion Module (line 51). External battery needed. Built-in H.264 DVR.",
+      "tags": [
+        "goggle",
+        "hdzero",
+        "fpv"
+      ]
+    },
+    {
+      "id": "acc-hdzero-expansion-module",
+      "name": "HDZero Goggle Expansion Module (Analog + WiFi)",
+      "category": "goggle-accessory",
+      "weight_g": 40,
+      "material": "Plastic",
+      "compatible_with": [
+        "acc-hdzero-goggle-v1"
+      ],
+      "manufacturer": "HDZero",
+      "part_number": "HDZ3311",
+      "cost_usd": 79.0,
+      "availability": "in-stock",
+      "notes": "Adds analog 5.8GHz reception + WiFi live stream to HDZero Goggle. Only 20 modules for 50 goggles — prioritize mixed-feed stations.",
+      "tags": [
+        "goggle-expansion",
+        "hdzero",
+        "analog",
+        "wifi"
+      ]
+    },
+    {
+      "id": "acc-walksnail-avatar-goggles-x",
+      "name": "Walksnail Avatar HD Goggles X",
+      "category": "goggle",
+      "weight_g": 520,
+      "dimensions_mm": {
+        "length": 175,
+        "width": 85,
+        "height": 80
+      },
+      "material": "Plastic + micro-OLED",
+      "frequency_band": "5.8GHz",
+      "frequency_range_mhz": {
+        "min": 5725,
+        "max": 5875
+      },
+      "rx_sensitivity_dbm": -95,
+      "rx_gain_dbi": 2,
+      "manufacturer": "Walksnail / CaddxFPV",
+      "part_number": "WN-GOGGLES-X",
+      "cost_usd": 550.0,
+      "availability": "in-stock",
+      "notes": "Pairs with Walksnail Avatar V2 VTX. HDMI-in for simulator use. 1080p60 DVR.",
+      "tags": [
+        "goggle",
+        "walksnail",
+        "fpv",
+        "hdmi-in",
+        "simulator"
+      ]
+    },
+    {
+      "id": "acc-walksnail-avatar-vrx",
+      "name": "Walksnail Avatar FPV VRX (External Receiver)",
+      "category": "video-receiver",
+      "weight_g": 40,
+      "material": "Plastic",
+      "manufacturer": "Walksnail / CaddxFPV",
+      "part_number": "WN02-FP001",
+      "cost_usd": 120.0,
+      "availability": "in-stock",
+      "notes": "HDMI-out for instructor monitoring via external screen. USB-C power.",
+      "tags": [
+        "vrx",
+        "walksnail",
+        "instructor-monitor",
+        "hdmi-out"
+      ]
+    },
+    {
+      "id": "acc-immersion-rapidfire-module",
+      "name": "ImmersionRC Rapidfire Analog Diversity Receiver",
+      "category": "goggle-module",
+      "weight_g": 30,
+      "material": "PCB module",
+      "frequency_band": "5.8GHz",
+      "frequency_range_mhz": {
+        "min": 5650,
+        "max": 5945
+      },
+      "rx_sensitivity_dbm": -92,
+      "rx_gain_dbi": 2,
+      "manufacturer": "ImmersionRC",
+      "part_number": "23346",
+      "cost_usd": 119.0,
+      "availability": "in-stock",
+      "notes": "Orqa FPV.One / Fatshark HDO module bay. Quadversity analog diversity. **VERIFY pairing goggles exist** — may be unused stock.",
+      "tags": [
+        "goggle-module",
+        "analog",
+        "diversity",
+        "rapidfire",
+        "verify-pairing"
+      ]
+    },
+    {
+      "id": "acc-truerc-core-5.8ghz",
+      "name": "TrueRC Core 5.8GHz 85mm U.FL Antenna",
+      "category": "antenna",
+      "weight_g": 3,
+      "dimensions_mm": {
+        "length": 85,
+        "width": 10,
+        "height": 10
+      },
+      "material": "plastic + copper",
+      "manufacturer": "TrueRC",
+      "part_number": "CORE-5.8-UFL-85",
+      "cost_usd": 12.99,
+      "availability": "in-stock",
+      "notes": "U.FL termination. Atlatl HV V2 uses MMCX — adapter needed unless VTX has U.FL pigtail.",
+      "tags": [
+        "antenna",
+        "vtx-side",
+        "5.8ghz",
+        "rhcp",
+        "u.fl"
+      ]
+    },
+    {
+      "id": "acc-x2-air-hdzero-goggle-pair",
+      "name": "X2-AIR RHCP Antenna Pair for HDZero Goggles",
+      "category": "antenna",
+      "weight_g": 20,
+      "compatible_with": [
+        "acc-hdzero-goggle-v1"
+      ],
+      "manufacturer": "X2-AIR (TrueRC X-AIR equivalent)",
+      "part_number": "X2-AIR-HDZGOG-PAIR-RHCP",
+      "cost_usd": 35.0,
+      "availability": "in-stock",
+      "notes": "Goggle-side SMA. RHCP matched pair.",
+      "tags": [
+        "antenna",
+        "goggle-side",
+        "5.8ghz",
+        "rhcp",
+        "sma"
+      ]
+    },
+    {
+      "id": "acc-emax-es08-maii-servo",
+      "name": "EMAX ES08 MA II Metal Gear Servo 9g",
+      "category": "servo",
+      "weight_g": 9,
+      "dimensions_mm": {
+        "length": 22,
+        "width": 12,
+        "height": 27
+      },
+      "material": "plastic + metal gear",
+      "manufacturer": "EMAX",
+      "part_number": "ES08A-20181129",
+      "cost_usd": 6.99,
+      "availability": "in-stock",
+      "notes": "1.8 kg-cm torque @ 6V, 0.12 sec/60°. Plenty for 4-5 servos × 25 fixed-wing builds.",
+      "tags": [
+        "servo",
+        "fixed-wing",
+        "9g",
+        "metal-gear"
+      ]
+    },
+    {
+      "id": "acc-caddx-gm3-gimbal",
+      "name": "Caddx GM3 Gimbal (no camera)",
+      "category": "gimbal",
+      "weight_g": 15,
+      "material": "Aluminum",
+      "manufacturer": "Caddx",
+      "part_number": "GM3-NC",
+      "cost_usd": 45.0,
+      "availability": "in-stock",
+      "notes": "Camera sold separately. PWM control from FC. Fixed-wing / VTOL stabilization.",
+      "tags": [
+        "gimbal",
+        "fixed-wing",
+        "pwm-controlled"
+      ]
+    },
+    {
+      "id": "acc-radiomaster-pocket",
+      "name": "RadioMaster Pocket (ELRS 2.4GHz internal)",
+      "category": "transmitter-radio",
+      "weight_g": 250,
+      "dimensions_mm": {
+        "length": 170,
+        "width": 95,
+        "height": 35
+      },
+      "material": "ABS",
+      "manufacturer": "RadioMaster",
+      "part_number": "RM-POCKET",
+      "cost_usd": 99.0,
+      "availability": "in-stock",
+      "notes": "Smallest full-featured EdgeTX radio. Internal ELRS 2.4GHz up to 250mW. 2x 18650 Li-Ion removable. Great for patrol / ruck-carry. 4-channel gimbal.",
+      "tags": [
+        "transmitter",
+        "edgetx",
+        "elrs-internal",
+        "compact",
+        "ruck"
+      ]
+    },
+    {
+      "id": "acc-radiomaster-boxer",
+      "name": "RadioMaster Boxer (ELRS 2.4GHz internal)",
+      "category": "transmitter-radio",
+      "weight_g": 500,
+      "dimensions_mm": {
+        "length": 200,
+        "width": 165,
+        "height": 70
+      },
+      "material": "ABS + Hall gimbals",
+      "manufacturer": "RadioMaster",
+      "part_number": "RM-BOXER-ELRS",
+      "cost_usd": 159.0,
+      "availability": "in-stock",
+      "notes": "Mid-size gamepad-style radio. Hall gimbals, EdgeTX, internal ELRS 1W. 2x 18650 battery. Between Pocket and TX16S.",
+      "tags": [
+        "transmitter",
+        "edgetx",
+        "elrs-internal",
+        "mid-size"
+      ]
+    },
+    {
+      "id": "acc-frsky-x9d-plus",
+      "name": "FrSky X9D Plus SE 2019 (ACCESS + OpenTX/EdgeTX)",
+      "category": "transmitter-radio",
+      "weight_g": 710,
+      "dimensions_mm": {
+        "length": 200,
+        "width": 205,
+        "height": 90
+      },
+      "material": "ABS",
+      "manufacturer": "FrSky",
+      "part_number": "X9D-PLUS-SE-2019",
+      "cost_usd": 220.0,
+      "availability": "in-stock",
+      "notes": "Legacy-standard radio. Native FrSky ACCESS but accepts JR-bay modules (ES24TX Pro, Crossfire, etc.). Widely fielded — compatible with most existing training inventories.",
+      "tags": [
+        "transmitter",
+        "opentx",
+        "edgetx",
+        "frsky-access",
+        "jr-bay"
+      ]
+    },
+    {
+      "id": "acc-jumper-t-pro-v2",
+      "name": "Jumper T-Pro V2 (ELRS 2.4GHz internal, multi-protocol)",
+      "category": "transmitter-radio",
+      "weight_g": 240,
+      "dimensions_mm": {
+        "length": 165,
+        "width": 90,
+        "height": 35
+      },
+      "material": "ABS",
+      "manufacturer": "Jumper",
+      "part_number": "JUMPER-T-PRO-V2",
+      "cost_usd": 119.0,
+      "availability": "in-stock",
+      "notes": "Gamepad-style radio with internal ELRS + optional 4-in-1 multi-protocol module. Compact. 2x 18350 Li-Ion.",
+      "tags": [
+        "transmitter",
+        "edgetx",
+        "elrs-internal",
+        "multi-protocol",
+        "compact"
+      ]
+    },
+    {
+      "id": "acc-fatshark-hdo2",
+      "name": "Fatshark Dominator HDO2 (analog, module bay)",
+      "category": "goggle",
+      "weight_g": 260,
+      "dimensions_mm": {
+        "length": 175,
+        "width": 85,
+        "height": 80
+      },
+      "material": "plastic + OLED",
+      "frequency_band": "5.8GHz",
+      "frequency_range_mhz": {
+        "min": 5650,
+        "max": 5945
+      },
+      "rx_sensitivity_dbm": -92,
+      "rx_gain_dbi": 2,
+      "manufacturer": "Fatshark",
+      "part_number": "FAT-HDO2",
+      "cost_usd": 499.0,
+      "availability": "in-stock",
+      "notes": "Analog goggles, OLED micro-displays. Module bay accepts Rapidfire + TrueRC Fusion. Long-standing operator choice for analog.",
+      "tags": [
+        "goggle",
+        "analog",
+        "module-bay",
+        "fatshark"
+      ]
+    },
+    {
+      "id": "acc-dji-goggles-2",
+      "name": "DJI Goggles 2 (DJI O3 ecosystem)",
+      "category": "goggle",
+      "weight_g": 290,
+      "dimensions_mm": {
+        "length": 170,
+        "width": 90,
+        "height": 80
+      },
+      "material": "Plastic + micro-OLED",
+      "frequency_band": "5.8GHz/2.4GHz",
+      "frequency_range_mhz": {
+        "min": 2400,
+        "max": 5945
+      },
+      "rx_sensitivity_dbm": -94,
+      "rx_gain_dbi": 2,
+      "manufacturer": "DJI",
+      "part_number": "DJI-GOG-2",
+      "cost_usd": 649.0,
+      "availability": "in-stock",
+      "notes": "Closed-ecosystem DJI digital goggles. Only works with DJI O3 / Vista VTX. 1080p60, <30ms latency. USB-C power.",
+      "tags": [
+        "goggle",
+        "dji",
+        "digital-hd",
+        "closed-ecosystem"
+      ]
+    },
+    {
+      "id": "acc-skyzone-04x",
+      "name": "SkyZone SKY04X v2 (analog diversity + HDMI in)",
+      "category": "goggle",
+      "weight_g": 360,
+      "dimensions_mm": {
+        "length": 175,
+        "width": 85,
+        "height": 85
+      },
+      "material": "plastic + OLED",
+      "frequency_band": "5.8GHz",
+      "frequency_range_mhz": {
+        "min": 5650,
+        "max": 5945
+      },
+      "rx_sensitivity_dbm": -95,
+      "rx_gain_dbi": 2,
+      "manufacturer": "SkyZone",
+      "part_number": "SKY04X-V2",
+      "cost_usd": 449.0,
+      "availability": "in-stock",
+      "notes": "Integrated analog diversity + DVR. HDMI-in for simulator / secondary feed. Adjustable IPD.",
+      "tags": [
+        "goggle",
+        "analog",
+        "diversity",
+        "hdmi-in"
+      ]
+    },
+    {
+      "id": "acc-truerc-singularity-5.8-stubby-rhcp",
+      "name": "TrueRC Singularity 5.8GHz Stubby RHCP",
+      "category": "antenna",
+      "weight_g": 2.8,
+      "dimensions_mm": {
+        "length": 28,
+        "width": 10,
+        "height": 10
+      },
+      "material": "plastic + copper",
+      "manufacturer": "TrueRC",
+      "part_number": "TRC-SING-5.8-RHCP-STUBBY",
+      "cost_usd": 16.99,
+      "availability": "in-stock",
+      "notes": "Short-range omni for VTX or goggle. ~1.6 dBi. RHCP. Durable for crashes.",
+      "tags": [
+        "antenna",
+        "omni",
+        "vtx-side",
+        "5.8ghz",
+        "rhcp",
+        "stubby"
+      ]
+    },
+    {
+      "id": "acc-lumenier-axii-patch-hd",
+      "name": "Lumenier AXII Patch HD 5.8GHz (9 dBi, SMA)",
+      "category": "antenna",
+      "weight_g": 42,
+      "dimensions_mm": {
+        "length": 110,
+        "width": 110,
+        "height": 15
+      },
+      "material": "plastic + PCB",
+      "frequency_band": "5.8GHz",
+      "rx_gain_dbi": 9,
+      "manufacturer": "Lumenier",
+      "part_number": "LUM-AXII-PATCH-HD",
+      "cost_usd": 49.0,
+      "availability": "in-stock",
+      "notes": "High-gain directional patch for goggle / ground-station. 9 dBi, 5.8GHz. Doubles effective range on the receive side when paired with an omni.",
+      "tags": [
+        "antenna",
+        "patch",
+        "goggle-side",
+        "5.8ghz",
+        "high-gain",
+        "directional"
+      ]
+    },
+    {
+      "id": "acc-immersion-pagoda-2",
+      "name": "ImmersionRC Pagoda 2 5.8GHz (RHCP)",
+      "category": "antenna",
+      "weight_g": 10,
+      "dimensions_mm": {
+        "length": 95,
+        "width": 15,
+        "height": 15
+      },
+      "material": "PCB + SMA",
+      "manufacturer": "ImmersionRC",
+      "part_number": "IRC-PAGODA-2",
+      "cost_usd": 24.0,
+      "availability": "in-stock",
+      "notes": "Pagoda PCB-based omni. Good for ground-station omni or VTX side. ~2.2 dBi.",
+      "tags": [
+        "antenna",
+        "omni",
+        "pagoda",
+        "5.8ghz",
+        "rhcp"
+      ]
+    },
+    {
+      "id": "acc-alpha-24g-elrs-dipole",
+      "name": "2.4GHz Dipole Antenna (T-Antenna for ELRS RX)",
+      "category": "antenna",
+      "weight_g": 2.5,
+      "dimensions_mm": {
+        "length": 100,
+        "width": 3,
+        "height": 3
+      },
+      "material": "coax + copper",
+      "frequency_band": "2.4GHz",
+      "rx_gain_dbi": 2,
+      "manufacturer": "Generic / Happymodel / iFlight",
+      "part_number": "ANT-2.4-DIPOLE-100",
+      "cost_usd": 4.99,
+      "availability": "in-stock",
+      "notes": "Standard ELRS 2.4GHz T-antenna. Common across Gemini RX, Solkin R24, HappyModel EP1/EP2.",
+      "tags": [
+        "antenna",
+        "elrs",
+        "2.4ghz",
+        "dipole",
+        "rx-side"
+      ]
+    },
+    {
+      "id": "acc-915-dipole-ipex",
+      "name": "915MHz Long-Range Dipole (IPEX, for ELRS 915 RX)",
+      "category": "antenna",
+      "weight_g": 4,
+      "dimensions_mm": {
+        "length": 170,
+        "width": 3,
+        "height": 3
+      },
+      "material": "coax + copper",
+      "frequency_band": "915MHz",
+      "rx_gain_dbi": 2,
+      "manufacturer": "Generic",
+      "part_number": "ANT-915-DIPOLE-170",
+      "cost_usd": 6.99,
+      "availability": "in-stock",
+      "notes": "Long-wire 915MHz RX antenna. Pairs with HGLRC Gemini 915 / Matek R24-915 / TBS Crossfire RX.",
+      "tags": [
+        "antenna",
+        "elrs",
+        "915mhz",
+        "dipole",
+        "long-range",
+        "rx-side"
+      ]
+    },
+    {
+      "id": "acc-isdt-q6-nano",
+      "name": "ISDT Q6 Nano (200W DC charger, 1-6S)",
+      "category": "charger",
+      "weight_g": 175,
+      "dimensions_mm": {
+        "length": 85,
+        "width": 65,
+        "height": 30
+      },
+      "material": "aluminum",
+      "manufacturer": "ISDT",
+      "part_number": "ISDT-Q6-NANO",
+      "cost_usd": 62.0,
+      "availability": "in-stock",
+      "notes": "Compact 200W DC balance charger. 1-6S LiPo/Li-ion. Needs 12-28V input (vehicle inverter or wall PSU).",
+      "tags": [
+        "charger",
+        "dc",
+        "200w",
+        "balance",
+        "portable"
+      ]
+    },
+    {
+      "id": "acc-toolkitrc-m8s",
+      "name": "ToolkitRC M8S (1500W 8-channel smart charger)",
+      "category": "charger",
+      "weight_g": 980,
+      "dimensions_mm": {
+        "length": 195,
+        "width": 140,
+        "height": 55
+      },
+      "material": "aluminum",
+      "manufacturer": "ToolkitRC",
+      "part_number": "TOOLKIT-M8S",
+      "cost_usd": 299.0,
+      "availability": "in-stock",
+      "notes": "Rapid charger for fleet ops. 8 packs at once, 1500W total. 30V input max. Built-in cell checker + servo tester. Standard at squadron-level FPV trainings.",
+      "tags": [
+        "charger",
+        "dc",
+        "1500w",
+        "8-channel",
+        "fleet",
+        "field-ops"
+      ]
+    },
+    {
+      "id": "acc-lipo-safe-bag-l",
+      "name": "LiPo Safe Bag Large (fire-resistant)",
+      "category": "safety",
+      "weight_g": 280,
+      "dimensions_mm": {
+        "length": 300,
+        "width": 220,
+        "height": 180
+      },
+      "material": "fiberglass + fire-resistant lining",
+      "manufacturer": "Generic",
+      "part_number": "LIPO-BAG-L",
+      "cost_usd": 15.0,
+      "availability": "in-stock",
+      "notes": "Mandatory for charge/storage. Holds ~6-8 6S packs. Replace if smoke staining appears.",
+      "tags": [
+        "safety",
+        "lipo",
+        "fire-suppression",
+        "transport"
+      ]
+    },
+    {
+      "id": "acc-voltage-alarm",
+      "name": "1-8S LiPo Voltage Checker + Low-Voltage Alarm",
+      "category": "battery-tool",
+      "weight_g": 10,
+      "dimensions_mm": {
+        "length": 35,
+        "width": 25,
+        "height": 10
+      },
+      "material": "plastic",
+      "manufacturer": "HobbyWing / generic",
+      "part_number": "LIPO-ALARM-1-8S",
+      "cost_usd": 5.99,
+      "availability": "in-stock",
+      "notes": "Plug into balance lead. Shows per-cell voltage; beeps at programmable low-voltage threshold. Critical for lost-drone recovery (audible locator).",
+      "tags": [
+        "battery-tool",
+        "voltage-check",
+        "locator",
+        "buzzer"
+      ]
+    },
+    {
+      "id": "acc-gopro-hero-11-black",
+      "name": "GoPro HERO 11 Black (action cam, payload)",
+      "category": "action-camera",
+      "weight_g": 154,
+      "dimensions_mm": {
+        "length": 72,
+        "width": 51,
+        "height": 33
+      },
+      "material": "polycarbonate + metal",
+      "manufacturer": "GoPro",
+      "part_number": "GOPRO-HERO-11-BLACK",
+      "cost_usd": 399.0,
+      "availability": "in-stock",
+      "notes": "5.3K60 HDR action cam. Common secondary recording payload for ISR missions. Mount on top of frame; adds ~160g AUW.",
+      "tags": [
+        "camera",
+        "action-cam",
+        "payload",
+        "isr-recording"
+      ]
+    },
+    {
+      "id": "acc-insta360-x3",
+      "name": "Insta360 X3 (360° action cam, payload)",
+      "category": "action-camera",
+      "weight_g": 180,
+      "dimensions_mm": {
+        "length": 114,
+        "width": 46,
+        "height": 38
+      },
+      "material": "polycarbonate",
+      "manufacturer": "Insta360",
+      "part_number": "INSTA360-X3",
+      "cost_usd": 449.0,
+      "availability": "in-stock",
+      "notes": "360° dual-lens action cam. Re-frame in post; useful for AAR / situational awareness recording.",
+      "tags": [
+        "camera",
+        "action-cam",
+        "360",
+        "aar"
+      ]
+    },
+    {
+      "id": "acc-finder-buzzer",
+      "name": "Lost-Drone Buzzer (VIFLY Finder 2)",
+      "category": "locator",
+      "weight_g": 4,
+      "dimensions_mm": {
+        "length": 20,
+        "width": 15,
+        "height": 8
+      },
+      "material": "PCB",
+      "manufacturer": "VIFLY",
+      "part_number": "VIFLY-FINDER-2",
+      "cost_usd": 12.99,
+      "availability": "in-stock",
+      "notes": "Self-powered 105dB piezo finder. Activates on lost-signal OR on vibration after crash. Replaceable coin cell lasts months.",
+      "tags": [
+        "locator",
+        "buzzer",
+        "lost-drone-recovery",
+        "safety"
+      ]
+    },
+    {
+      "id": "acc-current-sensor-200a",
+      "name": "200A Current Sensor (Hall-effect, external)",
+      "category": "current-sensor",
+      "weight_g": 8,
+      "dimensions_mm": {
+        "length": 35,
+        "width": 15,
+        "height": 10
+      },
+      "material": "PCB + shunt",
+      "manufacturer": "Matek / Holybro",
+      "part_number": "CSENSOR-200A",
+      "cost_usd": 18.99,
+      "availability": "in-stock",
+      "notes": "External current sensor for FCs without integrated sensing. Needed for accurate mAh-used telemetry on 10\"+ heavy-lift builds.",
+      "tags": [
+        "current-sensor",
+        "telemetry",
+        "heavy-lift"
+      ]
+    },
+    {
+      "id": "acc-xt60-to-xt90-adapter",
+      "name": "XT60 ↔ XT90 Adapter (for 10\" / heavy-lift packs)",
+      "category": "connector-adapter",
+      "weight_g": 12,
+      "dimensions_mm": {
+        "length": 70,
+        "width": 20,
+        "height": 15
+      },
+      "material": "silicone wire + nylon",
+      "manufacturer": "Generic",
+      "part_number": "ADAPTER-XT60-XT90",
+      "cost_usd": 4.99,
+      "availability": "in-stock",
+      "notes": "Adapter for builds with XT90 batteries but XT60 frames (or vice-versa).",
+      "tags": [
+        "connector",
+        "adapter",
+        "wiring"
+      ]
+    },
+    {
+      "id": "acc-prop-5inch-tri",
+      "name": "5\" Tri-Blade Prop Set (Gemfan Hurricane 51477 / HQ Prop T5)",
+      "category": "propeller",
+      "weight_g": 5,
+      "dimensions_mm": {
+        "length": 127,
+        "width": 127,
+        "height": 6
+      },
+      "material": "polycarbonate",
+      "manufacturer": "Gemfan / HQProp / Ethix",
+      "part_number": "PROP-5-TRI",
+      "cost_usd": 3.99,
+      "availability": "in-stock",
+      "notes": "Standard 5\" tri-blade racing/freestyle prop. Pack of 4 (2 CW + 2 CCW).",
+      "tags": [
+        "propeller",
+        "5-inch",
+        "tri-blade",
+        "freestyle"
+      ]
+    },
+    {
+      "id": "acc-prop-7inch-bi",
+      "name": "7\" Bi-Blade Long-Range Prop (HQ Prop DP7x4x2 / equivalent)",
+      "category": "propeller",
+      "weight_g": 8,
+      "dimensions_mm": {
+        "length": 178,
+        "width": 178,
+        "height": 6
+      },
+      "material": "polycarbonate",
+      "manufacturer": "HQProp / Gemfan",
+      "part_number": "PROP-7-BI",
+      "cost_usd": 5.99,
+      "availability": "in-stock",
+      "notes": "Efficient 7\" bi-blade for long-range cruise. Lower thrust, better endurance than tri-blade.",
+      "tags": [
+        "propeller",
+        "7-inch",
+        "bi-blade",
+        "long-range"
+      ]
+    },
+    {
+      "id": "acc-prop-10inch-tri",
+      "name": "10\" Tri-Blade Cargo Prop (HQ Prop 1050 / Ethix 1050)",
+      "category": "propeller",
+      "weight_g": 16,
+      "dimensions_mm": {
+        "length": 254,
+        "width": 254,
+        "height": 8
+      },
+      "material": "polycarbonate / nylon",
+      "manufacturer": "HQProp / Ethix",
+      "part_number": "PROP-10-TRI",
+      "cost_usd": 9.99,
+      "availability": "in-stock",
+      "notes": "Heavy-lift / ISR 10\" tri-blade. Paired with 3110 motors on 10\" X-frames.",
+      "tags": [
+        "propeller",
+        "10-inch",
+        "tri-blade",
+        "cargo",
+        "isr"
+      ]
+    }
+  ]
+}

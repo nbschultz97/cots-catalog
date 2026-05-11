@@ -1,0 +1,413 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PartsLibrary",
+  "description": "COTS Architect Parts Library schema v1.1.0. COTS component catalog for offline platform design.",
+  "type": "object",
+  "definitions": {
+    "hardware_revision": {
+      "type": "string",
+      "description": "Hardware revision identifier (e.g., V1, V2, Pro, Mini)"
+    },
+    "pinout": {
+      "type": "object",
+      "description": "Pin label to function mapping (e.g., {\"1\": \"VCC 5V\", \"2\": \"GND\"})",
+      "additionalProperties": { "type": "string" }
+    },
+    "firmware_family": {
+      "type": "string",
+      "description": "Primary firmware ecosystem",
+      "enum": ["BetaFlight", "INAV", "ArduPilot", "ELRS", "Crossfire", "TBS", "Walksnail", "DJI", "HDZero", "OpenHD", "Other"]
+    },
+    "firmware_version": {
+      "type": "string",
+      "description": "Current or recommended firmware version (e.g., 4.5.1)"
+    },
+    "connectors": {
+      "type": "array",
+      "description": "Physical connectors on this component",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "description": "Connector type (e.g., JST-SH, JST-GH, XT60, USB-C)" },
+          "pins": { "type": "integer", "minimum": 1, "description": "Number of pins" },
+          "label": { "type": "string", "description": "Label or function (e.g., Main, UART1, Battery)" },
+          "notes": { "type": "string", "description": "Additional notes (e.g., USB Data on 6-pin only)" }
+        },
+        "required": ["type", "pins"]
+      }
+    }
+  },
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "description": "Semantic version of the Parts Library schema",
+      "default": "1.0.0"
+    },
+    "catalogId": {
+      "type": "string",
+      "description": "Unique identifier for this parts catalog"
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "unit": { "type": "string", "description": "Unit or organization that owns this catalog" },
+        "lastUpdated": { "type": "string", "format": "date-time" },
+        "inventoryReference": { "type": "string" }
+      }
+    },
+    "airframes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "type", "weight_g"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["fixed-wing", "multi-rotor", "vtol", "ground", "surface"]
+          },
+          "weight_g": { "type": "number", "minimum": 0 },
+          "max_payload_g": { "type": "number", "minimum": 0 },
+          "dimensions_mm": {
+            "type": "object",
+            "properties": {
+              "length": { "type": "number" },
+              "width": { "type": "number" },
+              "height": { "type": "number" }
+            }
+          },
+          "motor_count": { "type": "integer", "minimum": 0 },
+          "motor_size": { "type": "string", "description": "e.g., 2206, 2207, 1806" },
+          "prop_size": { "type": "string", "description": "e.g., 5x4.3, 7x3.5" },
+          "material": { "type": "string", "description": "e.g., carbon fiber, 3D-printed PLA" },
+          "printable": { "type": "boolean", "description": "Is this a 3D-printable design?" },
+          "stl_file": { "type": "string", "description": "Path to STL file if printable" },
+          "manufacturer": { "type": "string" },
+          "part_number": { "type": "string" },
+          "nsn": { "type": "string", "description": "NATO Stock Number" },
+          "cost_usd": { "type": "number", "minimum": 0 },
+          "availability": {
+            "type": "string",
+            "enum": ["in-stock", "on-order", "unavailable", "discontinued"]
+          },
+          "notes": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "motors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "kv", "weight_g", "max_thrust_g"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "size": { "type": "string", "description": "e.g., 2207, 2806" },
+          "kv": { "type": "integer", "description": "RPM per volt" },
+          "weight_g": { "type": "number", "minimum": 0 },
+          "max_current_a": { "type": "number", "minimum": 0 },
+          "max_power_w": { "type": "number", "minimum": 0 },
+          "max_thrust_g": { "type": "number", "minimum": 0, "description": "Maximum thrust output" },
+          "voltage_range": {
+            "type": "object",
+            "properties": {
+              "min_v": { "type": "number" },
+              "max_v": { "type": "number" }
+            }
+          },
+          "prop_size_range": { "type": "string", "description": "Compatible prop sizes" },
+          "manufacturer": { "type": "string" },
+          "part_number": { "type": "string" },
+          "cost_usd": { "type": "number", "minimum": 0 },
+          "availability": {
+            "type": "string",
+            "enum": ["in-stock", "on-order", "unavailable", "discontinued"]
+          },
+          "notes": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "escs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "max_current_a", "weight_g"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "max_current_a": { "type": "number", "minimum": 0 },
+          "weight_g": { "type": "number", "minimum": 0 },
+          "voltage_range": {
+            "type": "object",
+            "properties": {
+              "min_v": { "type": "number" },
+              "max_v": { "type": "number" }
+            }
+          },
+          "firmware": { "type": "string", "description": "e.g., BLHeli_32, KISS" },
+          "protocols": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "e.g., DShot600, PWM"
+          },
+          "integrated": { "type": "boolean", "description": "4-in-1 ESC?" },
+          "manufacturer": { "type": "string" },
+          "part_number": { "type": "string" },
+          "cost_usd": { "type": "number", "minimum": 0 },
+          "availability": {
+            "type": "string",
+            "enum": ["in-stock", "on-order", "unavailable", "discontinued"]
+          },
+          "notes": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "batteries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "chemistry", "voltage_nominal_v", "capacity_mah", "weight_g"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "chemistry": {
+            "type": "string",
+            "enum": ["LiPo", "Li-ion", "LiFe", "NiMH", "Lead-acid"]
+          },
+          "cells": { "type": "integer", "minimum": 1 },
+          "voltage_nominal_v": { "type": "number", "minimum": 0 },
+          "capacity_mah": { "type": "number", "minimum": 0 },
+          "capacity_wh": { "type": "number", "minimum": 0, "description": "Calculated or measured" },
+          "weight_g": { "type": "number", "minimum": 0 },
+          "c_rating": { "type": "number", "minimum": 0, "description": "Discharge rate multiplier" },
+          "max_discharge_a": { "type": "number", "minimum": 0 },
+          "connector_type": { "type": "string", "description": "e.g., XT60, XT30, Deans" },
+          "dimensions_mm": {
+            "type": "object",
+            "properties": {
+              "length": { "type": "number" },
+              "width": { "type": "number" },
+              "height": { "type": "number" }
+            }
+          },
+          "temperature_range_c": {
+            "type": "object",
+            "properties": {
+              "min": { "type": "number" },
+              "max": { "type": "number" }
+            }
+          },
+          "manufacturer": { "type": "string" },
+          "part_number": { "type": "string" },
+          "cost_usd": { "type": "number", "minimum": 0 },
+          "availability": {
+            "type": "string",
+            "enum": ["in-stock", "on-order", "unavailable", "discontinued"]
+          },
+          "notes": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "flight_controllers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "weight_g"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "weight_g": { "type": "number", "minimum": 0 },
+          "processor": { "type": "string" },
+          "firmware": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "e.g., Betaflight, ArduPilot, PX4"
+          },
+          "gyro": { "type": "string" },
+          "voltage_input_v": {
+            "type": "object",
+            "properties": {
+              "min": { "type": "number" },
+              "max": { "type": "number" }
+            }
+          },
+          "current_draw_ma": { "type": "number", "minimum": 0 },
+          "uart_ports": { "type": "integer", "minimum": 0 },
+          "features": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "e.g., GPS, Barometer, OSD"
+          },
+          "manufacturer": { "type": "string" },
+          "part_number": { "type": "string" },
+          "cost_usd": { "type": "number", "minimum": 0 },
+          "availability": {
+            "type": "string",
+            "enum": ["in-stock", "on-order", "unavailable", "discontinued"]
+          },
+          "notes": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "radios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "type", "frequency_band", "weight_g"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["control", "video", "telemetry", "mesh", "relay"]
+          },
+          "frequency_band": {
+            "type": "string",
+            "description": "e.g., 2.4GHz, 5.8GHz, 900MHz, 433MHz"
+          },
+          "frequency_range_mhz": {
+            "type": "object",
+            "properties": {
+              "min": { "type": "number" },
+              "max": { "type": "number" }
+            }
+          },
+          "weight_g": { "type": "number", "minimum": 0 },
+          "power_output_mw": { "type": "number", "minimum": 0, "description": "Nominal or max output power. For switchable devices, prefer power_levels_mw." },
+          "power_levels_mw": {
+            "type": "array",
+            "description": "Discrete selectable output levels for switchable transmitters (e.g., VTX 25/200/500/800mW). Platform design slot sets selected_power_level_index into this array.",
+            "items": { "type": "number", "minimum": 0 }
+          },
+          "rx_sensitivity_dbm": { "type": "number", "description": "Receiver sensitivity threshold in dBm (more negative = more sensitive). Used by the operator-drone link planner and link-budget engine." },
+          "tx_gain_dbi": { "type": "number", "description": "Transmit antenna gain (dBi). Typical stock dipole ~2 dBi; patch ~8-10 dBi." },
+          "rx_gain_dbi": { "type": "number", "description": "Receive antenna gain (dBi)." },
+          "tx_cable_loss_db": { "type": "number", "description": "Loss between TX and antenna connector (dB)." },
+          "rx_cable_loss_db": { "type": "number", "description": "Loss between RX and antenna connector (dB)." },
+          "power_consumption_w": { "type": "number", "minimum": 0 },
+          "range_m": { "type": "number", "minimum": 0, "description": "Line-of-sight range" },
+          "data_rate_kbps": { "type": "number", "minimum": 0 },
+          "antenna_connector": { "type": "string" },
+          "protocols": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "e.g., SBUS, CRSF, MAVLink, LoRa"
+          },
+          "voltage_input_v": {
+            "type": "object",
+            "properties": {
+              "min": { "type": "number" },
+              "max": { "type": "number" }
+            }
+          },
+          "manufacturer": { "type": "string" },
+          "part_number": { "type": "string" },
+          "cost_usd": { "type": "number", "minimum": 0 },
+          "availability": {
+            "type": "string",
+            "enum": ["in-stock", "on-order", "unavailable", "discontinued"]
+          },
+          "notes": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "sensors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "type", "weight_g"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["camera", "lidar", "gps", "imu", "magnetometer", "barometer", "other"]
+          },
+          "weight_g": { "type": "number", "minimum": 0 },
+          "power_consumption_w": { "type": "number", "minimum": 0 },
+          "voltage_input_v": {
+            "type": "object",
+            "properties": {
+              "min": { "type": "number" },
+              "max": { "type": "number" }
+            }
+          },
+          "resolution": { "type": "string", "description": "For cameras/sensors with resolution specs" },
+          "fov_degrees": { "type": "number", "description": "Field of view for cameras" },
+          "interface": {
+            "type": "string",
+            "description": "e.g., UART, SPI, I2C, HDMI"
+          },
+          "data_rate_mbps": { "type": "number" },
+          "manufacturer": { "type": "string" },
+          "part_number": { "type": "string" },
+          "cost_usd": { "type": "number", "minimum": 0 },
+          "availability": {
+            "type": "string",
+            "enum": ["in-stock", "on-order", "unavailable", "discontinued"]
+          },
+          "notes": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "accessories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "category", "weight_g"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "category": {
+            "type": "string",
+            "description": "e.g., propeller, antenna, mount, cable, case"
+          },
+          "weight_g": { "type": "number", "minimum": 0 },
+          "dimensions_mm": {
+            "type": "object",
+            "properties": {
+              "length": { "type": "number" },
+              "width": { "type": "number" },
+              "height": { "type": "number" }
+            }
+          },
+          "material": { "type": "string" },
+          "compatible_with": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "IDs of compatible parts"
+          },
+          "frequency_band": { "type": "string", "description": "For goggles / video receivers (e.g., 5.8GHz)" },
+          "frequency_range_mhz": {
+            "type": "object",
+            "properties": {
+              "min": { "type": "number" },
+              "max": { "type": "number" }
+            }
+          },
+          "rx_sensitivity_dbm": { "type": "number", "description": "For goggles / receiver accessories: demodulation threshold in dBm." },
+          "rx_gain_dbi": { "type": "number", "description": "Integrated-antenna gain for goggles/receivers (dBi)." },
+          "manufacturer": { "type": "string" },
+          "part_number": { "type": "string" },
+          "cost_usd": { "type": "number", "minimum": 0 },
+          "availability": {
+            "type": "string",
+            "enum": ["in-stock", "on-order", "unavailable", "discontinued"]
+          },
+          "notes": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

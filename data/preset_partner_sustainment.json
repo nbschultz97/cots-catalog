@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectId": "mission-partner-sustainment",
+  "meta": {
+    "name": "Partner-force sustainment w/ 3D-printed UAS",
+    "description": "Partner sustainment lane using partner UAS kits and mesh backhaul.",
+    "durationHours": 96,
+    "origin_tool": "hub",
+    "scenario": "Partner sustainment lane",
+    "inventoryReference": "DEMO-PARTNER-3DP",
+    "missionType": "sustainment",
+    "team": { "size": 8, "roles": ["Team lead", "Partner liaison", "Mesh lead", "UAS maintainer", "Payload tech", "Medic", "RTO", "Sustainment lead"] }
+  },
+  "environment": [
+    {
+      "id": "env-partner",
+      "name": "Coastal partner AO",
+      "band": "suburban",
+      "altitudeBand": "0-500m",
+      "temperatureBand": "10-25C",
+      "weather": "Maritime layer, light winds",
+      "terrain": "coastal", 
+      "origin_tool": "hub",
+      "notes": "Partner-operated sustainment nodes"
+    }
+  ],
+  "constraints": [],
+  "nodes": [
+    { "id": "node-partner-kit", "name": "Partner sustainment kit", "role": "resupply node", "rf": { "band": "L-band", "powerW": 5 }, "origin_tool": "node" }
+  ],
+  "platforms": [
+    { "id": "platform-3dp-uas", "name": "3D-printed UAS", "role": "Lift", "origin_tool": "uxs" }
+  ],
+  "mesh_links": [
+    { "id": "mesh-partner", "name": "Partner sustainment mesh", "role": "backhaul", "origin_tool": "mesh" }
+  ],
+  "kits": [],
+  "mission": {
+    "tasks": [
+      { "id": "task-resupply", "name": "Partner resupply", "description": "Deliver batteries and payloads via partner UAS", "origin_tool": "mission" }
+    ],
+    "phases": [
+      { "id": "phase-standup", "name": "Stand-up", "durationHours": 12, "focus": "Mesh deployment", "origin_tool": "mission" },
+      { "id": "phase-sustain", "name": "Sustainment", "durationHours": 72, "focus": "Continuous resupply", "origin_tool": "mission" }
+    ],
+    "assignments": [
+      { "phaseId": "phase-sustain", "nodeIds": ["node-partner-kit"], "platformIds": ["platform-3dp-uas"] }
+    ],
+    "mission_cards": []
+  },
+  "sustainment": {
+    "sustainmentHours": 120,
+    "batteryCounts": 14,
+    "feasibility": {},
+    "notes": "Partner batteries staged at checkpoints",
+    "power_plan": "",
+    "packing_lists": []
+  },
+  "meshPlan": {
+    "relayCount": 5,
+    "criticalLinks": 3,
+    "rf_bands": ["L-band", "S-band"],
+    "ew_profile": "contested"
+  },
+  "kitsSummary": {
+    "perOperatorLoads": [],
+    "perOperatorLoadKg": 17,
+    "perOperatorLimitKg": 22
+  },
+  "exports": { "links": [], "notes": "" }
+}

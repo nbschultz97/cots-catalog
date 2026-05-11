@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectId": "mission-whitefrost",
+  "meta": {
+    "name": "Cold-weather ridge recon mesh",
+    "description": "Cold-weather ridge recon mesh with generic payloads and redundant relays.",
+    "durationHours": 72,
+    "origin_tool": "hub",
+    "scenario": "Snowy ridgeline demo",
+    "inventoryReference": "DEMO-COLDWX-KIT-01",
+    "missionType": "mesh_recon",
+    "team": { "size": 6, "roles": ["Team lead", "Mesh lead", "UAS operator", "Relay tech", "EW watch", "Partner liaison"] }
+  },
+  "environment": [
+    {
+      "id": "env-whitefrost",
+      "name": "Cold ridge line",
+      "band": "open",
+      "altitudeBand": "1500-2500m",
+      "temperatureBand": "-10-10C",
+      "weather": "Snow flurries, gusting winds",
+      "elevationM": 2100,
+      "terrain": "ridge",
+      "origin_tool": "hub",
+      "notes": "Cold weather demo configuration"
+    }
+  ],
+  "constraints": [
+    { "id": "c-ew", "type": "EW", "description": "Periodic jamming spikes near phase lines", "severity": "medium", "origin_tool": "mission" }
+  ],
+  "nodes": [
+    { "id": "node-ridge-relay", "name": "Ridge relay kit", "role": "mesh relay", "rf": { "band": "L/S", "powerW": 10 }, "origin_tool": "node" }
+  ],
+  "platforms": [
+    { "id": "platform-whitefrost-quad", "name": "Cold weather quad", "role": "UAS lift", "origin_tool": "uxs" }
+  ],
+  "mesh_links": [
+    { "id": "mesh-ridge", "name": "Ridge backhaul", "role": "relay", "origin_tool": "mesh" }
+  ],
+  "kits": [],
+  "mission": {
+    "tasks": [
+      { "id": "task-recon", "name": "Ridge reconnaissance", "description": "Confirm ridge movement lanes", "origin_tool": "mission" }
+    ],
+    "phases": [
+      { "id": "phase-insert", "name": "Insertion", "durationHours": 12, "focus": "Move relays", "origin_tool": "mission" },
+      { "id": "phase-ridge", "name": "Ridge hold", "durationHours": 48, "focus": "Mesh coverage", "origin_tool": "mission" }
+    ],
+    "assignments": [
+      { "phaseId": "phase-insert", "nodeIds": ["node-ridge-relay"], "platformIds": ["platform-whitefrost-quad"] }
+    ],
+    "mission_cards": []
+  },
+  "sustainment": {
+    "sustainmentHours": 96,
+    "batteryCounts": 8,
+    "feasibility": {},
+    "notes": "Cold weather spare packs and power buffers",
+    "power_plan": "",
+    "packing_lists": []
+  },
+  "meshPlan": {
+    "relayCount": 3,
+    "criticalLinks": 2,
+    "rf_bands": ["L-band", "S-band"],
+    "ew_profile": "contested"
+  },
+  "kitsSummary": {
+    "perOperatorLoads": [],
+    "perOperatorLoadKg": 18,
+    "perOperatorLimitKg": 22
+  },
+  "exports": { "links": [], "notes": "" }
+}
