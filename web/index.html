@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architect Companion FPV sUAS build advisor</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --panel-2: #1c232c;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-2: #7ee787;
+    --warn: #ff7b72;
+    --good: #56d364;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+  header h1 { font-size: 18px; margin: 0; }
+  header .subtitle { color: var(--muted); font-size: 13px; }
+  header .badge {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr 320px;
+    min-height: calc(100vh - 53px);
+  }
+  aside {
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 16px;
+    overflow-y: auto;
+  }
+  aside.right { border-right: 0; border-left: 1px solid var(--border); }
+  aside h2 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin: 16px 0 8px;
+    font-weight: 600;
+  }
+  aside h2:first-child { margin-top: 0; }
+  main { padding: 24px; overflow-y: auto; }
+  main h2 {
+    font-size: 16px;
+    margin: 24px 0 12px;
+    color: var(--accent-2);
+  }
+  main h2:first-child { margin-top: 0; }
+  select, input, button {
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--panel-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    width: 100%;
+  }
+  button {
+    cursor: pointer;
+    background: var(--accent);
+    color: var(--bg);
+    border: 0;
+    font-weight: 600;
+  }
+  button.secondary {
+    background: var(--panel-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  label {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    margin-top: 8px;
+  }
+  .card {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  .card.template { cursor: pointer; transition: border-color 0.15s; }
+  .card.template:hover { border-color: var(--accent); }
+  .card .title { font-weight: 600; }
+  .card .meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .badge-pill {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-right: 4px;
+    background: var(--border);
+    color: var(--text);
+  }
+  .badge-pill.ok { background: var(--good); color: var(--bg); }
+  .badge-pill.warn { background: var(--warn); color: var(--bg); }
+  .slot {
+    background: var(--panel-2);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .slot.filled { border-style: solid; color: var(--text); }
+  .slot .slot-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 2px; }
+  .slot .slot-value { color: var(--text); font-weight: 500; }
+  .slot .slot-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .issue {
+    font-size: 12px;
+    padding: 6px 8px;
+    background: rgba(255, 123, 114, 0.1);
+    border-left: 3px solid var(--warn);
+    border-radius: 4px;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .ok-pill { display: inline-block; padding: 4px 8px; background: rgba(86,211,100,0.15); border: 1px solid var(--good); color: var(--good); border-radius: 4px; font-size: 12px; font-weight: 600; }
+  .err-pill { display: inline-block; padding: 4px 8px; background: rgba(255,123,114,0.15); border: 1px solid var(--warn); color: var(--warn); border-radius: 4px; font-size: 12px; font-weight: 600; }
+  .stat-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; border-bottom: 1px dashed var(--border); }
+  .stat-row:last-child { border-bottom: 0; }
+  .stat-row .label { color: var(--muted); }
+  .stat-row .value { font-weight: 600; }
+  .muted { color: var(--muted); }
+  .small { font-size: 11px; }
+  footer { padding: 12px 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: 11px; text-align: center; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Architect Companion</h1>
+  <span class="subtitle">FPV sUAS build advisor open-source MCP-native</span>
+  <span class="badge" id="version-badge">loading</span>
+</header>
+<div class="layout">
+  <aside>
+    <h2>Wizard</h2>
+    <label>Mission type</label>
+    <select id="wizard-mission">
+      <option value="">any</option>
+      <option value="freestyle">Freestyle</option>
+      <option value="racing">Racing</option>
+      <option value="long_range">Long-range cruise</option>
+      <option value="endurance_survey">Endurance survey</option>
+      <option value="cinematic">Cinematic</option>
+      <option value="sub_250g">Sub 250g recreational</option>
+      <option value="tinywhoop_indoor">Tinywhoop indoor</option>
+    </select>
+    <label>Airframe class</label>
+    <select id="wizard-class">
+      <option value="">any</option>
+      <option value="1.6-inch">1.6 tinywhoop</option>
+      <option value="2-inch">2 cinewhoop</option>
+      <option value="3.5-inch">3.5 micro</option>
+      <option value="5-inch">5</option>
+      <option value="7-inch">7 long-range</option>
+      <option value="10-inch">10 heavy-lift</option>
+      <option value="fixed-wing">Fixed-wing</option>
+      <option value="flying-wing">Flying-wing</option>
+    </select>
+    <label>Skill</label>
+    <select id="wizard-skill">
+      <option value="">any</option>
+      <option value="beginner">Beginner</option>
+      <option value="intermediate">Intermediate</option>
+      <option value="advanced">Advanced</option>
+    </select>
+    <label>Budget USD</label>
+    <input id="wizard-budget" type="number" placeholder="500" />
+    <div style="height:12px"></div>
+    <button onclick="runWizard()">Run wizard</button>
+    <h2>Catalog</h2>
+    <label>Category</label>
+    <select id="cat-category"><option value="">all</option></select>
+    <label>Tag</label>
+    <input id="cat-tag" placeholder="5-inch freestyle hd" />
+    <div style="height:8px"></div>
+    <button class="secondary" onclick="loadCatalog()">Browse parts</button>
+  </aside>
+  <main>
+    <h2 id="main-title">Welcome try the wizard or browse</h2>
+    <p class="muted">Pick a mission and budget. The wizard returns canonical builds with live compatibility, endurance, and accuracy data.</p>
+    <div id="results"></div>
+  </main>
+  <aside class="right">
+    <h2>Current build</h2>
+    <div id="build-slots"></div>
+    <div style="height:12px"></div>
+    <button onclick="evaluateBuild()">Check compatibility</button>
+    <div style="height:16px"></div>
+    <div id="evaluation"></div>
+    <h2>Model accuracy</h2>
+    <div id="accuracy" class="small muted">
+      <button class="secondary" onclick="loadAccuracy()">Show MAPE vs flight data</button>
+    </div>
+  </aside>
+</div>
+<footer>Architect Companion MCP MIT <a href="https://github.com/nbschultz97/cots-catalog" style="color:var(--accent)">GitHub</a></footer>
+<script>
+const API = window.location.origin;
+let currentBuild = {};
+
+function el(tag, attrs, ...children) {
+  const node = document.createElement(tag);
+  if (attrs) {
+    for (const [k, v] of Object.entries(attrs)) {
+      if (k === "onclick") node.addEventListener("click", v);
+      else if (k === "className") node.className = v;
+      else node.setAttribute(k, v);
+    }
+  }
+  for (const c of children) {
+    if (c === null || c === undefined) continue;
+    node.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+  }
+  return node;
+}
+
+async function fetchJSON(path, options) {
+  options = options || {};
+  const res = await fetch(API + path, {
+    headers: { "Content-Type": "application/json" },
+    method: options.method || "GET",
+    body: options.body ? JSON.stringify(options.body) : undefined,
+  });
+  if (!res.ok) throw new Error(path + " " + res.status);
+  return res.json();
+}
+
+async function init() {
+  try {
+    const health = await fetchJSON("/api/health");
+    document.getElementById("version-badge").textContent = "v" + health.version;
+    const catSel = document.getElementById("cat-category");
+    if (health.catalog && health.catalog.counts) {
+      for (const c of Object.keys(health.catalog.counts)) {
+        catSel.appendChild(el("option", { value: c }, c + " (" + health.catalog.counts[c] + ")"));
+      }
+    }
+    renderSlots();
+  } catch (e) {
+    document.getElementById("version-badge").textContent = "offline";
+  }
+}
+
+function renderSlots() {
+  const slots = ["airframe", "motor", "esc", "battery", "flight_controller", "control_radio", "camera_vtx"];
+  const container = document.getElementById("build-slots");
+  container.replaceChildren();
+  for (const slot of slots) {
+    const value = currentBuild[slot];
+    const div = el("div", {
+      className: "slot" + (value ? " filled" : ""),
+      title: value ? "Click to remove" : "Browse parts to fill",
+      onclick: () => { if (value) { delete currentBuild[slot]; renderSlots(); } },
+    },
+      el("div", { className: "slot-label" }, slot.replace(/_/g, " ")),
+      el("div", { className: "slot-value" }, value ? value.name : "empty"),
+      value ? el("div", { className: "slot-meta" }, (value.weight_g || "?") + "g $" + (value.cost_usd || "?")) : null,
+    );
+    container.appendChild(div);
+  }
+}
+
+async function runWizard() {
+  document.getElementById("main-title").textContent = "Wizard results";
+  const results = document.getElementById("results");
+  results.replaceChildren(el("p", { className: "muted" }, "Running"));
+  const body = {
+    mission_type: document.getElementById("wizard-mission").value || null,
+    airframe_class: document.getElementById("wizard-class").value || null,
+    skill_level: document.getElementById("wizard-skill").value || null,
+    budget_usd: parseFloat(document.getElementById("wizard-budget").value) || null,
+    top_n: 4,
+  };
+  try {
+    const r = await fetchJSON("/api/wizard", { method: "POST", body });
+    renderWizardResults(r);
+  } catch (e) {
+    results.replaceChildren(el("p", { style: "color:var(--warn)" }, "Error " + e.message));
+  }
+}
+
+function renderWizardResults(r) {
+  const results = document.getElementById("results");
+  results.replaceChildren();
+  if (!r.top_picks.length) {
+    results.appendChild(el("p", { className: "muted" }, "No templates match. Loosen the constraints."));
+    return;
+  }
+  results.appendChild(el("p", { className: "muted small" }, r.n_candidates + " candidates top " + r.top_picks.length + " shown"));
+  for (const pick of r.top_picks) {
+    const ok = pick.validation.compatible;
+    const meta = el("div", { className: "meta" },
+      el("span", { className: "badge-pill " + (ok ? "ok" : "warn") }, ok ? "compatible" : "issues"),
+      " ",
+      el("span", { className: "badge-pill" }, pick.airframe_class || ""),
+      " ",
+      el("span", { className: "badge-pill" }, pick.skill_level || "any skill"),
+      " $" + (pick.computed_cost_usd || 0).toFixed(0) + " est $" + (pick.budget_estimate_usd || ""),
+    );
+    const issuesNode = pick.validation.issues.length
+      ? el("div", { style: "margin-top:8px" },
+          ...pick.validation.issues.map(i => el("div", { className: "issue" }, i)))
+      : null;
+    results.appendChild(el("div", {
+      className: "card template",
+      onclick: () => loadTemplate(pick.template_id),
+    },
+      el("div", { className: "title" }, pick.name),
+      meta,
+      el("div", { className: "meta", style: "margin-top:8px" }, pick.description || ""),
+      issuesNode,
+    ));
+  }
+}
+
+async function loadTemplate(templateId) {
+  const tpl = await fetchJSON("/api/templates/" + encodeURIComponent(templateId));
+  currentBuild = {};
+  for (const [slot, partId] of Object.entries(tpl.parts || {})) {
+    if (!partId) continue;
+    try {
+      const part = await fetchJSON("/api/parts/" + encodeURIComponent(partId));
+      currentBuild[slot] = part;
+    } catch (e) { /* skip missing */ }
+  }
+  renderSlots();
+  document.getElementById("main-title").textContent = tpl.name;
+  const results = document.getElementById("results");
+  results.replaceChildren(
+    el("div", { className: "card" },
+      el("div", { className: "title" }, tpl.name),
+      el("p", null, tpl.description || ""),
+      el("p", { className: "small muted" }, tpl.notes || ""),
+    ),
+    el("p", { className: "muted small" }, "Loaded into the build panel. Click Check compatibility to evaluate."),
+  );
+  evaluateBuild();
+}
+
+async function loadCatalog() {
+  const category = document.getElementById("cat-category").value;
+  const tag = document.getElementById("cat-tag").value;
+  document.getElementById("main-title").textContent = "Catalog browser";
+  const results = document.getElementById("results");
+  results.replaceChildren(el("p", { className: "muted" }, "Loading"));
+  const params = new URLSearchParams();
+  if (category) params.set("category", category);
+  if (tag) params.set("tag", tag);
+  params.set("limit", "50");
+  try {
+    const parts = await fetchJSON("/api/components?" + params.toString());
+    renderCatalog(parts);
+  } catch (e) {
+    results.replaceChildren(el("p", { style: "color:var(--warn)" }, "Error " + e.message));
+  }
+}
+
+function renderCatalog(parts) {
+  const results = document.getElementById("results");
+  results.replaceChildren();
+  if (!parts.length) {
+    results.appendChild(el("p", { className: "muted" }, "No parts match."));
+    return;
+  }
+  results.appendChild(el("p", { className: "muted small" }, parts.length + " parts"));
+  for (const p of parts) {
+    const tags = (p.tags || []).slice(0, 5).map(t => el("span", { className: "badge-pill" }, t));
+    results.appendChild(el("div", {
+      className: "card",
+      style: "cursor:pointer",
+      onclick: () => addToBuild(p.id),
+    },
+      el("div", { className: "title" }, p.name),
+      el("div", { className: "meta" },
+        el("span", { className: "badge-pill" }, p._category),
+        " ",
+        ...tags,
+        " " + (p.weight_g || "?") + "g $" + (p.cost_usd || "?"),
+      ),
+    ));
+  }
+}
+
+async function addToBuild(partId) {
+  const part = await fetchJSON("/api/parts/" + encodeURIComponent(partId));
+  const slotMap = {
+    airframes: "airframe", motors: "motor", escs: "esc", batteries: "battery",
+    flight_controllers: "flight_controller", radios: "control_radio", sensors: "camera_vtx",
+  };
+  const slot = slotMap[part._category] || part._category;
+  currentBuild[slot] = part;
+  renderSlots();
+}
+
+async function evaluateBuild() {
+  const part_ids = Object.values(currentBuild).map(p => p.id).filter(Boolean);
+  const evaluation = document.getElementById("evaluation");
+  if (!part_ids.length) {
+    evaluation.replaceChildren(el("p", { className: "muted small" }, "Pick parts first."));
+    return;
+  }
+  const compat = await fetchJSON("/api/compatibility", { method: "POST", body: { part_ids } });
+  evaluation.replaceChildren();
+  evaluation.appendChild(compat.compatible
+    ? el("div", { className: "ok-pill" }, "Compatible")
+    : el("div", { className: "err-pill" }, "Issues found"));
+  if (compat.issues && compat.issues.length) {
+    for (const i of compat.issues) {
+      evaluation.appendChild(el("div", { className: "issue", style: "margin-top:8px" }, i));
+    }
+  }
+  if (compat.budget) {
+    const b = compat.budget;
+    evaluation.appendChild(el("div", { className: "card", style: "margin-top:12px" },
+      el("div", { className: "stat-row" }, el("span", { className: "label" }, "Airframe"), el("span", { className: "value" }, b.airframe_weight_g + "g")),
+      el("div", { className: "stat-row" }, el("span", { className: "label" }, "Components"), el("span", { className: "value" }, b.component_weight_g + "g")),
+      el("div", { className: "stat-row" }, el("span", { className: "label" }, "Payload budget"), el("span", { className: "value" }, b.max_payload_g + "g")),
+      el("div", { className: "stat-row" }, el("span", { className: "label" }, "Remaining"), el("span", { className: "value" }, b.remaining_budget_g + "g")),
+    ));
+  }
+  const airframe = currentBuild.airframe;
+  const battery = currentBuild.battery;
+  if (airframe && battery) {
+    try {
+      const ft = await fetchJSON("/api/flight-time", {
+        method: "POST",
+        body: { airframe_id: airframe.id, battery_id: battery.id, flight_mode: "cruise" },
+      });
+      evaluation.appendChild(el("div", { className: "card", style: "margin-top:12px" },
+        el("div", { className: "title" }, "Endurance cruise"),
+        el("div", { className: "stat-row" }, el("span", { className: "label" }, "AUW"), el("span", { className: "value" }, ft.auw_g + "g")),
+        el("div", { className: "stat-row" }, el("span", { className: "label" }, "Hover endurance"), el("span", { className: "value" }, ft.hover_endurance_min + " min")),
+        el("div", { className: "stat-row" }, el("span", { className: "label" }, "Cruise endurance"), el("span", { className: "value" }, ft.safe_endurance_min + " min")),
+        el("div", { className: "stat-row" }, el("span", { className: "label" }, "Power electric"), el("span", { className: "value" }, ft.p_electric_w_hover + " W")),
+      ));
+    } catch (e) { /* skip */ }
+  }
+}
+
+async function loadAccuracy() {
+  const ax = document.getElementById("accuracy");
+  ax.replaceChildren(el("p", { className: "muted" }, "Loading"));
+  try {
+    const r = await fetchJSON("/api/validate-endurance");
+    ax.replaceChildren(
+      el("div", { className: "stat-row" }, el("span", { className: "label" }, "Records"), el("span", { className: "value" }, String(r.n_records))),
+      el("div", { className: "stat-row" }, el("span", { className: "label" }, "Overall MAE"), el("span", { className: "value" }, r.mae_min + " min")),
+      el("div", { className: "stat-row" }, el("span", { className: "label" }, "Overall MAPE"), el("span", { className: "value" }, r.mape_pct + "%")),
+    );
+    for (const [cls, stats] of Object.entries(r.per_class || {})) {
+      ax.appendChild(el("div", { className: "stat-row" },
+        el("span", { className: "label" }, cls + " (n=" + stats.n + ")"),
+        el("span", { className: "value" }, stats.mape_pct + "% MAPE"),
+      ));
+    }
+  } catch (e) {
+    ax.replaceChildren(el("p", { style: "color:var(--warn)" }, "Error " + e.message));
+  }
+}
+
+init();
+</script>
+</body>
+</html>

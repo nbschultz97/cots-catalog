@@ -35,11 +35,11 @@ def _clear_catalog_cache():
     reset_cache()
 
 
-def test_version_is_010x_or_higher():
-    """v0.10.0+ ships build templates + wizard + alternatives."""
+def test_version_is_011x_or_higher():
+    """v0.11.0+ ships HTTP gateway + web UI."""
     parts = [int(p) for p in __version__.split(".") if p.isdigit()]
     assert parts[0] >= 0
-    assert parts[1] >= 10 or parts[0] >= 1
+    assert parts[1] >= 11 or parts[0] >= 1
 
 
 def test_health_reports_catalog():
@@ -158,6 +158,45 @@ def test_estimate_thrust_returns_tw_ratio():
     assert result["thrust_to_weight_ratio"] > 0
     assert "verdict" in result
     assert result["n_motors"] == 4
+
+
+def test_http_gateway_endpoints():
+    """Smoke-test every important HTTP endpoint."""
+    pytest.importorskip("fastapi")
+    from fastapi.testclient import TestClient
+    from architect_companion_mcp.http_server import app
+
+    client = TestClient(app)
+
+    assert client.get("/api/health").status_code == 200
+    assert client.get("/api/categories").status_code == 200
+    assert client.get("/api/components?category=motors&limit=2").status_code == 200
+    assert client.get("/api/templates").status_code == 200
+    assert client.get("/api/presets").status_code == 200
+    assert client.get("/api/flight-records").status_code == 200
+    assert client.get("/api/validate-catalog").status_code == 200
+
+    r = client.post("/api/wizard", json={
+        "mission_type": "long_range", "budget_usd": 800, "top_n": 2,
+    })
+    assert r.status_code == 200
+    assert r.json()["n_candidates"] > 0
+
+    r = client.post("/api/compatibility", json={
+        "part_ids": ["airframe-5in-true-x", "motor-iflight-xing2-2207-2050kv"],
+    })
+    assert r.status_code == 200
+    assert "compatible" in r.json()
+
+    r = client.post("/api/flight-time", json={
+        "airframe_id": "airframe-5in-true-x",
+        "battery_id": "battery-cnhl-black-4s-1500mah-100c",
+    })
+    assert r.status_code == 200
+    assert "safe_endurance_min" in r.json()
+
+    # Root path serves either the index.html or a fallback HTML
+    assert client.get("/").status_code == 200
 
 
 def test_list_build_templates_returns_curated_kits():

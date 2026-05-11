@@ -1,6 +1,6 @@
 [project]
 name = "architect-companion-mcp"
-version = "0.10.0"
+version = "0.11.0"
 description = "Offline-first MCP server for COTS sUAS / FPV mission planning, parts catalog, and build compatibility checks. LLM-shaped tools over a curated, manufacturer-sourced library."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -27,10 +27,17 @@ dependencies = [
 
 [project.optional-dependencies]
 schema = ["jsonschema>=4.0"]
+http = [
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.27",
+]
 dev = [
   "pytest>=7.0",
   "jsonschema>=4.0",
   "ruff>=0.5",
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.27",
+  "httpx>=0.27",
 ]
 
 [project.urls]
@@ -42,6 +49,7 @@ Changelog = "https://github.com/nbschultz97/cots-catalog/blob/main/CHANGELOG.md"
 [project.scripts]
 architect-companion-mcp = "architect_companion_mcp.server:main"
 architect-companion-ingest = "architect_companion_mcp.ingest:main"
+architect-companion-http = "architect_companion_mcp.http_server:main"
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]

@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] — 2026-05-11
+
+### Added — HTTP gateway
+- **`architect_companion_mcp.http_server`** — FastAPI app wrapping every
+  MCP tool as a REST endpoint. 24 routes covering catalog, compat,
+  recommend, wizard, alternatives, physics (flight-time / thrust /
+  range), templates, presets, flight records, validators.
+- **`architect-companion-http`** CLI: `architect-companion-http --port 8765`
+  spins up uvicorn serving the API + bundled web UI.
+- **OpenAPI / Swagger docs** at `/docs` for free.
+- **Permissive CORS** for web UI development (tighten in production).
+- Optional dependency — install with `pip install architect-companion-mcp[http]`.
+
+### Added — single-page web UI
+- **`web/index.html`** — vanilla HTML + CSS + JS (no build step, no
+  framework). Three-column layout:
+  - Left: wizard controls + catalog browser filters.
+  - Center: results (wizard picks, catalog results, template details).
+  - Right: current build (drop parts into slots), live compatibility
+    + endurance evaluation, model-accuracy dashboard.
+- **XSS-safe rendering**: user-supplied catalog strings flow through
+  `textContent` + `createElement`, never raw `innerHTML`.
+- Live wizard → template load → swap → re-evaluate flow in the
+  browser.
+
+### Quality
+- **19 tools** (1 new: the gateway is itself a tool surface) + 7
+  resources + 5 prompts.
+- **58 pytest tests** including HTTP gateway smoke test that exercises
+  every important endpoint via FastAPI TestClient.
+- **Catalog: 116 parts**, 12 templates, 15 flight records, 7 presets.
+
 ## [0.10.0] — 2026-05-11
 
 ### Added — build templates library
