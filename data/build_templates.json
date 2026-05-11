@@ -1,0 +1,229 @@
+{
+  "schemaVersion": "1.0.0",
+  "templates": [
+    {
+      "id": "tpl-beginner-5in-6s-freestyle",
+      "name": "Beginner 5\" 6S Freestyle (Bardwell-style)",
+      "description": "Forgiving, accessible 5-inch 6S build aimed at first-time pilots. Lower KV motors, in-stock budget parts, all-in-one FC+ESC for simpler soldering.",
+      "mission_type": "freestyle",
+      "airframe_class": "5-inch",
+      "skill_level": "beginner",
+      "budget_estimate_usd": 320,
+      "parts": {
+        "airframe": "airframe-5in-true-x",
+        "motor": "motor-tmotor-f40-pro-ii-1750kv",
+        "battery": "battery-cnhl-black-4s-1500mah-100c",
+        "flight_controller": "fc-speedybee-f405-v4-aio",
+        "control_radio": "radio-radiomaster-rp1-v2",
+        "camera_vtx": "sensor-caddx-ratel-2"
+      },
+      "notes": "AIO FC + 55A ESC reduces solder joints. CNHL 4S is forgiving on amp draw."
+    },
+    {
+      "id": "tpl-premium-5in-6s-freestyle",
+      "name": "Premium 5\" 6S Freestyle (Armattan)",
+      "description": "Premium 5-inch freestyle with lifetime-warranty frame, top-tier motors, premium HD video. Built to last and to abuse.",
+      "mission_type": "freestyle",
+      "airframe_class": "5-inch",
+      "skill_level": "advanced",
+      "budget_estimate_usd": 750,
+      "parts": {
+        "airframe": "airframe-armattan-rooster-5",
+        "motor": "motor-brotherhobby-avenger-v3-2207-5-1750kv",
+        "esc": "esc-tmotor-f55a-pro-ii-4in1",
+        "battery": "battery-tattu-rline-v5-6s-1300mah-150c",
+        "flight_controller": "fc-holybro-kakute-h7-v2",
+        "control_radio": "radio-radiomaster-xr1-nano-db",
+        "camera_vtx": "sensor-walksnail-avatar-hd-vtx-v2",
+        "goggle": "sensor-walksnail-avatar-hd-goggles-x",
+        "antenna": "accessory-lumenier-axii-2-58-rhcp"
+      },
+      "notes": "Walksnail HD ecosystem end-to-end. H7 FC for INAV / ArduPilot bench mode."
+    },
+    {
+      "id": "tpl-5in-race-6s",
+      "name": "5\" Race 6S (high-thrust)",
+      "description": "Race-class 5\" build with high-KV T-Motor F40 Pro V 2150KV for maximum punch on tight courses.",
+      "mission_type": "racing",
+      "airframe_class": "5-inch",
+      "skill_level": "advanced",
+      "budget_estimate_usd": 480,
+      "parts": {
+        "airframe": "airframe-5in-true-x",
+        "motor": "motor-tmotor-f40-pro-v-2150kv",
+        "esc": "esc-diatone-mamba-f55-128k-4in1",
+        "battery": "battery-gnb-6s-1300mah-120c",
+        "flight_controller": "fc-speedybee-f405-v4-aio",
+        "control_radio": "radio-radiomaster-rp1-v2",
+        "camera_vtx": "sensor-foxeer-razer-mini-1200tvl"
+      },
+      "notes": "Analog race setup. 6S 1300 100C+ pack mandatory for amp draw."
+    },
+    {
+      "id": "tpl-7in-longrange-cruise",
+      "name": "7\" Long-Range Cruise",
+      "description": "Long-range 7\" build with 4S Li-ion for endurance, low-KV motors for efficiency, HD video, and long-range Crossfire control.",
+      "mission_type": "long_range",
+      "airframe_class": "7-inch",
+      "skill_level": "intermediate",
+      "budget_estimate_usd": 580,
+      "parts": {
+        "airframe": "airframe-7in-longrange",
+        "motor": "motor-iflight-xing-2806-5-1300kv",
+        "esc": "esc-hobbywing-xrotor-micro-60a-4in1",
+        "battery": "battery-4s-5200mah-li-ion",
+        "flight_controller": "fc-matek-h743-slim-v4",
+        "control_radio": "radio-tbs-crossfire-nano-rx",
+        "camera_vtx": "sensor-caddx-vista-vtx",
+        "antenna": "accessory-truerc-x2air-5-8-mk2"
+      },
+      "notes": "H7 FC for INAV / GPS support. Crossfire LoRa control extends range beyond 5.8GHz video."
+    },
+    {
+      "id": "tpl-10in-heavy-lift",
+      "name": "10\" Heavy-Lift Cinelifter",
+      "description": "10-inch heavy-lift platform for carrying a GoPro / cine camera, or for endurance mapping with a 4-6S Li-ion pack.",
+      "mission_type": "endurance_survey",
+      "airframe_class": "10-inch",
+      "skill_level": "intermediate",
+      "budget_estimate_usd": 720,
+      "parts": {
+        "airframe": "airframe-10in-heavy",
+        "motor": "motor-emax-eco-ii-2807-1300kv",
+        "esc": "esc-tmotor-f55a-pro-ii-4in1",
+        "battery": "battery-6s-3000mah-35c",
+        "flight_controller": "fc-matek-h743-slim-v4",
+        "control_radio": "radio-tbs-crossfire-nano-rx",
+        "camera_vtx": "sensor-dji-o3-air-unit"
+      },
+      "notes": "DJI O3 for 4K onboard recording. INAV / ArduPilot on H7 for autonomous mapping."
+    },
+    {
+      "id": "tpl-skywalker-x8-endurance",
+      "name": "Skywalker X8 Flying-Wing Endurance",
+      "description": "Long-endurance flying-wing platform for survey / FPV cruise. 90+ min on 4S 5200 Li-ion.",
+      "mission_type": "endurance_survey",
+      "airframe_class": "flying-wing",
+      "skill_level": "intermediate",
+      "budget_estimate_usd": 690,
+      "parts": {
+        "airframe": "airframe-fw-flying-wing",
+        "motor": "motor-emax-eco-ii-2807-1300kv",
+        "esc": "esc-lumenier-51a-blheli-32",
+        "battery": "battery-4s-5200mah-li-ion",
+        "flight_controller": "fc-matek-h743-slim-v4",
+        "control_radio": "radio-tbs-crossfire-nano-rx",
+        "camera_vtx": "sensor-walksnail-avatar-hd-vtx-v2"
+      },
+      "notes": "INAV or ArduPilot on H7. Crossfire long-range RX for >30km. Walksnail HD for FPV cruise."
+    },
+    {
+      "id": "tpl-tinywhoop-indoor-1s",
+      "name": "Tinywhoop Indoor 1S (BetaFPV-style)",
+      "description": "Sub-50g indoor cinewhoop on 1S HV. Quietest, smallest, easiest entry to FPV.",
+      "mission_type": "tinywhoop_indoor",
+      "airframe_class": "1.6-inch",
+      "skill_level": "beginner",
+      "budget_estimate_usd": 165,
+      "parts": {
+        "airframe": "airframe-betafpv-pavo-pico-2",
+        "motor": "motor-betafpv-1102-18000kv",
+        "battery": "battery-gnb-1s-450mah-90c-hv",
+        "control_radio": "radio-betafpv-elrs-lite-rx",
+        "camera_vtx": "sensor-walksnail-avatar-hd-vtx-v2"
+      },
+      "notes": "Pavo Pico II uses an integrated AIO board (not in catalog as standalone). 1S BT2.0 packs only."
+    },
+    {
+      "id": "tpl-sub-250g-cinematic",
+      "name": "Sub-250g 3.5\" Cinematic Toothpick",
+      "description": "Sub-250g cinematic toothpick for recreational / regulatory-friendly flying. 4S 1300mAh pack.",
+      "mission_type": "sub_250g",
+      "airframe_class": "3.5-inch",
+      "skill_level": "intermediate",
+      "budget_estimate_usd": 380,
+      "parts": {
+        "airframe": "airframe-geprc-smart35-hd",
+        "battery": "battery-gnb-4s-850mah-90c",
+        "flight_controller": "fc-speedybee-f405-v4-aio",
+        "control_radio": "radio-happymodel-ep1-tcxo",
+        "camera_vtx": "sensor-caddx-ratel-2"
+      },
+      "notes": "GEPRC SMART 35 HD is sold as a complete RTF/BNF. Catalog uses the frame as the airframe entry; motors / ESC integrated."
+    },
+    {
+      "id": "tpl-pavo20-pro-cinewhoop-o3",
+      "name": "BetaFPV Pavo20 Pro 2\" Cinewhoop (DJI O3)",
+      "description": "2\" ducted cinewhoop with DJI O3 air unit for cinematic indoor / pass-through footage.",
+      "mission_type": "tinywhoop_indoor",
+      "airframe_class": "2-inch",
+      "skill_level": "intermediate",
+      "budget_estimate_usd": 520,
+      "parts": {
+        "airframe": "airframe-betafpv-pavo20-pro",
+        "battery": "battery-gnb-4s-850mah-90c",
+        "flight_controller": "fc-speedybee-f405-v4-aio",
+        "control_radio": "radio-radiomaster-xr1-nano-db",
+        "camera_vtx": "sensor-dji-o3-air-unit"
+      },
+      "notes": "BetaFPV publishes 1404 motors on the Pavo20 Pro stock build — not yet in catalog. Substitute when stocked."
+    },
+    {
+      "id": "tpl-5in-dji-o3-freestyle",
+      "name": "5\" Freestyle with DJI O3 HD",
+      "description": "5\" freestyle build with DJI O3 air unit for premium HD recording + low-latency video.",
+      "mission_type": "freestyle",
+      "airframe_class": "5-inch",
+      "skill_level": "intermediate",
+      "budget_estimate_usd": 620,
+      "parts": {
+        "airframe": "airframe-5in-true-x",
+        "motor": "motor-iflight-xing2-2207-1750kv",
+        "esc": "esc-diatone-mamba-f55-128k-4in1",
+        "battery": "battery-tattu-rline-v5-4s-1300mah-150c",
+        "flight_controller": "fc-holybro-kakute-h7-v2",
+        "control_radio": "radio-radiomaster-xr1-nano-db",
+        "camera_vtx": "sensor-dji-o3-air-unit",
+        "antenna": "accessory-truerc-x2air-5-8-mk2"
+      },
+      "notes": "Premium DJI O3 setup with 4K30 onboard. Dual-band ELRS RX for range insurance."
+    },
+    {
+      "id": "tpl-5in-longrange-cruise",
+      "name": "5\" Long-Range Cruise (efficient)",
+      "description": "Cruise-tuned 5\" with low-KV motors and 4S 1500 pack for ~10 min smooth cruise on analog video.",
+      "mission_type": "long_range",
+      "airframe_class": "5-inch",
+      "skill_level": "intermediate",
+      "budget_estimate_usd": 410,
+      "parts": {
+        "airframe": "airframe-5in-true-x",
+        "motor": "motor-emax-eco-ii-2207-2400kv",
+        "esc": "esc-lumenier-51a-blheli-32",
+        "battery": "battery-cnhl-black-4s-1500mah-100c",
+        "flight_controller": "fc-matek-h743-slim-v4",
+        "control_radio": "radio-tbs-crossfire-nano-rx",
+        "camera_vtx": "sensor-runcam-phoenix-2-sp"
+      },
+      "notes": "Crossfire LoRa control + analog video for longer-range than HD."
+    },
+    {
+      "id": "tpl-volantex-raptor-fw",
+      "name": "Volantex Raptor 660mm Pusher FW",
+      "description": "Compact foam fixed-wing pusher with Li-ion endurance pack. Forgiving beginner FW platform.",
+      "mission_type": "endurance_survey",
+      "airframe_class": "fixed-wing",
+      "skill_level": "beginner",
+      "budget_estimate_usd": 380,
+      "parts": {
+        "airframe": "airframe-fw-660",
+        "motor": "motor-emax-eco-ii-2807-1300kv",
+        "esc": "esc-lumenier-51a-blheli-32",
+        "battery": "battery-4s-5200mah-li-ion",
+        "flight_controller": "fc-matek-h743-slim-v4",
+        "control_radio": "radio-radiomaster-er6-pwm"
+      },
+      "notes": "PWM RX for direct servo control on FW. INAV / ArduPilot on H7 for return-to-home."
+    }
+  ]
+}

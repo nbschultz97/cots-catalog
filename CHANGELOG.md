@@ -7,6 +7,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] — 2026-05-11
+
+### Added — build templates library
+- **`data/build_templates.json`** with 12 curated canonical kits:
+  beginner / premium / race 5", 7" long-range cruise, 10" heavy-lift,
+  Skywalker X8 endurance, tinywhoop 1S, sub-250g 3.5", Pavo20 Pro
+  cinewhoop, 5" DJI O3 freestyle, 5" long-range cruise, Volantex
+  Raptor FW. Each template includes mission, skill, budget, full parts
+  manifest, and design notes.
+- **`list_build_templates`** MCP tool — browse with mission / class /
+  skill / budget filters.
+- **`get_build_template`** MCP tool — fetch a full template by ID.
+
+### Added — build wizard
+- **`build_wizard`** MCP tool — one-shot canonical-build picker. Filters
+  templates, runs `check_compatibility` on each, ranks compatible-first
+  then closest-to-budget. Returns top N picks with validation status
+  inline so the LLM client gets engineering-clean recommendations in a
+  single tool call.
+
+### Added — suggest alternatives
+- **`suggest_alternatives`** MCP tool — given a failing build's parts +
+  the issue text, returns up to N candidate swap parts in the category
+  the issue points to. Closes the iteration loop: wizard surfaces an
+  issue → alternatives proposes swaps → user re-validates.
+
+### Catalog growth
+- **+16 manufacturer-sourced parts** (100 → 116):
+  - Motors: T-Motor F40 Pro V 2150KV, F40 Pro II 1750KV, BrotherHobby
+    Avenger V3 2207.5 1750KV, BetaFPV 1102 18000KV tinywhoop.
+  - Flight controllers: Matek F722-SE (F7).
+  - Sensors: Caddx Ratel 2 (premium analog), RunCam Hybrid 2 (4K + analog),
+    Walksnail Avatar HD Goggles X.
+  - Accessories: HQProp 5x4.3x3 V2S, Lumenier AXII 2 5.8GHz RHCP + LHCP.
+  - Batteries: Tattu R-Line V5 6S 1300 150C, GNB 4S 850 90C.
+  - Radios: BetaFPV ELRS Lite RX.
+  - ESCs: T-Motor F55A Pro II 4-in-1.
+  - Airframes: Armattan Rooster 5.
+
+### Changed — compatibility tuning
+- **C-rating throttle factor** is now class-aware. Race / freestyle uses
+  0.50 (aggressive), long-range / cruise / long-endurance / cinematic
+  uses 0.30 (smooth cruise), default 0.40. Removes false-positive
+  C-rating flags on Li-ion long-range cruise builds.
+- **Antenna polarization rule** now ignores dual-option antennas
+  (RHCP+LHCP tags on a single accessory means variant-selectable, not
+  a build-time mismatch).
+
+### Catalog data fixes
+- Fixed `motor-iflight-xing-2806-5-1300kv` `voltage_range.min_v` from
+  16.8V (4S charged) to 14.8V (4S nominal). Motor actually supports 4S-6S
+  per manufacturer spec.
+
+### Quality
+- **17 tools** + 7 resources + 5 prompts.
+- **57 pytest tests**, all passing.
+- Catalog: **116 parts**, 12 templates, 15 flight records, 7 mission presets.
+
 ## [0.9.0] — 2026-05-11
 
 ### Changed — physics calibration (overall MAPE 65% → 39%)

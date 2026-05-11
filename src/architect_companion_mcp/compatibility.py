@@ -241,28 +241,30 @@ def check_compatibility(part_ids: List[str]) -> Dict[str, Any]:
             f"VTXes and goggles must share one protocol (analog / walksnail / DJI / HDZero)."
         )
 
-    # Antenna polarization sanity: if any antenna accessory is in the
-    # build, its polarization tag (rhcp / lhcp) should appear on the
-    # paired VTX accessory or radio. Otherwise flag a likely mismatch.
+    # Antenna polarization sanity. Skip antennas tagged with BOTH rhcp
+    # and lhcp — those are variant-selectable items, not actual mixed
+    # polarization in the build. Only flag if two different antennas
+    # commit to opposite single polarizations.
     accessories = [p for p in parts if p["_category"] == "accessories"]
     antennas = [a for a in accessories if "antenna" in (a.get("category") or "").lower()
                 or any("antenna" in (t or "").lower() for t in (a.get("tags") or []))]
     pol_tags = {"rhcp", "lhcp"}
     if antennas:
-        antenna_pols = set()
+        committed_pols = set()
         for a in antennas:
-            for tag in (a.get("tags") or []):
-                if tag.lower() in pol_tags:
-                    antenna_pols.add(tag.lower())
-        if len(antenna_pols) > 1:
+            tags = {t.lower() for t in (a.get("tags") or [])}
+            antenna_pol_tags = tags & pol_tags
+            if len(antenna_pol_tags) == 1:
+                committed_pols.update(antenna_pol_tags)
+        if len(committed_pols) > 1:
             issues.append(
-                f"Mixed antenna polarizations: {sorted(antenna_pols)}. "
+                f"Mixed antenna polarizations: {sorted(committed_pols)}. "
                 f"TX and RX antennas should share polarization (both RHCP or both LHCP)."
             )
 
-    # Battery C-rating vs sustained current. Sustained current ≈ peak ÷ 2
-    # for typical FPV builds. If battery max_discharge_a (= C × Ah)
-    # can't cover the per-motor peak × motor_count × 0.5, flag.
+    # Battery C-rating vs sustained current. Sustained throttle factor
+    # depends on build class: race / freestyle ~ 0.5 (aggressive),
+    # long-range / cruise ~ 0.30 (smooth cruise), tinywhoop ~ 0.4.
     if battery and motors and airframe:
         max_discharge_a = battery.get("max_discharge_a")
         if not max_discharge_a:
@@ -271,14 +273,22 @@ def check_compatibility(part_ids: List[str]) -> Dict[str, Any]:
             if c_rating and capacity_mah:
                 max_discharge_a = float(c_rating) * float(capacity_mah) / 1000.0
         if max_discharge_a:
+            airframe_tags = {t.lower() for t in (airframe.get("tags") or [])}
+            if airframe_tags & {"race", "freestyle"}:
+                throttle_factor = 0.50
+            elif airframe_tags & {"long-range", "cruise", "long-endurance", "cinematic"}:
+                throttle_factor = 0.30
+            else:
+                throttle_factor = 0.40
             n_motors_expected = int(airframe.get("motor_count") or len(motors) or 1)
             peak_per_motor = max((m.get("max_current_a") or 0) for m in motors)
-            sustained_estimate_a = peak_per_motor * n_motors_expected * 0.5
+            sustained_estimate_a = peak_per_motor * n_motors_expected * throttle_factor
             if sustained_estimate_a > max_discharge_a:
                 issues.append(
                     f"Battery sustained discharge ({max_discharge_a:.0f}A) likely "
                     f"insufficient for build (estimated ~{sustained_estimate_a:.0f}A "
-                    f"sustained = {peak_per_motor:.0f}A peak × {n_motors_expected} motors × 0.5)."
+                    f"sustained = {peak_per_motor:.0f}A peak × {n_motors_expected} motors × "
+                    f"{throttle_factor:.2f})."
                 )
 
     # Control vs video radio band overlap

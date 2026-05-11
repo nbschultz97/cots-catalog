@@ -53,6 +53,14 @@ from .flight_data import (
     validate_endurance_model as _validate_endurance_model,
 )
 from .recommend import recommend_configuration as _recommend_configuration
+from .templates import (
+    get_build_template as _get_build_template,
+    list_build_templates as _list_build_templates,
+)
+from .wizard import (
+    build_wizard as _build_wizard,
+    suggest_alternatives as _suggest_alternatives,
+)
 from .resources import (
     category_resource,
     part_resource,
@@ -215,6 +223,69 @@ def validate_catalog() -> Dict[str, Any]:
     from .catalog import load_parts_library
 
     return full_validation_report(load_parts_library())
+
+
+@mcp.tool()
+def list_build_templates(
+    mission_type: Optional[str] = None,
+    airframe_class: Optional[str] = None,
+    skill_level: Optional[str] = None,
+    max_budget_usd: Optional[float] = None,
+) -> List[Dict[str, Any]]:
+    """Browse curated canonical build templates. Each template is a
+    complete kit (airframe + motor + ESC + battery + FC + radio + VTX)
+    with mission, skill level, and budget estimate. Filters all
+    AND-combined."""
+    return _list_build_templates(
+        mission_type=mission_type,
+        airframe_class=airframe_class,
+        skill_level=skill_level,
+        max_budget_usd=max_budget_usd,
+    )
+
+
+@mcp.tool()
+def get_build_template(template_id: str) -> Dict[str, Any]:
+    """Fetch a complete build template by ID, including all part slots,
+    description, and notes."""
+    return _get_build_template(template_id)
+
+
+@mcp.tool()
+def build_wizard(
+    mission_type: Optional[str] = None,
+    airframe_class: Optional[str] = None,
+    skill_level: Optional[str] = None,
+    budget_usd: Optional[float] = None,
+    top_n: int = 3,
+) -> Dict[str, Any]:
+    """One-shot canonical-build picker. Filters templates by mission /
+    class / skill / budget, runs check_compatibility on each, and
+    returns the top N with validation status attached. Compatible-first,
+    then closest to budget."""
+    return _build_wizard(
+        mission_type=mission_type,
+        airframe_class=airframe_class,
+        skill_level=skill_level,
+        budget_usd=budget_usd,
+        top_n=top_n,
+    )
+
+
+@mcp.tool()
+def suggest_alternatives(
+    failing_part_ids: List[str],
+    issue: str,
+    top_n: int = 3,
+) -> Dict[str, Any]:
+    """When a build fails compatibility, return up to N candidate swap
+    parts in the category the issue points at. Ranked by in-stock first,
+    then cheapest. Run check_compatibility again after swapping."""
+    return _suggest_alternatives(
+        failing_part_ids=failing_part_ids,
+        issue=issue,
+        top_n=top_n,
+    )
 
 
 @mcp.tool()

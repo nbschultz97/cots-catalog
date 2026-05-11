@@ -35,11 +35,11 @@ def _clear_catalog_cache():
     reset_cache()
 
 
-def test_version_is_09x_or_higher():
-    """v0.9.0+ ships calibrated physics + extended compatibility rules."""
+def test_version_is_010x_or_higher():
+    """v0.10.0+ ships build templates + wizard + alternatives."""
     parts = [int(p) for p in __version__.split(".") if p.isdigit()]
     assert parts[0] >= 0
-    assert parts[1] >= 9
+    assert parts[1] >= 10 or parts[0] >= 1
 
 
 def test_health_reports_catalog():
@@ -158,6 +158,65 @@ def test_estimate_thrust_returns_tw_ratio():
     assert result["thrust_to_weight_ratio"] > 0
     assert "verdict" in result
     assert result["n_motors"] == 4
+
+
+def test_list_build_templates_returns_curated_kits():
+    from architect_companion_mcp.server import list_build_templates
+
+    templates = list_build_templates()
+    assert len(templates) >= 10, "Should ship with ≥10 canonical templates"
+    for t in templates:
+        assert t["id"].startswith("tpl-")
+        assert t["mission_type"]
+        assert t["airframe_class"]
+        assert t["skill_level"] in {"beginner", "intermediate", "advanced"}
+
+
+def test_get_build_template_returns_full_parts():
+    from architect_companion_mcp.server import get_build_template
+
+    tpl = get_build_template("tpl-beginner-5in-6s-freestyle")
+    assert tpl["id"] == "tpl-beginner-5in-6s-freestyle"
+    assert "parts" in tpl
+    assert tpl["parts"]["airframe"] == "airframe-5in-true-x"
+
+
+def test_build_wizard_finds_long_range_picks():
+    from architect_companion_mcp.server import build_wizard
+
+    r = build_wizard(mission_type="long_range", budget_usd=800, top_n=3)
+    assert r["n_candidates"] >= 1
+    assert len(r["top_picks"]) >= 1
+    # Compatible picks should be first
+    if len(r["top_picks"]) >= 2:
+        c0 = r["top_picks"][0]["validation"]["compatible"]
+        c1 = r["top_picks"][1]["validation"]["compatible"]
+        # Either both compatible, or first is compatible
+        assert c0 or not c1
+
+
+def test_build_wizard_attaches_validation():
+    from architect_companion_mcp.server import build_wizard
+
+    r = build_wizard(mission_type="freestyle", skill_level="beginner")
+    for pick in r["top_picks"]:
+        assert "validation" in pick
+        assert "compatible" in pick["validation"]
+        assert "issues" in pick["validation"]
+
+
+def test_suggest_alternatives_returns_candidates():
+    from architect_companion_mcp.server import suggest_alternatives
+
+    r = suggest_alternatives(
+        failing_part_ids=["airframe-5in-true-x", "esc-lumenier-51a-blheli-32"],
+        issue="ESC max current insufficient for motor peak draw",
+        top_n=3,
+    )
+    assert r["target_category"] == "escs"
+    assert len(r["swap_out"]) >= 1
+    assert len(r["swap_in_candidates"]) >= 1
+    assert all("id" in c and "cost_usd" in c for c in r["swap_in_candidates"])
 
 
 def test_check_compatibility_mixed_video_ecosystem():
