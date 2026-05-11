@@ -35,8 +35,8 @@ def _clear_catalog_cache():
     reset_cache()
 
 
-def test_version_is_04x():
-    assert __version__.startswith("0.4")
+def test_version_is_05x():
+    assert __version__.startswith("0.5")
 
 
 def test_health_reports_catalog():

@@ -5,7 +5,7 @@
     "name": "Sample COTS FPV Catalog",
     "description": "Realistic off-the-shelf FPV / small-UAS hardware catalog: flight controllers, ESCs, motors, batteries, VTXes with switchable power levels, ELRS TX/RX, goggles, and GPS modules. Built for hobbyist and commercial sUAS builders. Demonstrates compatibility validation, link-budget math, density-altitude derating, and endurance estimation.",
     "unit": "Sample / Demo",
-    "lastUpdated": "2026-04-21T04:40:36.153848+00:00",
+    "lastUpdated": "2026-05-11T06:45:07.331678+00:00",
     "inventoryReference": "SAMPLE-FPV-001"
   },
   "airframes": [
@@ -29,7 +29,7 @@
       "part_number": "FRAME-5IN-TRUEX",
       "cost_usd": 45.0,
       "availability": "in-stock",
-      "notes": "Workhorse 5\" true-X frame with 4mm carbon arms and 30.5×30.5 FC mount.",
+      "notes": "Workhorse 5\" true-X frame with 4mm carbon arms and 30.5\u00d730.5 FC mount.",
       "tags": [
         "5-inch",
         "freestyle",
@@ -112,7 +112,7 @@
       "part_number": "FRAME-FW-660",
       "cost_usd": 95.0,
       "availability": "in-stock",
-      "notes": "Compact fixed-wing with pusher config — 60+ min endurance on Li-ion.",
+      "notes": "Compact fixed-wing with pusher config \u2014 60+ min endurance on Li-ion.",
       "tags": [
         "fixed-wing",
         "endurance",
@@ -220,13 +220,137 @@
       "part_number": "AVENGER-3110-730KV",
       "cost_usd": 24.99,
       "availability": "in-stock",
-      "notes": "Generic Amazon rebrand, no official datasheet. QC varies unit-to-unit — inspect for smooth rotation and bell balance before install.",
+      "notes": "Generic Amazon rebrand, no official datasheet. QC varies unit-to-unit \u2014 inspect for smooth rotation and bell balance before install.",
       "tags": [
         "multi-rotor",
         "10-inch",
         "6s",
         "generic-amazon"
       ]
+    },
+    {
+      "id": "motor-iflight-xing2-2207-1750kv",
+      "name": "iFlight XING2 2207 1750KV Unibell",
+      "size": "2207",
+      "kv": 1750,
+      "weight_g": 30.5,
+      "max_current_a": 36.03,
+      "max_power_w": 720,
+      "max_thrust_g": 2100,
+      "voltage_range": {
+        "min_v": 16.8,
+        "max_v": 25.2
+      },
+      "prop_size_range": "5 inch",
+      "manufacturer": "iFlight",
+      "part_number": "XING2-2207-1750KV-UNI",
+      "cost_usd": 23.99,
+      "availability": "in-stock",
+      "notes": "5\" 4S-6S workhorse. Center slotted N52H magnets, 5mm titanium shaft, 16x16 mount.",
+      "tags": [
+        "multi-rotor",
+        "5-inch",
+        "freestyle",
+        "long-range-5in"
+      ],
+      "data_source": {
+        "url": "https://shop.iflight.com/XING2-2207-4S-6S-FPV-Motor-Unibell-Black-for-Nazgul-Evoque-F5-pro1610",
+        "fetched_at": "2026-05-11T06:30:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "motor-iflight-xing2-2207-2050kv",
+      "name": "iFlight XING2 2207 2050KV Unibell",
+      "size": "2207",
+      "kv": 2050,
+      "weight_g": 30.5,
+      "max_current_a": 49.53,
+      "max_power_w": 880,
+      "max_thrust_g": 2200,
+      "voltage_range": {
+        "min_v": 14.8,
+        "max_v": 22.2
+      },
+      "prop_size_range": "5 inch",
+      "manufacturer": "iFlight",
+      "part_number": "XING2-2207-2050KV-UNI",
+      "cost_usd": 23.99,
+      "availability": "in-stock",
+      "notes": "5\" freestyle / race. Same 30.5g body; 49A peak draw matches Lumenier 51A ESC.",
+      "tags": [
+        "multi-rotor",
+        "5-inch",
+        "race",
+        "freestyle"
+      ],
+      "data_source": {
+        "url": "https://shop.iflight.com/XING2-2207-4S-6S-FPV-Motor-Unibell-Black-for-Nazgul-Evoque-F5-pro1610",
+        "fetched_at": "2026-05-11T06:30:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "motor-emax-eco-ii-2207-2400kv",
+      "name": "EMAX ECO II 2207 2400KV",
+      "size": "2207",
+      "kv": 2400,
+      "weight_g": 32,
+      "max_current_a": 36,
+      "max_power_w": 770,
+      "max_thrust_g": 2050,
+      "voltage_range": {
+        "min_v": 11.1,
+        "max_v": 22.2
+      },
+      "prop_size_range": "5 inch",
+      "manufacturer": "EMAX",
+      "part_number": "ECO222072400",
+      "cost_usd": 12.99,
+      "availability": "in-stock",
+      "notes": "Budget 5\" race motor. N52SH arc magnets, 16x16 mount, EZO 9mm bearings.",
+      "tags": [
+        "multi-rotor",
+        "5-inch",
+        "race",
+        "budget"
+      ],
+      "data_source": {
+        "url": "https://emax-usa.com/products/eco-ii-2207-brushless-motor-1700kv-1900kv-2400kv",
+        "fetched_at": "2026-05-11T06:30:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "motor-tmotor-f40-pro-v-1950kv",
+      "name": "T-Motor F40 PRO V 1950KV",
+      "size": "2207",
+      "kv": 1950,
+      "weight_g": 32.5,
+      "max_current_a": 41.5,
+      "max_power_w": 920,
+      "max_thrust_g": 2300,
+      "voltage_range": {
+        "min_v": 14.8,
+        "max_v": 25.2
+      },
+      "prop_size_range": "5 inch",
+      "manufacturer": "T-Motor",
+      "part_number": "F40PRO-V-1950KV",
+      "cost_usd": 26.9,
+      "availability": "in-stock",
+      "notes": "5\" 6S race / high-thrust freestyle. EZO bearings, hollow shaft.",
+      "tags": [
+        "multi-rotor",
+        "5-inch",
+        "race",
+        "high-thrust"
+      ],
+      "data_source": {
+        "url": "https://store.tmotor.com/product/f40pro-5-fpv-motor.html",
+        "fetched_at": "2026-05-11T06:30:00+00:00",
+        "parser": "webfetch+manual"
+      }
     }
   ],
   "escs": [
@@ -342,7 +466,7 @@
       "part_number": "680138770916",
       "cost_usd": 32.0,
       "availability": "in-stock",
-      "notes": "Single ESC for fixed-wing use with F405-WING V2. BLHeli_32 is locked/unflashable post-EOL — stock settings work for fixed-wing.",
+      "notes": "Single ESC for fixed-wing use with F405-WING V2. BLHeli_32 is locked/unflashable post-EOL \u2014 stock settings work for fixed-wing.",
       "tags": [
         "fixed-wing",
         "single-motor",
@@ -500,13 +624,78 @@
       "part_number": "Li-Ion-4S-5200",
       "cost_usd": 58.0,
       "availability": "in-stock",
-      "notes": "Li-ion endurance pack for fixed-wing. Better cold-weather performance than LiPo — matters for ~45-60 min cruise.",
+      "notes": "Li-ion endurance pack for fixed-wing. Better cold-weather performance than LiPo \u2014 matters for ~45-60 min cruise.",
       "tags": [
         "endurance",
         "fixed-wing",
         "li-ion",
         "cold-weather"
       ]
+    },
+    {
+      "id": "battery-gnb-6s-1300mah-120c",
+      "name": "GAONENG GNB 6S 1300mAh 120C (5\" race / freestyle)",
+      "chemistry": "LiPo",
+      "cells": 6,
+      "voltage_nominal_v": 22.2,
+      "capacity_mah": 1300,
+      "capacity_wh": 28.86,
+      "weight_g": 226,
+      "c_rating": 120,
+      "max_discharge_a": 156,
+      "connector_type": "XT60",
+      "dimensions_mm": {
+        "length": 76,
+        "width": 35,
+        "height": 46
+      },
+      "manufacturer": "GAONENG (GNB)",
+      "part_number": "GNB-6S-1300-120C",
+      "cost_usd": 38.99,
+      "availability": "in-stock",
+      "notes": "Green-label race pack. 240C burst. Fits standard 5\" freestyle bays.",
+      "tags": [
+        "6s",
+        "1300mah",
+        "race",
+        "freestyle",
+        "high-discharge"
+      ],
+      "data_source": {
+        "url": "https://www.gaoneng.shop/products/gaoneng-gnb-lihv-6s-22.8v-1300mah-120c-xt60-lipo-battery",
+        "fetched_at": "2026-05-11T06:30:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "battery-cnhl-black-6s-1300mah-130c",
+      "name": "CNHL Black Series V2 6S 1300mAh 130C",
+      "chemistry": "LiPo",
+      "cells": 6,
+      "voltage_nominal_v": 22.2,
+      "capacity_mah": 1300,
+      "capacity_wh": 28.86,
+      "weight_g": 220,
+      "c_rating": 130,
+      "max_discharge_a": 169,
+      "connector_type": "XT60",
+      "manufacturer": "CNHL",
+      "part_number": "CNHL-BLK-V2-6S-1300",
+      "cost_usd": 32.99,
+      "availability": "in-stock",
+      "notes": "Black Series \u2014 premium race pack with low internal resistance. Common alternative to GNB.",
+      "tags": [
+        "6s",
+        "1300mah",
+        "race",
+        "freestyle",
+        "high-discharge"
+      ],
+      "data_source": {
+        "url": "https://www.getfpv.com/cnhl-black-series-v2-0-1300mah-22-2v-130c-6s-lipo-battery-xt60.html",
+        "fetched_at": "2026-05-11T06:30:00+00:00",
+        "parser": "webfetch+manual"
+      }
     }
   ],
   "flight_controllers": [
@@ -719,6 +908,51 @@
           "label": "Config"
         }
       ]
+    },
+    {
+      "id": "fc-holybro-kakute-h7-v2",
+      "name": "Holybro Kakute H7 V2 Flight Controller",
+      "weight_g": 11,
+      "processor": "STM32H743 @ 480MHz",
+      "firmware": [
+        "Betaflight",
+        "INAV",
+        "ArduPilot",
+        "PX4"
+      ],
+      "gyro": "BMI270",
+      "voltage_input_v": {
+        "min": 7.4,
+        "max": 33.6
+      },
+      "current_draw_ma": 250,
+      "uart_ports": 6,
+      "features": [
+        "OSD",
+        "Bluetooth",
+        "Barometer",
+        "Logging128MB",
+        "9V-BEC",
+        "5V-BEC"
+      ],
+      "manufacturer": "Holybro",
+      "part_number": "KAKUTE-H7-V2",
+      "cost_usd": 89.99,
+      "availability": "in-stock",
+      "notes": "30.5x30.5 mount. 2S-8S input. ESP32-C3 onboard Bluetooth. 9V VTX pit switch.",
+      "tags": [
+        "flight-controller",
+        "h7",
+        "30x30",
+        "betaflight",
+        "ardupilot",
+        "bluetooth"
+      ],
+      "data_source": {
+        "url": "https://holybro.com/products/kakute-h7-v2",
+        "fetched_at": "2026-05-11T06:30:00+00:00",
+        "parser": "webfetch+manual"
+      }
     }
   ],
   "radios": [
@@ -842,7 +1076,7 @@
     },
     {
       "id": "radio-happymodel-es24tx-pro",
-      "name": "HappyModel ES24TX Pro Micro — 1000mW ELRS TX Module",
+      "name": "HappyModel ES24TX Pro Micro \u2014 1000mW ELRS TX Module",
       "type": "control",
       "frequency_band": "2.4GHz",
       "frequency_range_mhz": {
@@ -890,7 +1124,7 @@
     },
     {
       "id": "radio-holybro-atlatl-hv-v2",
-      "name": "Holybro Atlatl HV V2 — Analog VTX",
+      "name": "Holybro Atlatl HV V2 \u2014 Analog VTX",
       "type": "video",
       "frequency_band": "5.8GHz",
       "frequency_range_mhz": {
@@ -1028,7 +1262,7 @@
     },
     {
       "id": "radio-reaper-extreme-v2-vtx",
-      "name": "Rotor Riot Reaper Extreme V2 — Analog VTX 1.6W",
+      "name": "Rotor Riot Reaper Extreme V2 \u2014 Analog VTX 1.6W",
       "type": "video",
       "frequency_band": "5.8GHz",
       "frequency_range_mhz": {
@@ -1072,6 +1306,125 @@
         "specialty"
       ],
       "firmware_family": "Other"
+    },
+    {
+      "id": "radio-radiomaster-rp1-v2",
+      "name": "RadioMaster RP1 V2 ExpressLRS 2.4GHz Nano RX",
+      "type": "control",
+      "frequency_band": "2.4GHz",
+      "frequency_range_mhz": {
+        "min": 2404,
+        "max": 2479
+      },
+      "weight_g": 2.2,
+      "power_output_mw": 10,
+      "rx_sensitivity_dbm": -108,
+      "power_consumption_w": 0.1,
+      "data_rate_kbps": 1000,
+      "antenna_connector": "U.FL",
+      "protocols": [
+        "CRSF",
+        "ExpressLRS"
+      ],
+      "voltage_input_v": {
+        "min": 4.5,
+        "max": 5.5
+      },
+      "manufacturer": "RadioMaster",
+      "part_number": "HP0157.RX-RP1-V2",
+      "cost_usd": 18.99,
+      "availability": "in-stock",
+      "notes": "TCXO-stabilized ELRS nano RX. SX1281 RF chip, ESP8285 MCU. 65mm T-antenna in box.",
+      "tags": [
+        "control",
+        "elrs",
+        "crsf",
+        "2.4ghz",
+        "nano"
+      ],
+      "data_source": {
+        "url": "https://radiomasterrc.com/products/rp1-expresslrs-2-4ghz-nano-receiver",
+        "fetched_at": "2026-05-11T06:30:00+00:00",
+        "parser": "jsonld"
+      }
+    },
+    {
+      "id": "radio-radiomaster-xr1-nano-db",
+      "name": "RadioMaster XR1 Nano Dual-Band ExpressLRS RX",
+      "type": "control",
+      "frequency_band": "Dual-band",
+      "frequency_range_mhz": {
+        "min": 868,
+        "max": 2479
+      },
+      "weight_g": 1.0,
+      "power_output_mw": 100,
+      "data_rate_kbps": 1000,
+      "antenna_connector": "IPEX-1",
+      "protocols": [
+        "CRSF",
+        "ExpressLRS"
+      ],
+      "voltage_input_v": {
+        "min": 4.5,
+        "max": 5.5
+      },
+      "manufacturer": "RadioMaster",
+      "part_number": "HP0157.XR1-DB",
+      "cost_usd": 11.99,
+      "availability": "in-stock",
+      "notes": "Dual-band 2.4GHz + 900MHz ELRS RX. Semtech LR1121 RF, ESP32C3 MCU. 1g (no antenna).",
+      "tags": [
+        "control",
+        "elrs",
+        "crsf",
+        "dual-band",
+        "nano"
+      ],
+      "data_source": {
+        "url": "https://radiomasterrc.com/products/xr1-nano-multi-frequency-expresslrs-receiver",
+        "fetched_at": "2026-05-11T06:30:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "radio-radiomaster-er6-pwm",
+      "name": "RadioMaster ER6 2.4GHz ELRS PWM RX",
+      "type": "control",
+      "frequency_band": "2.4GHz",
+      "frequency_range_mhz": {
+        "min": 2404,
+        "max": 2479
+      },
+      "weight_g": 14.5,
+      "power_output_mw": 100,
+      "protocols": [
+        "CRSF",
+        "SBUS",
+        "PWM",
+        "ExpressLRS"
+      ],
+      "voltage_input_v": {
+        "min": 4.5,
+        "max": 8.4
+      },
+      "manufacturer": "RadioMaster",
+      "part_number": "HP0157.RX-ER6",
+      "cost_usd": 24.99,
+      "availability": "in-stock",
+      "notes": "6-channel PWM ELRS RX for fixed-wing / non-FC builds. Dual-antenna.",
+      "tags": [
+        "control",
+        "elrs",
+        "pwm",
+        "sbus",
+        "fixed-wing"
+      ],
+      "data_source": {
+        "url": "https://radiomasterrc.com/products/er6-2-4ghz-elrs-pwm-receiver",
+        "fetched_at": "2026-05-11T06:30:00+00:00",
+        "parser": "webfetch+manual"
+      }
     }
   ],
   "sensors": [
@@ -1217,7 +1570,7 @@
       "part_number": "HDZ3311",
       "cost_usd": 79.0,
       "availability": "in-stock",
-      "notes": "Adds analog 5.8GHz reception + WiFi live stream to HDZero Goggle. Only 20 modules for 50 goggles — prioritize mixed-feed stations.",
+      "notes": "Adds analog 5.8GHz reception + WiFi live stream to HDZero Goggle. Only 20 modules for 50 goggles \u2014 prioritize mixed-feed stations.",
       "tags": [
         "goggle-expansion",
         "hdzero",
@@ -1291,7 +1644,7 @@
       "part_number": "23346",
       "cost_usd": 119.0,
       "availability": "in-stock",
-      "notes": "Orqa FPV.One / Fatshark HDO module bay. Quadversity analog diversity. **VERIFY pairing goggles exist** — may be unused stock.",
+      "notes": "Orqa FPV.One / Fatshark HDO module bay. Quadversity analog diversity. **VERIFY pairing goggles exist** \u2014 may be unused stock.",
       "tags": [
         "goggle-module",
         "analog",
@@ -1315,7 +1668,7 @@
       "part_number": "CORE-5.8-UFL-85",
       "cost_usd": 12.99,
       "availability": "in-stock",
-      "notes": "U.FL termination. Atlatl HV V2 uses MMCX — adapter needed unless VTX has U.FL pigtail.",
+      "notes": "U.FL termination. Atlatl HV V2 uses MMCX \u2014 adapter needed unless VTX has U.FL pigtail.",
       "tags": [
         "antenna",
         "vtx-side",
@@ -1360,7 +1713,7 @@
       "part_number": "ES08A-20181129",
       "cost_usd": 6.99,
       "availability": "in-stock",
-      "notes": "1.8 kg-cm torque @ 6V, 0.12 sec/60°. Plenty for 4-5 servos × 25 fixed-wing builds.",
+      "notes": "1.8 kg-cm torque @ 6V, 0.12 sec/60\u00b0. Plenty for 4-5 servos \u00d7 25 fixed-wing builds.",
       "tags": [
         "servo",
         "fixed-wing",
@@ -1447,7 +1800,7 @@
       "part_number": "X9D-PLUS-SE-2019",
       "cost_usd": 220.0,
       "availability": "in-stock",
-      "notes": "Legacy-standard radio. Native FrSky ACCESS but accepts JR-bay modules (ES24TX Pro, Crossfire, etc.). Widely fielded — compatible with most existing training inventories.",
+      "notes": "Legacy-standard radio. Native FrSky ACCESS but accepts JR-bay modules (ES24TX Pro, Crossfire, etc.). Widely fielded \u2014 compatible with most existing training inventories.",
       "tags": [
         "transmitter",
         "opentx",
@@ -1819,7 +2172,7 @@
     },
     {
       "id": "acc-insta360-x3",
-      "name": "Insta360 X3 (360° action cam, payload)",
+      "name": "Insta360 X3 (360\u00b0 action cam, payload)",
       "category": "action-camera",
       "weight_g": 180,
       "dimensions_mm": {
@@ -1832,7 +2185,7 @@
       "part_number": "INSTA360-X3",
       "cost_usd": 449.0,
       "availability": "in-stock",
-      "notes": "360° dual-lens action cam. Re-frame in post; useful for AAR / situational awareness recording.",
+      "notes": "360\u00b0 dual-lens action cam. Re-frame in post; useful for AAR / situational awareness recording.",
       "tags": [
         "camera",
         "action-cam",
@@ -1887,7 +2240,7 @@
     },
     {
       "id": "acc-xt60-to-xt90-adapter",
-      "name": "XT60 ↔ XT90 Adapter (for 10\" / heavy-lift packs)",
+      "name": "XT60 \u2194 XT90 Adapter (for 10\" / heavy-lift packs)",
       "category": "connector-adapter",
       "weight_g": 12,
       "dimensions_mm": {

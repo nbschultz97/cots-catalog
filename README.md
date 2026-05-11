@@ -72,6 +72,33 @@ directory to swap in your own parts library and presets — useful for
 race clubs, mapping shops, fleet operators, or anyone running an
 internal inventory.
 
+### Adding parts: the `architect-companion-ingest` CLI
+
+A second console script ships alongside the MCP server for growing the
+catalog from manufacturer product pages:
+
+```bash
+architect-companion-ingest https://radiomasterrc.com/products/rp1-expresslrs-2-4ghz-nano-receiver
+```
+
+The ingester tries three strategies in order:
+
+1. **JSON-LD Product schema** — clean structured extraction (Shopify
+   stores generally publish this).
+2. **OpenGraph meta tags** — falls back when JSON-LD is missing.
+3. **`from_specs()` programmatic call** — for pages without either,
+   import the module and pass a hand-curated spec dict.
+
+Every ingested entry carries a `data_source: {url, fetched_at, parser}`
+block so the catalog stays auditable. The `_extraction.missing_fields`
+list tells you what the parser couldn't get; fill those in by hand
+before merging into `data/parts_library.json`.
+
+**ToS note:** the ingester is meant for manufacturer pages (iFlight,
+T-Motor, EMAX, Lumenier, Happymodel, RadioMaster, BetaFPV, etc.) where
+spec data is intended to be public. Don't point it at retailers whose
+terms forbid automated access.
+
 ## Data directory
 
 The server reads JSON from `data/` (bundled in this repo, vendored from

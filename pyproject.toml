@@ -1,6 +1,6 @@
 [project]
 name = "architect-companion-mcp"
-version = "0.3.0"
+version = "0.5.0"
 description = "Offline-first MCP server for COTS robotics mission planning. Complements the Ceradon Architect suite."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -11,6 +11,7 @@ dependencies = [
 
 [project.scripts]
 architect-companion-mcp = "architect_companion_mcp.server:main"
+architect-companion-ingest = "architect_companion_mcp.ingest:main"
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]
