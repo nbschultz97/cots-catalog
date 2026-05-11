@@ -182,7 +182,67 @@ def record_observation(stream: str, payload: Dict[str, Any]) -> Dict[str, str]:
     return {"status": "stored", "path": str(path)}
 
 
+@mcp.tool()
+def validate_catalog() -> Dict[str, Any]:
+    """Run JSON Schema + uniqueness + required-field validation on the
+    currently loaded parts library. Useful when running a custom data pack
+    via ``ARCHITECT_DATA_DIR``."""
+    from .validation import full_validation_report
+    from .catalog import load_parts_library
+
+    return full_validation_report(load_parts_library())
+
+
+def _diagnostics() -> Dict[str, Any]:
+    """Compact health + validation summary for ops use."""
+    from .validation import full_validation_report
+    from .catalog import load_parts_library
+
+    library = load_parts_library()
+    return {
+        "version": __version__,
+        "health": health(),
+        "validation": full_validation_report(library),
+    }
+
+
 def main() -> None:
+    import argparse
+    import json as _json
+    import sys
+
+    parser = argparse.ArgumentParser(
+        prog="architect-companion-mcp",
+        description="Architect Companion MCP server (stdio).",
+    )
+    parser.add_argument("--version", action="store_true", help="Print version and exit")
+    parser.add_argument(
+        "--list-tools", action="store_true", help="List registered MCP tools and exit"
+    )
+    parser.add_argument(
+        "--diagnostics",
+        action="store_true",
+        help="Run catalog validation + health report and exit",
+    )
+    args = parser.parse_args()
+
+    if args.version:
+        print(__version__)
+        return
+    if args.list_tools:
+        # FastMCP exposes registered tools through the underlying manager.
+        try:
+            tool_names = sorted(mcp._tool_manager._tools.keys())
+        except AttributeError:
+            tool_names = []
+        for name in tool_names:
+            print(name)
+        return
+    if args.diagnostics:
+        _json.dump(_diagnostics(), sys.stdout, indent=2, default=str)
+        sys.stdout.write("\n")
+        return
+
     mcp.run(transport="stdio")
 
 

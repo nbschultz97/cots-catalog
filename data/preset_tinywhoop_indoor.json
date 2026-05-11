@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectId": "preset-tinywhoop-indoor",
+  "meta": {
+    "name": "Tinywhoop indoor flying",
+    "description": "Sub-50g ducted tinywhoop quad for indoor flying. 1S Li-ion or 1S HV LiPo, brushed or brushless 0802/1102 motors, 31mm props. Perfect entry build.",
+    "durationHours": 2,
+    "origin_tool": "hub",
+    "scenario": "Indoor / cinewhoop tinywhoop",
+    "inventoryReference": "DEMO-TINYWHOOP",
+    "missionType": "tinywhoop_indoor",
+    "team": { "size": 1, "roles": ["Pilot"] }
+  },
+  "environment": [
+    {
+      "id": "env-indoor",
+      "name": "Indoor",
+      "band": "indoor",
+      "altitudeBand": "0-500m",
+      "temperatureBand": "10-25C",
+      "weather": "N/A",
+      "terrain": "indoor",
+      "origin_tool": "hub",
+      "notes": "Indoor obstacle course / cinewhoop pass-throughs"
+    }
+  ],
+  "constraints": [
+    { "id": "c-thrust", "type": "Performance", "description": "Limited thrust margin; payload near zero", "severity": "high", "origin_tool": "mission" }
+  ],
+  "nodes": [],
+  "platforms": [
+    { "id": "platform-tinywhoop", "name": "65mm ducted tinywhoop", "role": "Indoor cinewhoop", "origin_tool": "uxs" }
+  ],
+  "mesh_links": [],
+  "kits": [],
+  "mission": {
+    "tasks": [
+      { "id": "task-cinewhoop", "name": "Cinewhoop run", "description": "Indoor camera pass-through with smooth gimbal", "origin_tool": "mission" }
+    ],
+    "phases": [
+      { "id": "phase-setup", "name": "Setup / battery rotation", "durationHours": 0.5, "focus": "Battery rotation, props check", "origin_tool": "mission" },
+      { "id": "phase-fly", "name": "Flight", "durationHours": 1.5, "focus": "Indoor cinewhoop", "origin_tool": "mission" }
+    ],
+    "assignments": [
+      { "phaseId": "phase-fly", "platformIds": ["platform-tinywhoop"] }
+    ],
+    "mission_cards": []
+  },
+  "sustainment": {
+    "sustainmentHours": 2,
+    "batteryCounts": 8,
+    "feasibility": {},
+    "notes": "Tinywhoop packs are 1-3 min each — bring 6+",
+    "power_plan": "Mains charger",
+    "packing_lists": []
+  },
+  "meshPlan": {
+    "relayCount": 0,
+    "criticalLinks": 0,
+    "rf_bands": ["5.8GHz"],
+    "rf_environment": "permissive"
+  },
+  "kitsSummary": {
+    "perOperatorLoads": [],
+    "perOperatorLoadKg": 3,
+    "perOperatorLimitKg": 10
+  },
+  "exports": { "links": [], "notes": "" }
+}

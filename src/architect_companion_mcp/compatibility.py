@@ -8,6 +8,8 @@ Engineering rules applied (in order):
   as a spec line). ESC count or one integrated 4-in-1 covers the motors.
 * Motor KV vs prop size sanity (high-KV + big prop → burnout flag;
   low-KV + small prop → underprop flag).
+* Motor mount pattern matches airframe motor mount pattern.
+* Flight controller mounting pattern matches a known FC mount slot.
 * Control and video radios use different frequency bands when both present.
 * ESC max current covers motor peak current.
 
@@ -21,6 +23,28 @@ import re
 from typing import Any, Dict, List, Optional
 
 from .catalog import part_by_id
+
+# Canonical FC / ESC mount patterns (mm). Used as a set of "known good"
+# patterns when a motor lists e.g. "16x16" — the engine pairs it against
+# any FC also at 16x16.
+_KNOWN_FC_MOUNTS = {"20x20", "25.5x25.5", "30.5x30.5", "16x16"}
+
+
+def _normalize_mount(value: Any) -> Optional[str]:
+    """Pull "16x16" / "30.5x30.5" out of various string formats."""
+    if not value:
+        return None
+    text = str(value).lower().replace("mm", "").replace(" ", "")
+    match = re.search(r"(\d+(?:\.\d+)?)x(\d+(?:\.\d+)?)", text)
+    if match:
+        a, b = match.group(1), match.group(2)
+        try:
+            af = float(a)
+            bf = float(b)
+        except ValueError:
+            return None
+        return f"{af:g}x{bf:g}"
+    return None
 
 # Heuristic KV bands per prop size (inches). Rough rule of thumb from
 # FPV builder community — tune as the catalog grows.
@@ -167,6 +191,27 @@ def check_compatibility(part_ids: List[str]) -> Dict[str, Any]:
                     f"Motor {motor['name']} ({kv}KV) too low for {prop_inches}\" prop "
                     f"— suggested {band['kv_min']}-{band['kv_max']}KV. Insufficient thrust."
                 )
+
+    # Mount pattern: motor mount vs airframe mount; FC mount vs FC stack
+    flight_controllers = [p for p in parts if p["_category"] == "flight_controllers"]
+    if airframe:
+        airframe_mount = _normalize_mount(
+            airframe.get("motor_mount") or airframe.get("motor_mount_mm")
+        )
+        for motor in motors:
+            motor_mount = _normalize_mount(motor.get("mount_pattern") or motor.get("mount"))
+            if airframe_mount and motor_mount and airframe_mount != motor_mount:
+                issues.append(
+                    f"Motor {motor['name']} mount {motor_mount} does not match "
+                    f"airframe mount {airframe_mount}."
+                )
+    for fc in flight_controllers:
+        fc_mount = _normalize_mount(fc.get("mounting") or fc.get("mount_pattern"))
+        if fc_mount and fc_mount not in _KNOWN_FC_MOUNTS:
+            issues.append(
+                f"FC {fc['name']} mount {fc_mount} is not a standard FC stack "
+                f"({', '.join(sorted(_KNOWN_FC_MOUNTS))})."
+            )
 
     # Control vs video radio band overlap
     control_radios = [p for p in radios if p.get("type") == "control"]

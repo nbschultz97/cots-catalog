@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectId": "preset-sub-250g",
+  "meta": {
+    "name": "Sub-250g recreational flying",
+    "description": "Sub-250g all-up-weight build (no registration in many jurisdictions). Targets recreational FPV / cinematography pilots with light-weight 3-4\" platforms.",
+    "durationHours": 3,
+    "origin_tool": "hub",
+    "scenario": "Sub-250g recreational",
+    "inventoryReference": "DEMO-SUB-250G",
+    "missionType": "sub_250g",
+    "team": { "size": 1, "roles": ["Pilot"] }
+  },
+  "environment": [
+    {
+      "id": "env-park",
+      "name": "Suburban / park",
+      "band": "suburban",
+      "altitudeBand": "0-500m",
+      "temperatureBand": "10-25C",
+      "weather": "Variable",
+      "terrain": "park",
+      "origin_tool": "hub",
+      "notes": "Recreational area; respect line-of-sight rules"
+    }
+  ],
+  "constraints": [
+    { "id": "c-weight", "type": "Weight", "description": "AUW must remain under 250g", "severity": "high", "origin_tool": "mission" }
+  ],
+  "nodes": [],
+  "platforms": [
+    { "id": "platform-3in-cine", "name": "3-4\" cinematic", "role": "Recreational cinewhoop", "origin_tool": "uxs" }
+  ],
+  "mesh_links": [],
+  "kits": [],
+  "mission": {
+    "tasks": [
+      { "id": "task-cine", "name": "Cinematic pass", "description": "Smooth cinematic flight under 250g AUW", "origin_tool": "mission" }
+    ],
+    "phases": [
+      { "id": "phase-fly", "name": "Flight", "durationHours": 3, "focus": "Cinematic", "origin_tool": "mission" }
+    ],
+    "assignments": [
+      { "phaseId": "phase-fly", "platformIds": ["platform-3in-cine"] }
+    ],
+    "mission_cards": []
+  },
+  "sustainment": {
+    "sustainmentHours": 3,
+    "batteryCounts": 6,
+    "feasibility": {},
+    "notes": "Sub-250g packs ~5-7 min each; carry spare props",
+    "power_plan": "",
+    "packing_lists": []
+  },
+  "meshPlan": {
+    "relayCount": 0,
+    "criticalLinks": 0,
+    "rf_bands": ["2.4GHz", "5.8GHz"],
+    "rf_environment": "permissive"
+  },
+  "kitsSummary": {
+    "perOperatorLoads": [],
+    "perOperatorLoadKg": 4,
+    "perOperatorLimitKg": 10
+  },
+  "exports": { "links": [], "notes": "" }
+}

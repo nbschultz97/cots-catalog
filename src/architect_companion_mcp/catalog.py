@@ -32,6 +32,9 @@ PRESET_FILES = (
     "preset_endurance_survey.json",
     "preset_urban_congested.json",
     "preset_cold_weather.json",
+    "preset_tinywhoop_indoor.json",
+    "preset_sub_250g.json",
+    "preset_beginner_5in.json",
 )
 
 

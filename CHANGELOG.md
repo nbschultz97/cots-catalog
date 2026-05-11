@@ -1,0 +1,86 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.6.0] — 2026-05-11
+
+### Added
+- MIT LICENSE, CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md.
+- GitHub Actions CI: pytest matrix across Python 3.9-3.13 + lint + schema validation.
+- Issue and PR templates.
+- JSON Schema validation on catalog load (optional `jsonschema` extra).
+- `tests/test_catalog_quality.py` — every part must have required fields and unique ID.
+- Recommender self-validates picks via `check_compatibility`; surfaces issues in output.
+- Mount-hole pattern compatibility rule (motor vs FC vs airframe).
+- MCP CLI gains `--version`, `--list-tools`, `--diagnostics` flags.
+- New presets: `preset_tinywhoop_indoor`, `preset_sub_250g`, `preset_beginner_5in`.
+- `examples/` directory with 4 runnable scripts.
+- README badges + table of contents.
+
+### Changed
+- `recommend_configuration` output includes `validation` block with `compatible`,
+  `issues`, and (optionally) suggested alternatives.
+
+### Catalog
+- ~10-15 new ingested parts targeting tinywhoop motors, 4-in-1 ESCs, HD VTXes,
+  ELRS TX modules. Catalog growth: 73 → ~85 parts.
+
+## [0.5.0] — 2026-05-11
+
+### Added
+- `architect_companion_mcp.ingest` module: stdlib-only URL → part dict parser.
+  Three strategies: JSON-LD Product schema → OpenGraph meta tags →
+  `from_specs()` for hand-curated dicts.
+- `architect-companion-ingest <url>` CLI.
+- Every ingested part carries `data_source: {url, fetched_at, parser}` provenance.
+- 9 new tests for the ingester.
+
+### Catalog
+- 10 new manufacturer-sourced parts (iFlight XING2 motors, EMAX ECO II 2400KV,
+  T-Motor F40 PRO V, RadioMaster RP1 V2 / XR1 / ER6, Holybro Kakute H7 V2,
+  GAONENG GNB 6S, CNHL Black 6S). Catalog: 63 → 73.
+
+## [0.4.1] — 2026-05-11
+
+### Fixed
+- `compute_tier` parameter on `recommend_configuration` was previously a no-op.
+  Now actually filters airframes by payload budget and biases tag preferences.
+- Pi-zero now lands on a 5" frame; Jetson Orin lands on a flying-wing.
+
+### Added
+- Compatibility engine: motor_count cross-check, ESC count vs motor count check,
+  KV vs prop-size sanity check (four prop-size bands).
+- README "Known limitations" section documenting what the engine catches and
+  doesn't.
+
+## [0.4.0] — 2026-05-11
+
+### Changed (BREAKING — public posture scrub)
+- Removed ITAR/EAR thermal sensor entry.
+- Stripped "ISR" from parts library (IDs, tags, notes → "heavy-lift" /
+  "mapping" / "cinematography").
+- Dropped EMCON / operator-drone framing from catalog description.
+- Replaced 4 mil-flavored presets with hobby equivalents
+  (`long_range_relay`, `endurance_survey`, `urban_congested`, `cold_weather`).
+- `environment_taxonomy`: `ewLevels` → `rfEnvironments`.
+- `parts_library_schema`: dropped `nsn` field.
+- `mission_project_schema_v2`: `ew_profile` → `rf_environment`.
+- `recommend_configuration`: dropped `strike` / `sustainment` mission types in
+  favor of `freestyle` / `racing` / `cinematic` / `long_range` / `endurance_survey` /
+  `cold_weather`.
+
+## [0.3.0] — 2026-05-11
+
+### Added
+- First real release: 8 stdio MCP tools (`health`, `list_components`, `get_part`,
+  `check_compatibility`, `generate_mission_blueprint`, `estimate_flight_time`,
+  `recommend_configuration`, `record_observation`).
+- Bundled COTS-Architect parts library (63 parts, 8 categories) and 4 mission
+  presets.
+- 18 pytest tests covering every tool.
+- README with Claude Desktop and Claude Code config snippets.

@@ -1,137 +1,109 @@
 # Architect Companion MCP
 
-Offline-first **MCP server for COTS robotics mission planning**, complementing the
-[Ceradon Architect](https://ceradonsystems.com) suite (COTS-Architect). Exposes
-the parts library, presets, and engineering checks as stdio MCP tools so LLM
-clients (Claude Desktop, Claude Code, Cursor, etc.) can do sUAS mission planning
-against real catalog data.
+[![CI](https://github.com/nbschultz97/cots-catalog/actions/workflows/ci.yml/badge.svg)](https://github.com/nbschultz97/cots-catalog/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
+[![MCP](https://img.shields.io/badge/MCP-server-purple.svg)](https://modelcontextprotocol.io/)
 
-## Scope
+Offline-first **Model Context Protocol (MCP) server for COTS sUAS / FPV
+build planning**. Exposes a curated, manufacturer-sourced parts library
+and a set of compatibility / endurance / blueprint tools so LLM clients
+(Claude Desktop, Claude Code, Cursor, any MCP host) can recommend
+builds, sanity-check them, and emit MissionProject v2 stubs — all from
+local data, no cloud calls.
 
-- 8 stdio MCP tools over the bundled COTS-Architect parts library (v1.1.0
-  schema) and MissionProject schema (v2.0.0).
-- No network calls, no cloud, no hardware required. Bundled `data/`
-  directory carries everything needed.
-- Sanity-check math only — voltage chain, weight budget, RF-band overlap,
-  hover-endurance approximation. **Not a flight simulator.**
+**The catalog is hobby / commercial sUAS only.** No military framing,
+no export-controlled parts, no operationally sensitive data.
+
+---
+
+## Table of contents
+
+- [What you get](#what-you-get)
+- [Quickstart](#quickstart)
+- [MCP tools](#mcp-tools)
+- [Wiring into Claude Desktop / Claude Code](#wiring-into-claude-desktop--claude-code)
+- [CLI tools](#cli-tools)
+- [Categories, operation types, compute tiers](#categories-operation-types-compute-tiers)
+- [Bring your own catalog](#bring-your-own-catalog)
+- [Adding parts](#adding-parts)
+- [Examples](#examples)
+- [Known limitations](#known-limitations)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## What you get
+
+- **10 stdio MCP tools** over a manufacturer-sourced parts library.
+- **80+ COTS parts** across 8 categories (airframes, motors, ESCs,
+  batteries, flight controllers, radios, sensors, accessories) sourced
+  from iFlight, EMAX, T-Motor, RadioMaster, BetaFPV, GEPRC, Holybro,
+  Walksnail, DJI, Tattu, GAONENG, CNHL, Lumenier, Diatone, Happymodel.
+  Every part carries `data_source` provenance.
+- **7 mission presets** covering long-range relay, endurance survey,
+  urban congested-RF, cold-weather, tinywhoop indoor, sub-250g, and
+  beginner 5". Each conforms to the MissionProject v2 schema.
+- **Self-validating recommender** — calls `check_compatibility` on its
+  own picks so the LLM doesn't have to remember.
+- **JSON Schema validation** of the catalog on load (optional dependency).
+- **Auditable provenance** — every ingested part has `data_source.url`
+  and `data_source.fetched_at`.
+- **No network calls anywhere in the package.** Air-gap friendly.
+
+---
 
 ## Quickstart
 
 ```bash
-python -m venv .venv
-.venv\Scripts\activate              # PowerShell
+# Install
 pip install -e .
-architect-companion-mcp             # blocks on stdio, ready to be wired into an MCP client
+
+# Run the MCP server (blocks on stdio, ready for a client)
+architect-companion-mcp
+
+# Or just check it works
+architect-companion-mcp --version
+architect-companion-mcp --list-tools
+architect-companion-mcp --diagnostics
 ```
 
 Run the tests:
 
 ```bash
-pip install pytest
+pip install -e ".[dev]"
 python -m pytest -q
 ```
 
-## MCP Tools
+---
+
+## MCP tools
 
 | Tool | Description |
 |------|-------------|
 | `health` | Server status, version, data dir, catalog counts, available presets and operation types |
 | `list_components` | Browse the parts catalog with filters (category, tag, manufacturer, availability, max_weight_g, max_cost_usd, frequency_band, limit) |
 | `get_part` | Fetch a single part by its catalog ID |
-| `check_compatibility` | Voltage chain, weight budget vs airframe payload, RF-band overlap, ESC vs motor current |
+| `check_compatibility` | Voltage chain, weight budget, mount patterns, motor count / ESC count, KV vs prop, RF-band overlap, ESC vs motor current |
 | `generate_mission_blueprint` | Produce a `MissionProject v2` stub seeded from one of the bundled presets |
-| `estimate_flight_time` | Hover endurance approximation — pass catalog IDs or raw battery/airframe numbers |
-| `recommend_configuration` | Heuristic kit pick for a compute tier + mission type, ranked by availability/tag-match/cost |
+| `estimate_flight_time` | Hover endurance approximation — pass catalog IDs or raw battery / airframe numbers |
+| `recommend_configuration` | Heuristic kit pick for a compute tier + mission type, **self-validates** via `check_compatibility` |
+| `validate_catalog` | Run JSON Schema + uniqueness + required-field checks on the currently loaded library (useful with `ARCHITECT_DATA_DIR`) |
 | `record_observation` | Append-only JSONL telemetry log to local storage |
 
-### Categories
+The recommender's output now includes a `validation` block with
+`compatible`, `issues`, and `budget` — so the LLM client immediately
+knows whether the picks pass engineering checks.
 
-`airframes`, `motors`, `escs`, `batteries`, `flight_controllers`, `radios`,
-`sensors`, `accessories`.
+---
 
-### Operation types
+## Wiring into Claude Desktop / Claude Code
 
-`long_range`, `long_range_relay`, `relay`, `endurance`, `endurance_survey`,
-`survey`, `mapping`, `urban`, `urban_congested`, `race`, `racing`,
-`cold_weather`, `winter`. Unknown types fall back to `long_range_relay`.
+### Claude Desktop
 
-### Mission types (recommend_configuration)
-
-`long_range`, `endurance_survey`, `freestyle`, `racing`, `cinematic`,
-`cold_weather`. Unknown types fall back to `long_range`.
-
-### Compute tiers
-
-`pi-zero`, `pi4`, `pi5`, `jetson-nano`, `jetson-orin-nano`, `x86`.
-
-### Bring your own catalog
-
-The bundled `data/` directory is a hobby / COTS FPV reference pack you
-can use out of the box. Point `ARCHITECT_DATA_DIR` at a different
-directory to swap in your own parts library and presets — useful for
-race clubs, mapping shops, fleet operators, or anyone running an
-internal inventory.
-
-### Adding parts: the `architect-companion-ingest` CLI
-
-A second console script ships alongside the MCP server for growing the
-catalog from manufacturer product pages:
-
-```bash
-architect-companion-ingest https://radiomasterrc.com/products/rp1-expresslrs-2-4ghz-nano-receiver
-```
-
-The ingester tries three strategies in order:
-
-1. **JSON-LD Product schema** — clean structured extraction (Shopify
-   stores generally publish this).
-2. **OpenGraph meta tags** — falls back when JSON-LD is missing.
-3. **`from_specs()` programmatic call** — for pages without either,
-   import the module and pass a hand-curated spec dict.
-
-Every ingested entry carries a `data_source: {url, fetched_at, parser}`
-block so the catalog stays auditable. The `_extraction.missing_fields`
-list tells you what the parser couldn't get; fill those in by hand
-before merging into `data/parts_library.json`.
-
-**ToS note:** the ingester is meant for manufacturer pages (iFlight,
-T-Motor, EMAX, Lumenier, Happymodel, RadioMaster, BetaFPV, etc.) where
-spec data is intended to be public. Don't point it at retailers whose
-terms forbid automated access.
-
-## Data directory
-
-The server reads JSON from `data/` (bundled in this repo, vendored from
-COTS-Architect). Override with `ARCHITECT_DATA_DIR`:
-
-```powershell
-$env:ARCHITECT_DATA_DIR = "C:\Users\noah\COTS-Architect\data"
-architect-companion-mcp
-```
-
-JSONL telemetry from `record_observation` lands in
-`ARCHITECT_COMPANION_DATA_DIR` (defaults to `./runtime_data`).
-
-## Wiring into Claude Desktop
-
-Add this to `claude_desktop_config.json` (Windows path:
-`%APPDATA%\Claude\claude_desktop_config.json`):
-
-```json
-{
-  "mcpServers": {
-    "architect-companion": {
-      "command": "architect-companion-mcp",
-      "env": {
-        "ARCHITECT_DATA_DIR": "C:\\Users\\noah\\cots-catalog\\data",
-        "ARCHITECT_COMPANION_DATA_DIR": "C:\\Users\\noah\\cots-catalog\\runtime_data"
-      }
-    }
-  }
-}
-```
-
-For Claude Code, add to `.claude/settings.json` or your global settings:
+`%APPDATA%\Claude\claude_desktop_config.json` (Windows) or
+`~/Library/Application Support/Claude/claude_desktop_config.json` (macOS):
 
 ```json
 {
@@ -143,13 +115,115 @@ For Claude Code, add to `.claude/settings.json` or your global settings:
 }
 ```
 
-Restart the client; the tools appear under the `architect-companion` server.
+### Claude Code
 
-## Edge deployment notes
+`.claude/settings.json` (project) or `~/.claude/settings.json` (global):
 
-- Python 3.9+. Tested on 3.12. Targets Raspberry Pi 4/5 and Jetson Orin Nano.
-- JSONL persistence — no database stack to pull in air-gapped builds.
-- All tools operate fully offline; no network calls anywhere in the package.
+```json
+{
+  "mcpServers": {
+    "architect-companion": {
+      "command": "architect-companion-mcp"
+    }
+  }
+}
+```
+
+Restart the client. The tools appear under the `architect-companion`
+server.
+
+---
+
+## CLI tools
+
+Two console scripts ship with the package:
+
+| Command | What it does |
+|---------|--------------|
+| `architect-companion-mcp` | Run the MCP server (stdio). Supports `--version`, `--list-tools`, `--diagnostics`. |
+| `architect-companion-ingest <url>` | Pull a manufacturer product page through the ingester and print the resulting part dict to stdout. JSON-LD → OpenGraph → spec dict fallback. |
+
+---
+
+## Categories, operation types, compute tiers
+
+**Part categories:** `airframes`, `motors`, `escs`, `batteries`,
+`flight_controllers`, `radios`, `sensors`, `accessories`.
+
+**Operation types (for `generate_mission_blueprint`):**
+`long_range`, `long_range_relay`, `relay`, `endurance`,
+`endurance_survey`, `survey`, `mapping`, `urban`, `urban_congested`,
+`race`, `racing`, `cold_weather`, `winter`, `tinywhoop`,
+`tinywhoop_indoor`, `indoor`, `sub_250g`, `recreational`,
+`beginner`, `beginner_5in`, `first_build`. Unknown types fall back to
+`long_range_relay`.
+
+**Mission types (for `recommend_configuration`):** `long_range`,
+`endurance_survey`, `freestyle`, `racing`, `cinematic`, `cold_weather`.
+
+**Compute tiers:** `pi-zero`, `pi4`, `pi5`, `jetson-nano`,
+`jetson-orin-nano`, `x86`. Heavier tiers bias the airframe pick toward
+larger frames with payload room for the companion compute.
+
+---
+
+## Bring your own catalog
+
+The bundled `data/` directory is a hobby / COTS FPV reference pack you
+can use out of the box. Point `ARCHITECT_DATA_DIR` at a different
+directory to swap in your own parts library and presets:
+
+```bash
+export ARCHITECT_DATA_DIR=/path/to/my-catalog
+architect-companion-mcp
+```
+
+Your custom catalog must conform to the schemas in `data/schema/`. The
+`validate_catalog` MCP tool will tell you exactly what's wrong if a
+load fails.
+
+JSONL telemetry from `record_observation` lands in
+`ARCHITECT_COMPANION_DATA_DIR` (defaults to `./runtime_data`).
+
+---
+
+## Adding parts
+
+```bash
+architect-companion-ingest https://radiomasterrc.com/products/rp1-expresslrs-2-4ghz-nano-receiver
+```
+
+Three parsers, tried in order:
+
+1. **JSON-LD Product schema** — clean structured extraction. Most
+   Shopify stores ship this.
+2. **OpenGraph meta tags** — falls back when JSON-LD is missing.
+3. **`from_specs()`** — for pages without either, import the module and
+   pass a hand-curated spec dict directly.
+
+Every ingested entry carries `data_source: {url, fetched_at, parser}`
+so the catalog stays auditable. `_extraction.missing_fields` tells you
+what the parser couldn't get; fill those by hand before merging into
+`data/parts_library.json`.
+
+**ToS:** target manufacturer pages, not retailers. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for the full process.
+
+---
+
+## Examples
+
+Runnable scripts in [`examples/`](examples/):
+
+- `recommend_first_build.py` — pick a long-range 7" kit and show the
+  self-validation report.
+- `check_my_5in.py` — run compatibility checks against a hand-picked
+  5" build manifest.
+- `long_range_endurance.py` — compare hover endurance across all
+  airframes in the catalog.
+- `ingest_walkthrough.py` — both ingester paths end-to-end.
+
+---
 
 ## Known limitations
 
@@ -158,28 +232,42 @@ What the compatibility engine **does** catch:
 - Battery nominal voltage outside an ESC / FC / motor voltage range.
 - Total component weight exceeding the airframe payload budget (only as
   accurate as the catalog's `max_payload_g`).
-- Airframe motor_count not matching the number of motor entries (≥2 entries
-  treated as explicit per-rotor listing; one entry treated as a spec line).
+- Airframe motor_count not matching the number of motor entries (≥2
+  entries treated as explicit per-rotor listing; one entry treated as a
+  spec line).
 - ESC count vs motors — flags missing 4-in-1 or wrong single-ESC count.
 - Motor KV outside the rough band for the airframe's prop size
-  (heuristic FPV builder rule of thumb, not a thrust model).
+  (heuristic FPV builder rule of thumb).
+- Motor / FC / airframe mount-hole pattern mismatch.
 - Control vs video radio frequency-band overlap.
 - ESC max current below motor peak current.
 
 What it **does not** catch:
 
-- Mount-hole pattern mismatch (30.5×30.5 vs 20×20 stacks).
-- Battery C-rating vs sustained current draw — only validates peak.
+- Battery C-rating vs sustained (not peak) current draw.
 - Frame battery-bay dimensions vs battery dimensions.
 - Antenna polarization (RHCP vs LHCP) between TX and RX.
 - VTX output power legality for the operator's regulatory region.
 - Goggle compatibility with VTX (Analog ↔ Walksnail ↔ DJI ↔ HDZero).
 - Actual thrust headroom or hover stability — see endurance disclaimer.
 
-The endurance tool (`estimate_flight_time`) is a single-line hover
-approximation. Forward-flight efficiency on long-range and fixed-wing
-platforms can produce 1.5–2× longer real endurance than the tool
-reports. Use as a sanity check, not a published spec.
+The endurance tool is a single-line hover approximation. Forward-flight
+efficiency on long-range and fixed-wing platforms can produce 1.5–2×
+longer real endurance than the tool reports. Use as a sanity check,
+not a published spec.
+
+---
+
+## Contributing
+
+We welcome PRs that add parts, compatibility rules, presets, and
+examples. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full process,
+including data-source expectations and the hobby-marketable scope.
+
+Security reports: see [SECURITY.md](SECURITY.md).
+Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+---
 
 ## Out of scope (intentionally)
 
@@ -188,3 +276,9 @@ reports. Use as a sanity check, not a published spec.
 - Cost roll-ups beyond per-part sums.
 - Regulatory / airspace / NOTAM checks.
 - Flight simulation.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).

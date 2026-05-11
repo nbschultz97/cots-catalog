@@ -35,8 +35,8 @@ def _clear_catalog_cache():
     reset_cache()
 
 
-def test_version_is_05x():
-    assert __version__.startswith("0.5")
+def test_version_is_06x():
+    assert __version__.startswith("0.6")
 
 
 def test_health_reports_catalog():
@@ -156,9 +156,13 @@ def test_list_presets_and_operations():
         "preset_endurance_survey.json",
         "preset_urban_congested.json",
         "preset_cold_weather.json",
+        "preset_tinywhoop_indoor.json",
+        "preset_sub_250g.json",
+        "preset_beginner_5in.json",
     }
     ops = list_operation_types()
-    assert "long_range" in ops and "endurance" in ops and "cold_weather" in ops
+    for expected in ("long_range", "endurance", "cold_weather", "tinywhoop", "sub_250g", "beginner"):
+        assert expected in ops, f"Missing operation type: {expected}"
 
 
 def test_recommend_configuration_picks_parts():
@@ -240,6 +244,25 @@ def test_check_compatibility_motor_count_mismatch():
         motors[1]["id"],
     ])["issues"]
     assert any("motors" in i.lower() and ("expects" in i or "lists" in i) for i in issues), issues
+
+
+def test_recommend_includes_validation_block():
+    rec = recommend_configuration(compute_tier="pi5", mission_type="long_range")
+    assert "validation" in rec
+    assert "compatible" in rec["validation"]
+    assert "issues" in rec["validation"]
+    # Validation is a list, not a string
+    assert isinstance(rec["validation"]["issues"], list)
+
+
+def test_validate_catalog_tool_returns_full_report():
+    from architect_companion_mcp.server import validate_catalog
+
+    report = validate_catalog()
+    assert "ok" in report
+    assert "schema" in report
+    assert "ids" in report
+    assert "required_fields" in report
 
 
 def test_check_compatibility_motor_count_single_spec_line_ok():

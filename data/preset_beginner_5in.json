@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectId": "preset-beginner-5in",
+  "meta": {
+    "name": "Beginner 5\" freestyle build",
+    "description": "Entry-level 5\" freestyle build aimed at first-time FPV pilots. Conservative thrust margin, durable frame, accessible parts, in-stock components.",
+    "durationHours": 4,
+    "origin_tool": "hub",
+    "scenario": "First 5\" freestyle build",
+    "inventoryReference": "DEMO-BEGINNER-5IN",
+    "missionType": "beginner_5in",
+    "team": { "size": 1, "roles": ["Pilot / builder"] }
+  },
+  "environment": [
+    {
+      "id": "env-field",
+      "name": "Open field / bando",
+      "band": "rural",
+      "altitudeBand": "0-500m",
+      "temperatureBand": "10-25C",
+      "weather": "Calm to moderate winds",
+      "terrain": "open",
+      "origin_tool": "hub",
+      "notes": "Beginner-friendly environment with line of sight"
+    }
+  ],
+  "constraints": [
+    { "id": "c-budget", "type": "Budget", "description": "Conservative budget", "severity": "medium", "origin_tool": "mission" },
+    { "id": "c-thrust", "type": "Performance", "description": "Aim for 4-5:1 thrust-to-weight for forgiving handling", "severity": "low", "origin_tool": "mission" }
+  ],
+  "nodes": [],
+  "platforms": [
+    { "id": "platform-5in-freestyle", "name": "5\" freestyle quad", "role": "Freestyle / line-of-sight", "origin_tool": "uxs" }
+  ],
+  "mesh_links": [],
+  "kits": [],
+  "mission": {
+    "tasks": [
+      { "id": "task-learn", "name": "Learn-to-fly", "description": "Build, bind, hover, basic flips", "origin_tool": "mission" }
+    ],
+    "phases": [
+      { "id": "phase-build", "name": "Build", "durationHours": 2, "focus": "Solder, configure, range-check", "origin_tool": "mission" },
+      { "id": "phase-fly", "name": "First flight", "durationHours": 2, "focus": "Hover, line of sight, low-altitude pattern", "origin_tool": "mission" }
+    ],
+    "assignments": [
+      { "phaseId": "phase-fly", "platformIds": ["platform-5in-freestyle"] }
+    ],
+    "mission_cards": []
+  },
+  "sustainment": {
+    "sustainmentHours": 4,
+    "batteryCounts": 4,
+    "feasibility": {},
+    "notes": "4 packs is enough for a first session",
+    "power_plan": "",
+    "packing_lists": []
+  },
+  "meshPlan": {
+    "relayCount": 0,
+    "criticalLinks": 0,
+    "rf_bands": ["2.4GHz", "5.8GHz"],
+    "rf_environment": "permissive"
+  },
+  "kitsSummary": {
+    "perOperatorLoads": [],
+    "perOperatorLoadKg": 5,
+    "perOperatorLimitKg": 12
+  },
+  "exports": { "links": [], "notes": "" }
+}

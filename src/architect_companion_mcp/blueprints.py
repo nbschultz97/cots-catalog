@@ -29,6 +29,14 @@ OPERATION_PRESET_MAP = {
     "racing": "preset_urban_congested.json",
     "cold_weather": "preset_cold_weather.json",
     "winter": "preset_cold_weather.json",
+    "tinywhoop": "preset_tinywhoop_indoor.json",
+    "tinywhoop_indoor": "preset_tinywhoop_indoor.json",
+    "indoor": "preset_tinywhoop_indoor.json",
+    "sub_250g": "preset_sub_250g.json",
+    "recreational": "preset_sub_250g.json",
+    "beginner": "preset_beginner_5in.json",
+    "beginner_5in": "preset_beginner_5in.json",
+    "first_build": "preset_beginner_5in.json",
 }
 
 

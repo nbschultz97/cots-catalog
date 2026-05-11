@@ -1,13 +1,43 @@
 [project]
 name = "architect-companion-mcp"
-version = "0.5.0"
-description = "Offline-first MCP server for COTS robotics mission planning. Complements the Ceradon Architect suite."
+version = "0.6.0"
+description = "Offline-first MCP server for COTS sUAS / FPV mission planning, parts catalog, and build compatibility checks. LLM-shaped tools over a curated, manufacturer-sourced library."
 readme = "README.md"
 requires-python = ">=3.9"
+license = { text = "MIT" }
 authors = [{ name = "Ceradon Systems" }]
+keywords = ["mcp", "fpv", "drone", "uas", "sUAS", "claude", "anthropic", "robotics", "catalog"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering",
+]
 dependencies = [
   "mcp>=1.2.0",
 ]
+
+[project.optional-dependencies]
+schema = ["jsonschema>=4.0"]
+dev = [
+  "pytest>=7.0",
+  "jsonschema>=4.0",
+  "ruff>=0.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/nbschultz97/cots-catalog"
+Repository = "https://github.com/nbschultz97/cots-catalog"
+Issues = "https://github.com/nbschultz97/cots-catalog/issues"
+Changelog = "https://github.com/nbschultz97/cots-catalog/blob/main/CHANGELOG.md"
 
 [project.scripts]
 architect-companion-mcp = "architect_companion_mcp.server:main"

@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional
 
 from .catalog import list_components
+from .compatibility import check_compatibility as _check_compatibility
 
 # Ranked tag preferences per mission_type → category
 MISSION_TAG_PREFS: Dict[str, Dict[str, List[str]]] = {
@@ -122,11 +123,20 @@ def recommend_configuration(
         budget_usd=budget_usd,
     )
 
+    # Derive motor and battery tag hints from the chosen airframe so the
+    # picker doesn't grab a tinywhoop motor for a 7" cruiser. Airframe
+    # tags like "5-inch" / "7-inch" / "2-inch" carry the right signal.
+    airframe_class_tags: List[str] = []
+    if airframe:
+        for tag in airframe.get("tags") or []:
+            if tag.endswith("-inch") or tag in {"tinywhoop", "fixed-wing", "flying-wing"}:
+                airframe_class_tags.append(tag)
+
     picks: Dict[str, Optional[Dict[str, Any]]] = {
         "airframe": airframe,
-        "motor": _pick("motors", [], budget_usd),
+        "motor": _pick("motors", airframe_class_tags, budget_usd),
         "esc": _pick("escs", [], budget_usd),
-        "battery": _pick("batteries", prefs.get("batteries", []), budget_usd),
+        "battery": _pick("batteries", airframe_class_tags + prefs.get("batteries", []), budget_usd),
         "flight_controller": _pick("flight_controllers", [], budget_usd),
         "control_radio": _pick("radios", ["control", "crsf", "elrs"], budget_usd),
     }
@@ -157,6 +167,13 @@ def recommend_configuration(
                 f"catalog lacks a heavier airframe. Pick a larger frame."
             )
 
+    # Self-validate: run check_compatibility on the chosen catalog picks
+    # so the LLM client doesn't have to remember to do it.
+    catalog_ids = [p["id"] for p in picks.values() if p is not None]
+    validation = _check_compatibility(catalog_ids) if catalog_ids else {
+        "compatible": True, "issues": [], "parts": [], "total_weight_g": 0
+    }
+
     return {
         "compute_tier": compute_tier,
         "mission_type": mission_type,
@@ -174,10 +191,16 @@ def recommend_configuration(
             "compute_weight_g": tier["weight_g"],
             "weight_g": total_weight,
         },
+        "validation": {
+            "compatible": validation.get("compatible", True),
+            "issues": validation.get("issues", []),
+            "budget": validation.get("budget"),
+        },
         "warning": airframe_warning,
         "note": (
             "Heuristic ranking — airframe weights compute_tier feasibility + "
-            "mission/compute tag match + availability + cost. Run "
-            "check_compatibility on the picks before committing."
+            "mission/compute tag match + availability + cost. The validation "
+            "block contains check_compatibility output on these picks; if "
+            "validation.issues is non-empty, iterate by filtering or swapping."
         ),
     }
