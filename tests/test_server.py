@@ -35,8 +35,12 @@ def _clear_catalog_cache():
     reset_cache()
 
 
-def test_version_is_08x():
+def test_version_is_081_plus():
+    # 0.8.1 introduces the flight-data validation framework
     assert __version__.startswith("0.8")
+    parts = __version__.split(".")
+    assert int(parts[0]) >= 0
+    assert int(parts[1]) >= 8
 
 
 def test_health_reports_catalog():
@@ -155,6 +159,55 @@ def test_estimate_thrust_returns_tw_ratio():
     assert result["thrust_to_weight_ratio"] > 0
     assert "verdict" in result
     assert result["n_motors"] == 4
+
+
+def test_validate_endurance_model_returns_report():
+    from architect_companion_mcp.flight_data import validate_endurance_model
+
+    report = validate_endurance_model(include_submissions=False)
+    assert report["n_records"] > 0
+    assert "mae_min" in report and report["mae_min"] is not None
+    assert "mape_pct" in report and report["mape_pct"] is not None
+    assert "per_class" in report
+    assert isinstance(report["worst"], list)
+    # Worst-5 entries must each have predicted/observed/error fields
+    if report["worst"]:
+        first = report["worst"][0]
+        assert "predicted_min" in first and "observed_min" in first
+
+
+def test_flight_data_has_seed_records():
+    from architect_companion_mcp.flight_data import load_records
+
+    records = load_records(include_submissions=False)
+    assert len(records) >= 10, "Bundled flight_data.jsonl should ship with ≥10 seed records"
+    for r in records:
+        assert r.get("observed_endurance_min", 0) > 0
+        assert r.get("airframe_class")
+        # Must have either a build or raw-spec inputs
+        has_build = bool(r.get("build"))
+        has_raw = bool(r.get("platform_weight_g") and r.get("battery_mah"))
+        assert has_build or has_raw, f"{r['id']} has neither build nor raw spec"
+
+
+def test_submit_flight_record_appends(tmp_path, monkeypatch):
+    from architect_companion_mcp.flight_data import submit_flight_record, load_records
+
+    monkeypatch.setenv("ARCHITECT_COMPANION_DATA_DIR", str(tmp_path))
+    result = submit_flight_record(
+        label="Test submission",
+        observed_endurance_min=4.2,
+        platform_weight_g=500,
+        battery_mah=1300,
+        battery_v=22.2,
+        flight_mode="cruise",
+        airframe_class="5-inch",
+        source="pytest",
+    )
+    assert result["status"] == "recorded"
+    assert "id" in result
+    submitted = load_records(include_submissions=True)
+    assert any(r["label"] == "Test submission" for r in submitted)
 
 
 def test_estimate_range_km_returns_round_trip():

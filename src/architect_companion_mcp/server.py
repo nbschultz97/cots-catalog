@@ -47,6 +47,11 @@ from .prompts import (
     troubleshoot_build as _prompt_troubleshoot_build,
     upgrade_path as _prompt_upgrade_path,
 )
+from .flight_data import (
+    list_flight_records as _list_flight_records,
+    submit_flight_record as _submit_flight_record,
+    validate_endurance_model as _validate_endurance_model,
+)
 from .recommend import recommend_configuration as _recommend_configuration
 from .resources import (
     category_resource,
@@ -222,6 +227,58 @@ def estimate_thrust(
     Uses motor.max_thrust_g scaled by battery voltage vs motor's voltage range.
     Returns a verdict (race-class / freestyle / cruise / marginal / below-hover)."""
     return _estimate_thrust(airframe_id, motor_id, battery_id)
+
+
+@mcp.tool()
+def validate_endurance_model(include_submissions: bool = True) -> Dict[str, Any]:
+    """Run the endurance physics model against every record in
+    ``data/flight_data.jsonl`` (and optional user submissions). Returns
+    per-class MAE / MAPE plus the worst 5 predictions. Use this to
+    calibrate the model against real flight data — the open-data moat
+    vs closed tools."""
+    return _validate_endurance_model(include_submissions=include_submissions)
+
+
+@mcp.tool()
+def submit_flight_record(
+    label: str,
+    observed_endurance_min: float,
+    build: Optional[List[str]] = None,
+    platform_weight_g: Optional[float] = None,
+    battery_mah: Optional[float] = None,
+    battery_v: Optional[float] = None,
+    payload_weight_g: float = 0,
+    flight_mode: str = "cruise",
+    airframe_class: str = "unknown",
+    source: str = "user_submission",
+    notes: str = "",
+) -> Dict[str, Any]:
+    """Append a real flight-data record to the runtime submissions file.
+    Provide either a catalog `build` list or raw `platform_weight_g +
+    battery_mah`. Submissions improve the model's calibration over time."""
+    return _submit_flight_record(
+        label=label,
+        observed_endurance_min=observed_endurance_min,
+        build=build,
+        platform_weight_g=platform_weight_g,
+        battery_mah=battery_mah,
+        battery_v=battery_v,
+        payload_weight_g=payload_weight_g,
+        flight_mode=flight_mode,
+        airframe_class=airframe_class,
+        source=source,
+        notes=notes,
+    )
+
+
+@mcp.tool()
+def list_flight_records(
+    airframe_class: Optional[str] = None,
+    limit: int = 25,
+) -> List[Dict[str, Any]]:
+    """Browse flight-data records, optionally filtered by airframe class
+    (5-inch, 7-inch, fixed-wing, etc.)."""
+    return _list_flight_records(airframe_class=airframe_class, limit=limit)
 
 
 @mcp.tool()

@@ -1,6 +1,6 @@
 [project]
 name = "architect-companion-mcp"
-version = "0.8.0"
+version = "0.8.1"
 description = "Offline-first MCP server for COTS sUAS / FPV mission planning, parts catalog, and build compatibility checks. LLM-shaped tools over a curated, manufacturer-sourced library."
 readme = "README.md"
 requires-python = ">=3.9"

@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.1] — 2026-05-11
+
+### Added — flight-data validation framework
+- **`data/flight_data.jsonl`** — 15 seeded real-world flight records
+  from FPV creator consensus (Bardwell, Le Drib, Oscar Liang) +
+  manufacturer-published numbers + community forum consensus. Every
+  record has `observed_endurance_min` (+ low/high range), conditions,
+  airframe class, source URL, and source type.
+- **`validate_endurance_model`** MCP tool — runs the physics model
+  against every record and returns overall MAE / MAPE, per-class
+  breakdown, and the worst 5 predictions. **This is the open-data
+  calibration moat — closed tools like eCalc can't show you their
+  error band.**
+- **`submit_flight_record`** MCP tool — append a new flight to the
+  runtime submissions file (lands in `ARCHITECT_COMPANION_DATA_DIR`,
+  not bundled). Community contributions improve calibration over time.
+- **`list_flight_records`** MCP tool — browse records with class filter.
+- Honest initial calibration: overall MAPE ~65% across the seed
+  records. Per-class: 10" 10%, 3.5" 16%, flying-wing 17%, 7" 20%,
+  2" 22%. Worst: 3" toothpick raw-spec 227% over (synthetic overhead
+  weight too low), 5" race cruise 126% over (cruise factor too high
+  for high-disc-loading race builds). The framework now gives us data
+  to tune against — future versions will close this gap.
+
+### Catalog totals
+- 14 tools (was 11) + 7 resources + 5 prompts.
+- 100 parts + 15 flight records + 7 mission presets.
+- 49 pytest tests, all passing.
+
 ## [0.8.0] — 2026-05-11
 
 ### Added — physics
