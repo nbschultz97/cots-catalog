@@ -175,7 +175,80 @@ def test_recommend_configuration_rejects_bad_tier():
 
 def test_recommend_configuration_budget_caps():
     rec = recommend_configuration(compute_tier="pi5", mission_type="long_range", budget_usd=20)
-    # Every picked part should be at or below the budget, or None.
+    # Every catalog part should be at or below the budget. companion_compute is a
+    # synthetic pseudo-pick with cost_usd=None and is exempt.
     for slot, part in rec["picks"].items():
-        if part is not None:
-            assert (part.get("cost_usd") or 0) <= 20
+        if part is None or slot == "companion_compute":
+            continue
+        assert (part.get("cost_usd") or 0) <= 20
+
+
+def test_recommend_includes_companion_compute_in_totals():
+    rec = recommend_configuration(compute_tier="jetson-orin-nano", mission_type="endurance_survey")
+    assert rec["picks"]["companion_compute"]["weight_g"] == 270
+    assert rec["totals"]["compute_weight_g"] == 270
+    assert rec["totals"]["weight_g"] == rec["totals"]["parts_weight_g"] + 270
+
+
+def test_recommend_compute_tier_biases_airframe():
+    # Light compute should land on a smaller, lighter airframe than a heavy one.
+    light = recommend_configuration(compute_tier="pi-zero", mission_type="freestyle")
+    heavy = recommend_configuration(compute_tier="x86", mission_type="endurance_survey")
+    # Sanity: chosen airframes should differ (catalog has 5 airframes spanning
+    # 5"/7"/10"/fixed-wing — picks should not collapse to the same frame).
+    assert light["picks"]["airframe"]["id"] != heavy["picks"]["airframe"]["id"]
+
+
+def test_check_compatibility_kv_prop_too_high():
+    # 1960KV on a 10" prop (heavy frame, prop_size '10x5x3') should flag —
+    # the 9.5-13" band tops out around 1200KV.
+    issues = check_compatibility([
+        "airframe-10in-heavy",
+        "motor-rcinpower-gts-v4-2207-1960kv",
+    ])["issues"]
+    assert any("too high" in i for i in issues), issues
+
+
+def test_check_compatibility_kv_prop_too_low():
+    # 730KV on a 5" prop should flag underprop.
+    issues = check_compatibility([
+        "airframe-5in-true-x",
+        "motor-avenger-3110-730kv",
+    ])["issues"]
+    assert any("too low" in i for i in issues), issues
+
+
+def test_check_compatibility_kv_prop_in_band_passes():
+    # 1300KV on a 7" prop should NOT trip the KV rule.
+    issues = check_compatibility([
+        "airframe-7in-longrange",
+        "motor-emax-eco-ii-2807-1300kv",
+    ])["issues"]
+    assert not any("too high" in i or "too low" in i for i in issues), issues
+
+
+def test_check_compatibility_motor_count_mismatch():
+    # Airframe expects 4 motors. Listing 2 motor entries (more than 1, fewer
+    # than 4) should flag the count mismatch. We use the same motor twice via
+    # the same ID — list_compatibility resolves duplicates, so we need two
+    # different motor IDs.
+    motors = list_components(category="motors")
+    assert len(motors) >= 2
+    issues = check_compatibility([
+        "airframe-5in-true-x",
+        motors[0]["id"],
+        motors[1]["id"],
+    ])["issues"]
+    assert any("motors" in i.lower() and ("expects" in i or "lists" in i) for i in issues), issues
+
+
+def test_check_compatibility_motor_count_single_spec_line_ok():
+    # One motor entry is treated as a spec line — should not flag count.
+    motors = list_components(category="motors", tag="5-inch", limit=1)
+    if not motors:
+        motors = list_components(category="motors", limit=1)
+    issues = check_compatibility([
+        "airframe-5in-true-x",
+        motors[0]["id"],
+    ])["issues"]
+    assert not any("Airframe expects" in i and "motors" in i for i in issues), issues

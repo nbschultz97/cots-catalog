@@ -124,10 +124,40 @@ Restart the client; the tools appear under the `architect-companion` server.
 - JSONL persistence — no database stack to pull in air-gapped builds.
 - All tools operate fully offline; no network calls anywhere in the package.
 
+## Known limitations
+
+What the compatibility engine **does** catch:
+
+- Battery nominal voltage outside an ESC / FC / motor voltage range.
+- Total component weight exceeding the airframe payload budget (only as
+  accurate as the catalog's `max_payload_g`).
+- Airframe motor_count not matching the number of motor entries (≥2 entries
+  treated as explicit per-rotor listing; one entry treated as a spec line).
+- ESC count vs motors — flags missing 4-in-1 or wrong single-ESC count.
+- Motor KV outside the rough band for the airframe's prop size
+  (heuristic FPV builder rule of thumb, not a thrust model).
+- Control vs video radio frequency-band overlap.
+- ESC max current below motor peak current.
+
+What it **does not** catch:
+
+- Mount-hole pattern mismatch (30.5×30.5 vs 20×20 stacks).
+- Battery C-rating vs sustained current draw — only validates peak.
+- Frame battery-bay dimensions vs battery dimensions.
+- Antenna polarization (RHCP vs LHCP) between TX and RX.
+- VTX output power legality for the operator's regulatory region.
+- Goggle compatibility with VTX (Analog ↔ Walksnail ↔ DJI ↔ HDZero).
+- Actual thrust headroom or hover stability — see endurance disclaimer.
+
+The endurance tool (`estimate_flight_time`) is a single-line hover
+approximation. Forward-flight efficiency on long-range and fixed-wing
+platforms can produce 1.5–2× longer real endurance than the tool
+reports. Use as a sanity check, not a published spec.
+
 ## Out of scope (intentionally)
 
 - Live sync with COTS-Architect (just re-vendor `data/`).
 - Mesh routing / link-budget compute — defer to MissionProject planner.
 - Cost roll-ups beyond per-part sums.
 - Regulatory / airspace / NOTAM checks.
-- Flight simulation. The endurance tool is a single-line approximation.
+- Flight simulation.
