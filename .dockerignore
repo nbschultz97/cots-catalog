@@ -1,0 +1,17 @@
+.git
+.github
+.venv
+__pycache__
+*.pyc
+*.egg-info
+.pytest_cache
+runtime_data
+dist
+build
+tests
+examples
+docs
+scripts
+*.md
+!README.md
+LICENSE

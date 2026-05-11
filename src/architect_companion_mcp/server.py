@@ -35,8 +35,27 @@ from .catalog import (
     part_by_id,
 )
 from .compatibility import check_compatibility as _check_compatibility
-from .physics import estimate_flight_time as _estimate_flight_time
+from .physics import (
+    estimate_flight_time as _estimate_flight_time,
+    estimate_thrust as _estimate_thrust,
+    estimate_range_km as _estimate_range_km,
+)
+from .prompts import (
+    compare_builds as _prompt_compare_builds,
+    design_build as _prompt_design_build,
+    endurance_what_if as _prompt_endurance_what_if,
+    troubleshoot_build as _prompt_troubleshoot_build,
+    upgrade_path as _prompt_upgrade_path,
+)
 from .recommend import recommend_configuration as _recommend_configuration
+from .resources import (
+    category_resource,
+    part_resource,
+    preset_index_resource,
+    preset_resource,
+    schema_resource,
+    stats_resource,
+)
 from .storage import EventStore
 
 mcp = FastMCP("architect-companion-mcp")
@@ -191,6 +210,123 @@ def validate_catalog() -> Dict[str, Any]:
     from .catalog import load_parts_library
 
     return full_validation_report(load_parts_library())
+
+
+@mcp.tool()
+def estimate_thrust(
+    airframe_id: str,
+    motor_id: str,
+    battery_id: str,
+) -> Dict[str, Any]:
+    """Estimate per-motor and total thrust + thrust-to-weight ratio for a build.
+    Uses motor.max_thrust_g scaled by battery voltage vs motor's voltage range.
+    Returns a verdict (race-class / freestyle / cruise / marginal / below-hover)."""
+    return _estimate_thrust(airframe_id, motor_id, battery_id)
+
+
+@mcp.tool()
+def estimate_range_km(
+    airframe_id: str,
+    battery_id: str,
+    cruise_speed_kmh: float = 60.0,
+    payload_weight_g: float = 0.0,
+    altitude_m: float = 0.0,
+) -> Dict[str, Any]:
+    """Estimate one-way / round-trip range (km) at a given cruise speed.
+    Uses cruise endurance × cruise speed. Plan operations on round_trip × 0.6."""
+    return _estimate_range_km(
+        airframe_id=airframe_id,
+        battery_id=battery_id,
+        cruise_speed_kmh=cruise_speed_kmh,
+        payload_weight_g=payload_weight_g,
+        altitude_m=altitude_m,
+    )
+
+
+# ---- MCP Resources (read-only catalog URIs the LLM can browse) ----
+
+@mcp.resource("catalog://stats")
+def _resource_stats() -> str:
+    """Catalog summary: counts per category, schema versions."""
+    return stats_resource()
+
+
+@mcp.resource("catalog://categories/{category}")
+def _resource_category(category: str) -> str:
+    """All parts in a category. category ∈ {airframes, motors, escs,
+    batteries, flight_controllers, radios, sensors, accessories}."""
+    return category_resource(category)
+
+
+@mcp.resource("catalog://parts/{part_id}")
+def _resource_part(part_id: str) -> str:
+    """A single part by its catalog ID (across all categories)."""
+    return part_resource(part_id)
+
+
+@mcp.resource("catalog://presets")
+def _resource_preset_index() -> str:
+    """Index of available mission presets."""
+    return preset_index_resource()
+
+
+@mcp.resource("catalog://presets/{filename}")
+def _resource_preset(filename: str) -> str:
+    """A single mission preset (MissionProject v2 stub)."""
+    return preset_resource(filename)
+
+
+@mcp.resource("schema://parts_library")
+def _resource_schema_parts() -> str:
+    """JSON Schema for parts_library.json (v1.1.0)."""
+    return schema_resource("parts_library")
+
+
+@mcp.resource("schema://mission_project")
+def _resource_schema_mission() -> str:
+    """JSON Schema for MissionProject v2 documents."""
+    return schema_resource("mission_project")
+
+
+# ---- MCP Prompts (templated workflows) ----
+
+@mcp.prompt()
+def design_build(
+    mission: str = "freestyle",
+    budget_usd: float | None = None,
+    compute_tier: str = "pi5",
+    skill: str = "intermediate",
+) -> str:
+    """Templated build-design workflow: recommend → validate → swap → report."""
+    return _prompt_design_build(mission, budget_usd, compute_tier, skill)
+
+
+@mcp.prompt()
+def compare_builds(build_a_ids: str, build_b_ids: str) -> str:
+    """Side-by-side A/B comparison of two builds across cost, AUW, T/W, endurance."""
+    return _prompt_compare_builds(build_a_ids, build_b_ids)
+
+
+@mcp.prompt()
+def troubleshoot_build(part_ids: str, symptom: str) -> str:
+    """Map a build symptom to likely causes via compat + physics."""
+    return _prompt_troubleshoot_build(part_ids, symptom)
+
+
+@mcp.prompt()
+def endurance_what_if(
+    airframe_id: str,
+    battery_id: str,
+    payload_weight_g: float = 0,
+) -> str:
+    """Endurance trade analysis: vary payload, compare batteries, compute range."""
+    return _prompt_endurance_what_if(airframe_id, battery_id, payload_weight_g)
+
+
+@mcp.prompt()
+def upgrade_path(current_build_ids: str, goal: str) -> str:
+    """Three-tier upgrade-swap recommendations toward a stated goal."""
+    return _prompt_upgrade_path(current_build_ids, goal)
 
 
 def _diagnostics() -> Dict[str, Any]:

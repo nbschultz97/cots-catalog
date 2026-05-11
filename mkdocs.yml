@@ -1,0 +1,69 @@
+site_name: Architect Companion MCP
+site_description: Offline-first MCP server for COTS sUAS / FPV build planning
+site_url: https://nbschultz97.github.io/cots-catalog/
+repo_url: https://github.com/nbschultz97/cots-catalog
+repo_name: nbschultz97/cots-catalog
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - content.code.copy
+    - content.code.annotate
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Quickstart: quickstart.md
+  - MCP integration:
+    - Claude Desktop / Code: integration.md
+    - Tools reference: tools.md
+    - Resources reference: resources.md
+    - Prompts reference: prompts.md
+  - Catalog:
+    - Categories: catalog.md
+    - Adding parts: ingest.md
+    - Bring your own pack: byo.md
+  - Engineering:
+    - Compatibility rules: compatibility.md
+    - Physics model: physics.md
+    - Known limitations: limitations.md
+  - Contributing: contributing.md
+  - Changelog: changelog.md

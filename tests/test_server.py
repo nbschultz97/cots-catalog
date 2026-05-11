@@ -35,8 +35,8 @@ def _clear_catalog_cache():
     reset_cache()
 
 
-def test_version_is_07x():
-    assert __version__.startswith("0.7")
+def test_version_is_08x():
+    assert __version__.startswith("0.8")
 
 
 def test_health_reports_catalog():
@@ -108,7 +108,65 @@ def test_estimate_flight_time_with_raw_inputs():
     )
     assert result["safe_endurance_min"] > 0
     assert result["reserve_pct"] == 20
-    assert result["total_weight_g"] == pytest.approx(1700, abs=1)
+    # AUW includes the synthetic 50g overhead for FC/ESC/wires/etc.
+    assert result["auw_g"] == pytest.approx(1750, abs=1)
+
+
+def test_estimate_flight_time_hover_vs_cruise_diverge_on_longrange():
+    airframes = list_components(category="airframes", tag="long-range", limit=1)
+    batteries = list_components(category="batteries", limit=1)
+    if not airframes or not batteries:
+        pytest.skip("Catalog missing long-range airframe or batteries")
+    hover = estimate_flight_time(
+        airframe_id=airframes[0]["id"],
+        battery_id=batteries[0]["id"],
+        flight_mode="hover",
+    )
+    cruise = estimate_flight_time(
+        airframe_id=airframes[0]["id"],
+        battery_id=batteries[0]["id"],
+        flight_mode="cruise",
+    )
+    # Long-range frames have a meaningful cruise factor (>=1.5)
+    assert cruise["safe_endurance_min"] > hover["safe_endurance_min"] * 1.4
+
+
+def test_estimate_flight_time_auto_picks_cruise_for_fixed_wing():
+    airframes = list_components(category="airframes", tag="fixed-wing", limit=1)
+    batteries = list_components(category="batteries", limit=1)
+    if not airframes or not batteries:
+        pytest.skip("Catalog missing fixed-wing airframe")
+    auto = estimate_flight_time(
+        airframe_id=airframes[0]["id"],
+        battery_id=batteries[0]["id"],
+        flight_mode="auto",
+    )
+    assert auto["flight_mode_resolved"] == "cruise"
+
+
+def test_estimate_thrust_returns_tw_ratio():
+    from architect_companion_mcp.physics import estimate_thrust
+
+    result = estimate_thrust(
+        airframe_id="airframe-5in-true-x",
+        motor_id="motor-iflight-xing2-2207-2050kv",
+        battery_id="battery-cnhl-black-4s-1500mah-100c",
+    )
+    assert result["thrust_to_weight_ratio"] > 0
+    assert "verdict" in result
+    assert result["n_motors"] == 4
+
+
+def test_estimate_range_km_returns_round_trip():
+    from architect_companion_mcp.physics import estimate_range_km
+
+    result = estimate_range_km(
+        airframe_id="airframe-7in-longrange",
+        battery_id="battery-4s-5200mah-li-ion",
+        cruise_speed_kmh=70,
+    )
+    assert result["one_way_range_km"] > 0
+    assert result["round_trip_range_km"] == pytest.approx(result["one_way_range_km"] / 2.0, abs=0.1)
 
 
 def test_estimate_flight_time_with_catalog_ids():

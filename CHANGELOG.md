@@ -7,6 +7,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] — 2026-05-11
+
+### Added — physics
+- **Real cruise-aware physics.** Replaced hover-only one-liner with:
+  - BEM-induced power × empirical aero-loss multiplier (multirotor hover).
+  - Airframe-class cruise factor (multirotor cruise).
+  - Simplified Breguet with empirical L/D-eta (fixed-wing cruise).
+  - ISA air density model (altitude-aware).
+  - Class-aware component overhead so AUW reflects buildable quads, not just airframe + battery.
+- New `estimate_thrust(airframe, motor, battery)` tool — per-motor / total
+  thrust + T/W ratio with verdict (race / freestyle / cruise / marginal).
+- New `estimate_range_km(airframe, battery, cruise_speed)` tool — one-way
+  and round-trip range with a planning factor caveat.
+- Calibrated against published FPV community flight times. Honest
+  accuracy band: ±25% hover, ±35% multirotor cruise, ±40% fixed-wing.
+
+### Added — MCP-native ergonomics
+- **MCP Resources** (read-only URIs the LLM browses without tool calls):
+  `catalog://stats`, `catalog://categories/{category}`,
+  `catalog://parts/{part_id}`, `catalog://presets`,
+  `catalog://presets/{filename}`, `schema://parts_library`,
+  `schema://mission_project`.
+- **MCP Prompts** (templated workflows / slash-commands):
+  `design_build`, `compare_builds`, `troubleshoot_build`,
+  `endurance_what_if`, `upgrade_path`.
+
+### Added — distribution
+- PyPI release GitHub Action (trusted publishing on tag push).
+- Multi-arch Dockerfile (linux/amd64 + linux/arm64) published to GHCR.
+- mkdocs Material site scaffold + GitHub Pages deploy workflow.
+- Docs pages: home, quickstart, integration, tools reference,
+  resources reference, prompts reference, catalog overview, ingest
+  guide, BYO data pack, compatibility rules, physics model,
+  limitations.
+
+### Catalog totals
+- 11 tools (was 10) + 7 resources + 5 prompts.
+- 100 parts across 8 categories.
+- 7 mission presets.
+- 47 pytest tests, all passing.
+
 ## [0.7.0] — 2026-05-11
 
 ### Catalog
