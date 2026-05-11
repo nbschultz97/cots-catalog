@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-05-11
+
+### Catalog
+- **Hit 100-part milestone** (81 → 100, +19 manufacturer-sourced).
+- 2 new airframes: BetaFPV Pavo Pico II (sub-100g 1.6" cinewhoop), iFlight
+  Nazgul Evoque F5 V3 (5" DC/X switchable freestyle frame).
+- 2 new motors: T-Motor Velox V2207 V3 1950KV, iFlight XING 2806.5 1300KV
+  Cinelifter (7-8" long-range).
+- 2 new ESCs: Hobbywing XRotor Micro 60A 4-in-1, HGLRC SPECTER 60A 4-in-1.
+- 2 new flight controllers: Matek H743-SLIM V4 (ArduPilot / INAV / fixed-wing),
+  SpeedyBee F405 V4 BLS 55A AIO.
+- 2 new batteries: CNHL Black Series 4S 1500mAh 100C, GAONENG GNB 1S 450mAh
+  HV (tinywhoop).
+- 4 new radios: TBS Crossfire Nano RX (915/868MHz LoRa long-range),
+  Happymodel EP1 TCXO ELRS RX, RadioMaster Boxer ELRS TX, TBS Tango 2 Pro
+  Crossfire TX.
+- 3 new sensors: Foxeer Razer Mini 1200TVL analog camera, RunCam Phoenix 2 SP
+  Starlight, Caddx Vista DJI Digital HD VTX.
+- 2 new accessories: HQProp Ethix S5 5x4x3 propeller, TrueRC X²-AIR 5.8 MK II
+  patch antenna (RHCP/LHCP).
+- Every new entry carries `data_source.url + fetched_at + parser` provenance.
+
 ## [0.6.0] — 2026-05-11
 
 ### Added

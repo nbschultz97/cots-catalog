@@ -5,7 +5,7 @@
     "name": "Sample COTS FPV Catalog",
     "description": "Realistic off-the-shelf FPV / small-UAS hardware catalog: flight controllers, ESCs, motors, batteries, VTXes with switchable power levels, ELRS TX/RX, goggles, and GPS modules. Built for hobbyist and commercial sUAS builders. Demonstrates compatibility validation, link-budget math, density-altitude derating, and endurance estimation.",
     "unit": "Sample / Demo",
-    "lastUpdated": "2026-05-11T07:17:43.575414+00:00",
+    "lastUpdated": "2026-05-11T09:04:04.792482+00:00",
     "inventoryReference": "SAMPLE-FPV-001"
   },
   "airframes": [
@@ -215,6 +215,75 @@
       "data_source": {
         "url": "https://geprc.com/product/geprc-smart-35-hd-3-5inch-micro-freestyle-drone/",
         "fetched_at": "2026-05-11T08:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "airframe-betafpv-pavo-pico-2",
+      "name": "BetaFPV Pavo Pico II 1.6\" Cinewhoop Frame",
+      "type": "multi-rotor",
+      "weight_g": 39.1,
+      "max_payload_g": 80,
+      "dimensions_mm": {
+        "length": 75,
+        "width": 75,
+        "height": 40
+      },
+      "motor_count": 4,
+      "motor_size": "1102",
+      "prop_size": "1.6x2",
+      "material": "PA12 + carbon fiber",
+      "printable": false,
+      "manufacturer": "BetaFPV",
+      "part_number": "BT-Pavo-Pico-II",
+      "cost_usd": 39.99,
+      "availability": "in-stock",
+      "notes": "Sub-100g cinewhoop frame redesigned for DJI O4 system. Lava 1102 motors at 14,000KV, GF 45mm props.",
+      "tags": [
+        "multi-rotor",
+        "1.6-inch",
+        "cinewhoop",
+        "tinywhoop",
+        "sub-100g",
+        "ducted"
+      ],
+      "data_source": {
+        "url": "https://betafpv.com/products/pavo-pico-ii-brushless-whoop-quadcopter",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "airframe-iflight-nazgul-evoque-f5-v3",
+      "name": "iFlight Nazgul Evoque F5 V3 5\" DC/X Switchable Frame",
+      "type": "multi-rotor",
+      "weight_g": 220,
+      "max_payload_g": 1800,
+      "dimensions_mm": {
+        "length": 245,
+        "width": 245,
+        "height": 50
+      },
+      "motor_count": 4,
+      "motor_size": "2207",
+      "prop_size": "5x4.3",
+      "material": "carbon fiber",
+      "printable": false,
+      "manufacturer": "iFlight",
+      "part_number": "NAZ-EVOQUE-F5-V3",
+      "cost_usd": 159.0,
+      "availability": "in-stock",
+      "notes": "Switchable DC/X frame geometry. Built for DJI O4 / Walksnail HD. Anti-spark, dual BEC.",
+      "tags": [
+        "multi-rotor",
+        "5-inch",
+        "freestyle",
+        "long-range",
+        "hd-ready"
+      ],
+      "data_source": {
+        "url": "https://www.iflight.com/en-Evoque-F5-V3.html",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
         "parser": "webfetch+manual"
       }
     }
@@ -454,6 +523,71 @@
         "fetched_at": "2026-05-11T08:00:00+00:00",
         "parser": "webfetch+manual"
       }
+    },
+    {
+      "id": "motor-tmotor-v2207-v3-1950kv",
+      "name": "T-Motor Velox V2207 V3 1950KV",
+      "size": "2207",
+      "kv": 1950,
+      "weight_g": 32,
+      "max_current_a": 43,
+      "max_power_w": 950,
+      "max_thrust_g": 2400,
+      "voltage_range": {
+        "min_v": 14.8,
+        "max_v": 25.2
+      },
+      "prop_size_range": "5 inch",
+      "manufacturer": "T-Motor",
+      "part_number": "V2207-V3-1950KV",
+      "cost_usd": 28.9,
+      "availability": "in-stock",
+      "notes": "Velox V3 5\" freestyle motor. Hollow shaft, EZO bearings, N52H magnets.",
+      "tags": [
+        "multi-rotor",
+        "5-inch",
+        "freestyle",
+        "tmotor",
+        "race"
+      ],
+      "data_source": {
+        "url": "https://store.tmotor.com/product/v2207-v3-kv1950-fpv-motor.html",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "motor-iflight-xing-2806-5-1300kv",
+      "name": "iFlight XING 2806.5 1300KV Unibell Cinelifter",
+      "size": "2806.5",
+      "kv": 1300,
+      "weight_g": 40,
+      "max_current_a": 38,
+      "max_power_w": 820,
+      "max_thrust_g": 2700,
+      "voltage_range": {
+        "min_v": 16.8,
+        "max_v": 25.2
+      },
+      "prop_size_range": "7-8 inch",
+      "manufacturer": "iFlight",
+      "part_number": "XING-2806.5-1300KV-UNI",
+      "cost_usd": 26.99,
+      "availability": "in-stock",
+      "notes": "7-8\" long-range / cinelifter motor. 4mm titanium shaft, NSK bearings, N52H curved arc magnets.",
+      "tags": [
+        "multi-rotor",
+        "7-inch",
+        "8-inch",
+        "long-range",
+        "cinelifter",
+        "iflight"
+      ],
+      "data_source": {
+        "url": "https://shop.iflight.com/X2-2806.5-FPV-Cinelifiter-Motor-Pro2372",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
     }
   ],
   "escs": [
@@ -635,6 +769,82 @@
       "data_source": {
         "url": "https://www.diatone.us/products/mb-f55_128k-bl32-esc",
         "fetched_at": "2026-05-11T08:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "esc-hobbywing-xrotor-micro-60a-4in1",
+      "name": "Hobbywing XRotor Micro 60A 4-in-1 BLHeli32",
+      "max_current_a": 60,
+      "weight_g": 15,
+      "voltage_range": {
+        "min_v": 11.1,
+        "max_v": 25.2
+      },
+      "firmware": "BLHeli_32",
+      "protocols": [
+        "DShot150",
+        "DShot300",
+        "DShot600",
+        "DShot1200",
+        "OneShot125",
+        "MultiShot"
+      ],
+      "integrated": true,
+      "manufacturer": "Hobbywing",
+      "part_number": "HWA30902063",
+      "cost_usd": 56.99,
+      "availability": "in-stock",
+      "notes": "30.5x30.5mm 4-in-1 for 130-280mm wheelbase quads. 80A burst, BEC 5V/10V @ 1.5A.",
+      "tags": [
+        "esc",
+        "4-in-1",
+        "30x30",
+        "blheli32",
+        "60a",
+        "6s"
+      ],
+      "data_source": {
+        "url": "https://www.hobbywing.com/en/products/xrotor-micro-60a-4in1-blheli-32-dshot1200117",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "esc-hglrc-specter-60a-4in1",
+      "name": "HGLRC SPECTER 60A 4-in-1 BLHeli32",
+      "max_current_a": 60,
+      "weight_g": 19.5,
+      "voltage_range": {
+        "min_v": 11.1,
+        "max_v": 25.2
+      },
+      "firmware": "BLHeli_32",
+      "protocols": [
+        "DShot600",
+        "DShot300",
+        "DShot150",
+        "OneShot125",
+        "OneShot42",
+        "MultiShot"
+      ],
+      "integrated": true,
+      "manufacturer": "HGLRC",
+      "part_number": "SPECTER60_G_128",
+      "cost_usd": 49.99,
+      "availability": "in-stock",
+      "notes": "20x20mm 4-in-1 with CNC heat sink. STM32G071 128K MCU. Nano-coated for moisture resistance.",
+      "tags": [
+        "esc",
+        "4-in-1",
+        "20x20",
+        "blheli32",
+        "60a",
+        "6s"
+      ],
+      "data_source": {
+        "url": "https://www.hglrc.com/products/hglrc-specter-60a-4in1-esc-3-6s-bl32-128k-with-heat-sink-for-fpv-racing-drone-freestyle",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
         "parser": "webfetch+manual"
       }
     }
@@ -868,6 +1078,72 @@
       "data_source": {
         "url": "https://genstattu.com/tattu-r-line-version-5-0-1300mah-4s-14-8v-150c-lipo-battery-pack-with-xt60-plug/",
         "fetched_at": "2026-05-11T08:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "battery-cnhl-black-4s-1500mah-100c",
+      "name": "CNHL Black Series 4S 1500mAh 100C",
+      "chemistry": "LiPo",
+      "cells": 4,
+      "voltage_nominal_v": 14.8,
+      "capacity_mah": 1500,
+      "capacity_wh": 22.2,
+      "weight_g": 183,
+      "c_rating": 100,
+      "max_discharge_a": 150,
+      "connector_type": "XT60",
+      "dimensions_mm": {
+        "length": 75,
+        "width": 35,
+        "height": 37
+      },
+      "manufacturer": "CNHL",
+      "part_number": "CNHL-BLK-4S-1500-100C",
+      "cost_usd": 24.99,
+      "availability": "in-stock",
+      "notes": "Staple 4S pack for 5\" freestyle. 200C burst.",
+      "tags": [
+        "4s",
+        "1500mah",
+        "freestyle",
+        "race",
+        "high-discharge"
+      ],
+      "data_source": {
+        "url": "https://chinahobbyline.com/products/cnhl-black-series-1500mah-14-8v-4s-100c-lipo-battery-with-xt60-plug",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "battery-gnb-1s-450mah-90c-hv",
+      "name": "GAONENG GNB 1S 450mAh 90C HV Tinywhoop",
+      "chemistry": "LiPo",
+      "cells": 1,
+      "voltage_nominal_v": 3.7,
+      "capacity_mah": 450,
+      "capacity_wh": 1.67,
+      "weight_g": 9,
+      "c_rating": 90,
+      "max_discharge_a": 40.5,
+      "connector_type": "BT2.0",
+      "manufacturer": "GAONENG (GNB)",
+      "part_number": "GNB-1S-450-90C-HV",
+      "cost_usd": 5.99,
+      "availability": "in-stock",
+      "notes": "1S HV tinywhoop / cinewhoop pack. BT2.0 connector. Industry standard for sub-100g whoops.",
+      "tags": [
+        "1s",
+        "450mah",
+        "tinywhoop",
+        "cinewhoop",
+        "lihv",
+        "bt2.0"
+      ],
+      "data_source": {
+        "url": "https://www.gaoneng.shop/",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
         "parser": "webfetch+manual"
       }
     }
@@ -1125,6 +1401,92 @@
       "data_source": {
         "url": "https://holybro.com/products/kakute-h7-v2",
         "fetched_at": "2026-05-11T06:30:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "fc-matek-h743-slim-v4",
+      "name": "Matek H743-SLIM V4 Flight Controller",
+      "weight_g": 7,
+      "processor": "STM32H743VIH6 @ 480MHz (1MB RAM / 2MB Flash)",
+      "firmware": [
+        "ArduPilot",
+        "INAV",
+        "Betaflight"
+      ],
+      "gyro": "ICM42688P (dual)",
+      "voltage_input_v": {
+        "min": 6,
+        "max": 36
+      },
+      "current_draw_ma": 200,
+      "uart_ports": 7,
+      "features": [
+        "OSD",
+        "Barometer",
+        "Blackbox-MicroSD",
+        "TVS",
+        "Dual-Gyro"
+      ],
+      "manufacturer": "Matek (MATEKSYS)",
+      "part_number": "H743-SLIM-V4",
+      "cost_usd": 79.99,
+      "availability": "in-stock",
+      "notes": "H7 powerhouse for ArduPilot / INAV / long-range / fixed-wing. 30.5x30.5 mount. 2-8S input.",
+      "tags": [
+        "flight-controller",
+        "h7",
+        "30x30",
+        "ardupilot",
+        "inav",
+        "fixed-wing",
+        "long-range"
+      ],
+      "data_source": {
+        "url": "https://www.getfpv.com/matek-h743-slim-flight-controller.html",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "fc-speedybee-f405-v4-aio",
+      "name": "SpeedyBee F405 V4 BLS 55A AIO",
+      "weight_g": 18,
+      "processor": "STM32F405 @ 168MHz",
+      "firmware": [
+        "Betaflight"
+      ],
+      "gyro": "ICM42688P",
+      "voltage_input_v": {
+        "min": 11.1,
+        "max": 25.2
+      },
+      "current_draw_ma": 250,
+      "uart_ports": 6,
+      "features": [
+        "OSD",
+        "Barometer",
+        "Bluetooth",
+        "Blackbox-16MB",
+        "AIO-ESC-55A"
+      ],
+      "manufacturer": "SpeedyBee",
+      "part_number": "SB-F405-V4-AIO-55A",
+      "cost_usd": 64.99,
+      "availability": "in-stock",
+      "notes": "All-in-one FC + 55A 4-in-1 ESC. 30.5x30.5 mount. Bluetooth-app configuration. 3-6S input.",
+      "tags": [
+        "flight-controller",
+        "aio",
+        "f4",
+        "30x30",
+        "betaflight",
+        "bluetooth",
+        "esc-integrated"
+      ],
+      "data_source": {
+        "url": "https://www.speedybee.com/speedybee-f405-v4-bls-55a-30x30-fc-esc-stack/",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
         "parser": "webfetch+manual"
       }
     }
@@ -1646,6 +2008,181 @@
         "fetched_at": "2026-05-11T08:00:00+00:00",
         "parser": "webfetch+manual"
       }
+    },
+    {
+      "id": "radio-tbs-crossfire-nano-rx",
+      "name": "TBS Crossfire Nano RX (915/868MHz LoRa)",
+      "type": "control",
+      "frequency_band": "Sub-GHz",
+      "frequency_range_mhz": {
+        "min": 868,
+        "max": 915
+      },
+      "weight_g": 0.5,
+      "power_output_mw": 10,
+      "data_rate_kbps": 250,
+      "protocols": [
+        "CRSF",
+        "SBUS",
+        "PPM",
+        "PWM"
+      ],
+      "voltage_input_v": {
+        "min": 3.3,
+        "max": 8.4
+      },
+      "manufacturer": "Team BlackSheep",
+      "part_number": "TBS-CRSF-NANO-RX",
+      "cost_usd": 39.95,
+      "availability": "in-stock",
+      "notes": "12-channel LoRa RX. 40km range. 11x18x11mm. Industry standard for long-range.",
+      "tags": [
+        "control",
+        "crossfire",
+        "lora",
+        "sub-ghz",
+        "long-range",
+        "nano"
+      ],
+      "data_source": {
+        "url": "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "radio-happymodel-ep1-tcxo",
+      "name": "Happymodel EP1 TCXO ExpressLRS 2.4GHz RX",
+      "type": "control",
+      "frequency_band": "2.4GHz",
+      "frequency_range_mhz": {
+        "min": 2400,
+        "max": 2500
+      },
+      "weight_g": 0.41,
+      "power_output_mw": 10,
+      "data_rate_kbps": 500,
+      "protocols": [
+        "CRSF",
+        "ExpressLRS"
+      ],
+      "voltage_input_v": {
+        "min": 4.5,
+        "max": 5.5
+      },
+      "manufacturer": "Happymodel",
+      "part_number": "EP1-TCXO",
+      "cost_usd": 9.99,
+      "availability": "in-stock",
+      "notes": "TCXO-stabilized ELRS nano RX. SX1281 RF, ESP8285 MCU. 10x10x6mm. Cheapest reliable ELRS RX.",
+      "tags": [
+        "control",
+        "elrs",
+        "crsf",
+        "2.4ghz",
+        "nano",
+        "budget"
+      ],
+      "data_source": {
+        "url": "https://www.happymodel.cn/index.php/2022/11/07/2-4g-elrs-ep1-ep2-ep1dual-tcxo-receiver/",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "radio-radiomaster-boxer-elrs",
+      "name": "RadioMaster Boxer ELRS 2.4GHz Transmitter",
+      "type": "control",
+      "frequency_band": "2.4GHz",
+      "frequency_range_mhz": {
+        "min": 2400,
+        "max": 2480
+      },
+      "weight_g": 532.5,
+      "power_output_mw": 1000,
+      "power_levels_mw": [
+        10,
+        25,
+        50,
+        100,
+        250,
+        500,
+        1000
+      ],
+      "data_rate_kbps": 1000,
+      "protocols": [
+        "ExpressLRS",
+        "CRSF",
+        "EdgeTX"
+      ],
+      "voltage_input_v": {
+        "min": 6.6,
+        "max": 8.4
+      },
+      "manufacturer": "RadioMaster",
+      "part_number": "HP0157-Boxer-ELRS-M2",
+      "cost_usd": 175.0,
+      "availability": "in-stock",
+      "notes": "16-channel hall-gimbal ELRS handheld. EdgeTX, 128x64 LCD, built-in cooling fan, 2x 18650 (separate).",
+      "tags": [
+        "control",
+        "transmitter",
+        "elrs",
+        "edgetx",
+        "2.4ghz",
+        "handheld",
+        "hall-gimbals"
+      ],
+      "data_source": {
+        "url": "https://radiomasterrc.com/products/boxer-radio-controller-m2",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "radio-tbs-tango-2-pro",
+      "name": "TBS Tango 2 Pro Crossfire Transmitter",
+      "type": "control",
+      "frequency_band": "Sub-GHz",
+      "frequency_range_mhz": {
+        "min": 868,
+        "max": 915
+      },
+      "weight_g": 380,
+      "power_output_mw": 250,
+      "power_levels_mw": [
+        25,
+        100,
+        250
+      ],
+      "protocols": [
+        "CRSF",
+        "Crossfire",
+        "OpenTX"
+      ],
+      "voltage_input_v": {
+        "min": 3.7,
+        "max": 4.2
+      },
+      "manufacturer": "Team BlackSheep",
+      "part_number": "TBS-TANGO-2-PRO",
+      "cost_usd": 199.95,
+      "availability": "in-stock",
+      "notes": "Built-in Crossfire Micro TX. Folding HAL gimbals. 5000mAh 1S internal battery. 30km range.",
+      "tags": [
+        "control",
+        "transmitter",
+        "crossfire",
+        "opentx",
+        "handheld",
+        "long-range",
+        "folding"
+      ],
+      "data_source": {
+        "url": "https://www.team-blacksheep.com/products/prod:tbs_tango2_pro",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
     }
   ],
   "sensors": [
@@ -1790,6 +2327,107 @@
       "data_source": {
         "url": "https://www.dji.com/o3-air-unit/specs",
         "fetched_at": "2026-05-11T08:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "sensor-foxeer-razer-mini-1200tvl",
+      "name": "Foxeer Razer Mini 1200TVL Analog FPV Camera",
+      "type": "camera",
+      "weight_g": 12,
+      "power_consumption_w": 1,
+      "voltage_input_v": {
+        "min": 4.5,
+        "max": 25
+      },
+      "resolution": "1200TVL",
+      "fov_degrees": 125,
+      "interface": "Analog NTSC/PAL",
+      "data_rate_mbps": 1,
+      "manufacturer": "Foxeer",
+      "part_number": "RAZER-MINI-V2",
+      "cost_usd": 28.99,
+      "availability": "in-stock",
+      "notes": "1/3\" CMOS 1200TVL. 21.8x21.8mm. Switchable 4:3/16:9 and PAL/NTSC. 0.01Lux minimum illumination.",
+      "tags": [
+        "camera",
+        "analog",
+        "fpv",
+        "1200tvl",
+        "foxeer",
+        "mini"
+      ],
+      "data_source": {
+        "url": "https://www.racedayquads.com/products/foxeer-razer-mini-1200tvl-16-9-pal-nstc-cmos-fpv-camera-2-1mm-black",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "sensor-runcam-phoenix-2-sp",
+      "name": "RunCam Phoenix 2 SP 1500TVL Starlight Analog",
+      "type": "camera",
+      "weight_g": 7.5,
+      "power_consumption_w": 1.5,
+      "voltage_input_v": {
+        "min": 5,
+        "max": 36
+      },
+      "resolution": "1500TVL",
+      "fov_degrees": 155,
+      "interface": "Analog NTSC/PAL",
+      "data_rate_mbps": 1,
+      "manufacturer": "RunCam",
+      "part_number": "PHOENIX-2-SP",
+      "cost_usd": 39.99,
+      "availability": "in-stock",
+      "notes": "1/2.8\" Starlight CMOS with Global WDR. Premium analog freestyle camera with low-light strength.",
+      "tags": [
+        "camera",
+        "analog",
+        "fpv",
+        "1500tvl",
+        "starlight",
+        "wdr",
+        "freestyle"
+      ],
+      "data_source": {
+        "url": "https://shop.runcam.com/runcam-phoenix-2-sp/",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "sensor-caddx-vista-vtx",
+      "name": "Caddx Vista DJI Digital HD VTX",
+      "type": "camera",
+      "weight_g": 29,
+      "power_consumption_w": 6,
+      "voltage_input_v": {
+        "min": 7.4,
+        "max": 26.4
+      },
+      "resolution": "1080p / 720p (recording)",
+      "fov_degrees": 150,
+      "interface": "Digital HD (5.8GHz, DJI)",
+      "data_rate_mbps": 40,
+      "manufacturer": "Caddx",
+      "part_number": "CADDX-VISTA",
+      "cost_usd": 199.0,
+      "availability": "in-stock",
+      "notes": "Compact DJI digital VTX. 21-28ms latency in low-latency mode. 4km FCC range. Older but well-supported.",
+      "tags": [
+        "camera",
+        "vtx",
+        "hd",
+        "digital",
+        "dji",
+        "5.8ghz",
+        "caddx"
+      ],
+      "data_source": {
+        "url": "https://www.getfpv.com/caddx-vista-digital-hd-system-for-dji-hd-fpv.html",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
         "parser": "webfetch+manual"
       }
     }
@@ -2619,6 +3257,67 @@
         "cargo",
         "heavy-lift"
       ]
+    },
+    {
+      "id": "accessory-hqprop-ethix-s5-5x4x3",
+      "name": "HQProp Ethix S5 5x4x3 (Set of 4)",
+      "category": "propeller",
+      "weight_g": 3.7,
+      "dimensions_mm": {
+        "length": 127,
+        "width": 12.8,
+        "height": 6
+      },
+      "material": "Polycarbonate",
+      "manufacturer": "HQProp / ETHiX",
+      "part_number": "ETHIX-S5",
+      "cost_usd": 3.49,
+      "availability": "in-stock",
+      "notes": "5\" 3-blade freestyle prop. 5mm hub. Bardwell signature pick \u2014 community freestyle staple.",
+      "tags": [
+        "propeller",
+        "5-inch",
+        "3-blade",
+        "freestyle",
+        "polycarbonate",
+        "ethix"
+      ],
+      "data_source": {
+        "url": "https://www.hqprop.com/ethix-s5-light-grey-2cw2ccw-poly-carbonate-p0206.html",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
+    },
+    {
+      "id": "accessory-truerc-x2air-5-8-mk2",
+      "name": "TrueRC X\u00b2-AIR 5.8 MK II Patch Antenna (RHCP/LHCP)",
+      "category": "antenna",
+      "weight_g": 70,
+      "frequency_band": "5.8GHz",
+      "frequency_range_mhz": {
+        "min": 5100,
+        "max": 7000
+      },
+      "rx_gain_dbi": 13,
+      "manufacturer": "TrueRC",
+      "part_number": "X2-AIR-58-MK2",
+      "cost_usd": 64.99,
+      "availability": "in-stock",
+      "notes": "Patch antenna for goggles. 13 dBic gain, 150\u00b0 horizontal beam-width. RHCP or LHCP option.",
+      "tags": [
+        "antenna",
+        "patch",
+        "5.8ghz",
+        "rhcp",
+        "lhcp",
+        "goggle",
+        "long-range"
+      ],
+      "data_source": {
+        "url": "https://www.truerc.ca/shop/5-8ghz-2/receiver-long-range/x%C2%B2-air-5-8-mk-ii-2",
+        "fetched_at": "2026-05-11T10:00:00+00:00",
+        "parser": "webfetch+manual"
+      }
     }
   ]
 }
