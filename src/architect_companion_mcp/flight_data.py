@@ -116,12 +116,18 @@ def _run_model_for_record(record: Dict[str, Any]) -> Optional[float]:
         result = estimate_flight_time(airframe_id=airframe_id, battery_id=battery_id, **kwargs)
         return float(result["safe_endurance_min"])
 
-    # Raw-spec path — used when build references parts not in our catalog
+    # Raw-spec path — pass class hint from the record so the model
+    # picks the right aero multiplier / overhead instead of defaulting
+    # to a 5" multirotor.
     if record.get("platform_weight_g") and record.get("battery_mah"):
+        airframe_class = record.get("airframe_class")
+        platform_type = "fixed-wing" if airframe_class in {"fixed-wing", "flying-wing"} else "multi-rotor"
         result = estimate_flight_time(
             platform_weight_g=float(record["platform_weight_g"]),
             battery_mah=float(record["battery_mah"]),
             battery_v=float(record["battery_v"]) if record.get("battery_v") else None,
+            platform_class=airframe_class,
+            platform_type=platform_type,
             **kwargs,
         )
         return float(result["safe_endurance_min"])

@@ -35,12 +35,11 @@ def _clear_catalog_cache():
     reset_cache()
 
 
-def test_version_is_081_plus():
-    # 0.8.1 introduces the flight-data validation framework
-    assert __version__.startswith("0.8")
-    parts = __version__.split(".")
-    assert int(parts[0]) >= 0
-    assert int(parts[1]) >= 8
+def test_version_is_09x_or_higher():
+    """v0.9.0+ ships calibrated physics + extended compatibility rules."""
+    parts = [int(p) for p in __version__.split(".") if p.isdigit()]
+    assert parts[0] >= 0
+    assert parts[1] >= 9
 
 
 def test_health_reports_catalog():
@@ -159,6 +158,36 @@ def test_estimate_thrust_returns_tw_ratio():
     assert result["thrust_to_weight_ratio"] > 0
     assert "verdict" in result
     assert result["n_motors"] == 4
+
+
+def test_check_compatibility_mixed_video_ecosystem():
+    """A build with both Walksnail and DJI sensors should flag."""
+    result = check_compatibility([
+        "airframe-5in-true-x",
+        "sensor-walksnail-avatar-hd-vtx-v2",
+        "sensor-dji-o3-air-unit",
+    ])
+    assert any("Mixed video ecosystem" in i for i in result["issues"]), result["issues"]
+
+
+def test_check_compatibility_single_ecosystem_ok():
+    """A single-ecosystem build should NOT flag the protocol rule."""
+    result = check_compatibility([
+        "airframe-5in-true-x",
+        "sensor-walksnail-avatar-hd-vtx-v2",
+    ])
+    assert not any("Mixed video ecosystem" in i for i in result["issues"]), result["issues"]
+
+
+def test_check_compatibility_c_rating_silent_when_adequate():
+    """A high-C race pack should NOT flag the sustained-current rule
+    when paired with a single motor (sustained estimate is low)."""
+    result = check_compatibility([
+        "airframe-5in-true-x",
+        "motor-tmotor-f40-pro-v-1950kv",
+        "battery-gnb-6s-1300mah-120c",
+    ])
+    assert not any("sustained discharge" in i for i in result["issues"]), result["issues"]
 
 
 def test_validate_endurance_model_returns_report():

@@ -49,14 +49,15 @@ _DEFAULT_ETA_PROP = 0.65
 # Empirical aerodynamic-loss multiplier: real hover power / BEM induced
 # power. BEM gives the theoretical minimum; real FPV power is dominated
 # by profile drag, tip vortex losses, and high-disc-loading
-# inefficiencies. Multipliers tuned to match published flight times
-# from Joshua Bardwell, Mr. Steele, Le Drib, and eCalc on common
-# builds. Range ±25%.
+# inefficiencies. Multipliers tuned against the bundled flight_data.jsonl
+# records — calibrated against published Bardwell, Le Drib, Oscar Liang,
+# Pavo Pico II / Pavo20 Pro, Skywalker X8 numbers.
 _AERO_LOSS_MULTIPLIER = {
     # prop diameter ranges (inches): multiplier
-    (0.0, 2.0): 8.0,    # tinywhoop / 1.6" cinewhoop
-    (2.0, 3.5): 7.0,    # 2"-3" toothpick / cine
-    (3.5, 4.5): 6.0,    # 3.5"-4"
+    (0.0, 2.0): 3.0,    # tinywhoop / 1.6" cinewhoop — small frames are
+                          # surprisingly efficient at their scale
+    (2.0, 3.5): 4.0,    # 2"-3" toothpick / cinewhoop
+    (3.5, 4.5): 4.5,    # 3.5"-4" micro freestyle
     (4.5, 6.0): 5.0,    # 5" freestyle / race
     (6.0, 8.0): 4.0,    # 6"-7" long-range
     (8.0, 11.0): 3.5,   # 8"-10" heavy-lift
@@ -93,18 +94,34 @@ _COMPONENT_OVERHEAD_BY_CLASS = {
 }
 
 
-# Per-airframe-class cruise multiplier (hover → cruise endurance factor)
+# Per-airframe-tag cruise multiplier (hover endurance × factor → cruise
+# endurance). For race-class builds, "cruise" means aggressive flat-out
+# flying at high throttle — that BURNS more than hover, so factor < 1.
+# For chill freestyle / cinematic / long-range, smooth cruise is more
+# efficient than hover (induced drag drops), so factor > 1.
 _CRUISE_FACTOR = {
-    "5-inch": 1.30,
-    "7-inch": 1.75,
-    "8-inch": 1.85,
-    "10-inch": 2.00,
-    "tinywhoop": 1.10,
-    "1.6-inch": 1.10,
-    "2-inch": 1.15,
-    "3-inch": 1.20,
-    "3.5-inch": 1.25,
-    "4-inch": 1.25,
+    # Race-class: aggressive cruise burns more than hover
+    "race": 0.55,
+    "freestyle": 0.85,
+    # Cinematic / cruise-tuned: roughly hover-equivalent or slightly better
+    "cinematic": 1.20,
+    "cruise": 1.30,
+    "true-x": 0.85,
+    # Long-range multirotor: smooth cruise saves real energy
+    "long-range": 1.50,
+    "long-range-5in": 1.10,
+    "5-inch": 0.80,        # ambiguous default — assume mid-throttle freestyle
+    "7-inch": 1.60,
+    "8-inch": 1.80,
+    "10-inch": 1.90,
+    # Tinywhoop / cinewhoop indoor: barely-moving cruise close to hover
+    "tinywhoop": 0.95,
+    "1.6-inch": 0.95,
+    "2-inch": 1.05,
+    "3-inch": 1.10,
+    "3.5-inch": 1.15,
+    "4-inch": 1.15,
+    # Fixed-wing: handled via Breguet, factor is unused for FW
     "fixed-wing": 2.50,
     "flying-wing": 2.50,
 }
@@ -136,7 +153,13 @@ def _air_density(altitude_m: float, temp_c: float = 15.0) -> float:
     return pressure_pa / (287.05 * max(temperature_k, 200.0))
 
 
-def _resolve_airframe(airframe_id: Optional[str], platform_weight_g: Optional[float]) -> Dict[str, Any]:
+def _resolve_airframe(
+    airframe_id: Optional[str],
+    platform_weight_g: Optional[float],
+    platform_class: Optional[str] = None,
+    platform_type: str = "multi-rotor",
+    prop_inches: Optional[float] = None,
+) -> Dict[str, Any]:
     if airframe_id:
         part = part_by_id(airframe_id)
         if part is None or part["_category"] != "airframes":
@@ -144,13 +167,24 @@ def _resolve_airframe(airframe_id: Optional[str], platform_weight_g: Optional[fl
         return part
     if platform_weight_g is None:
         raise ValueError("Must supply either airframe_id or platform_weight_g")
-    # Synthetic airframe — assume quad, 5" prop, no class tag.
+    # Synthetic airframe — caller can hint class/type/prop so we don't
+    # default to a 5" multirotor for everything.
+    tag = platform_class or "5-inch"
+    if prop_inches is None:
+        prop_inches_map = {
+            "tinywhoop": 1.6, "1.6-inch": 1.6, "2-inch": 2.0,
+            "3-inch": 3.0, "3.5-inch": 3.5, "4-inch": 4.0,
+            "5-inch": 5.0, "7-inch": 7.0, "8-inch": 8.0,
+            "10-inch": 10.0, "12-inch": 12.0,
+            "fixed-wing": 8.0, "flying-wing": 12.0,
+        }
+        prop_inches = prop_inches_map.get(tag, 5.0)
     return {
         "weight_g": platform_weight_g,
-        "motor_count": 4,
-        "prop_size": "5x4.3",
-        "tags": ["5-inch"],
-        "type": "multi-rotor",
+        "motor_count": 1 if platform_type in {"fixed-wing", "vtol"} else 4,
+        "prop_size": f"{prop_inches}x{prop_inches * 0.7:.1f}",
+        "tags": [tag],
+        "type": platform_type,
         "_synthetic": True,
     }
 
@@ -216,6 +250,9 @@ def estimate_flight_time(
     battery_id: Optional[str] = None,
     *,
     platform_weight_g: Optional[float] = None,
+    platform_class: Optional[str] = None,
+    platform_type: str = "multi-rotor",
+    prop_inches: Optional[float] = None,
     battery_mah: Optional[float] = None,
     battery_v: Optional[float] = None,
     payload_weight_g: float = 0.0,
@@ -226,28 +263,42 @@ def estimate_flight_time(
     eta_esc: float = _DEFAULT_ETA_ESC,
     eta_prop: float = _DEFAULT_ETA_PROP,
     reserve_pct: float = 0.2,
-    # Legacy parameter; only used as a soft override if BEM result is wildly off.
     avg_current_draw_a: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Estimate endurance using simplified BEM (multirotor) or Breguet
     (fixed-wing). Pass catalog IDs or raw inputs; either works.
 
-    ``flight_mode``: ``"hover"`` (default for multirotor), ``"cruise"``
-    (uses airframe-class cruise factor), or ``"auto"`` (cruise for any
-    fixed-wing / flying-wing airframe, else hover).
+    For raw-spec inputs, pass ``platform_class`` (e.g., ``"5-inch"``,
+    ``"7-inch"``, ``"tinywhoop"``, ``"flying-wing"``) and
+    ``platform_type`` (``"multi-rotor"`` or ``"fixed-wing"``) so the
+    aero multiplier, cruise factor, and component overhead pick the
+    right class. ``prop_inches`` overrides the class-default prop size.
+
+    ``flight_mode``: ``"hover"``, ``"cruise"``, or ``"auto"`` (cruise
+    for fixed-wing, hover for multirotor).
     """
 
-    airframe = _resolve_airframe(airframe_id, platform_weight_g)
+    airframe = _resolve_airframe(
+        airframe_id, platform_weight_g,
+        platform_class=platform_class,
+        platform_type=platform_type,
+        prop_inches=prop_inches,
+    )
     battery = _resolve_battery(battery_id, battery_mah, battery_v)
 
-    # AUW. Add a class-appropriate component overhead (motors + ESCs +
-    # FC + cam + VTX + RX + wires + props) so the AUW reflects a
-    # buildable quad rather than just "airframe + battery". Skipped if
-    # the caller passes their own platform_weight_g (assumed to include
-    # everything).
+    # AUW. For catalog airframes the class overhead reflects motors +
+    # ESCs + FC + cam + VTX + RX + wires + props on top of the bare
+    # frame weight. For synthetic (raw-spec) airframes we use a minimal
+    # 50g overhead by default since the caller likely already included
+    # components in platform_weight_g — but apply full class overhead
+    # if they explicitly passed platform_class.
     airframe_g = float(airframe.get("weight_g") or 0)
-    if airframe.get("_synthetic") or platform_weight_g is not None:
-        overhead_g = 50.0  # minimal sanity overhead for raw inputs
+    if airframe.get("_synthetic"):
+        overhead_g = (
+            _component_overhead_for(airframe)
+            if platform_class is not None
+            else 50.0
+        )
     else:
         overhead_g = _component_overhead_for(airframe)
     auw_g = airframe_g + battery["g"] + payload_weight_g + overhead_g

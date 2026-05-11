@@ -213,6 +213,74 @@ def check_compatibility(part_ids: List[str]) -> Dict[str, Any]:
                 f"({', '.join(sorted(_KNOWN_FC_MOUNTS))})."
             )
 
+    # Goggle / VTX protocol matrix. Walksnail, DJI, HDZero, and Analog
+    # are all incompatible with each other — if the build has parts from
+    # two different ecosystems, flag it. Read protocol from tags.
+    sensors = [p for p in parts if p["_category"] == "sensors"]
+
+    def _protocol_of(part: Dict[str, Any]) -> Optional[str]:
+        tag_protocols = {"walksnail", "dji", "hdzero", "hdz"}
+        tags = {(t or "").lower() for t in (part.get("tags") or [])}
+        for tp in tag_protocols:
+            if tp in tags:
+                return tp.replace("hdz", "hdzero")
+        # Analog as fallback if interface mentions NTSC/PAL/Analog
+        interface = (part.get("interface") or "").lower()
+        if "analog" in interface or "ntsc" in interface or "pal" in interface:
+            return "analog"
+        if "digital" in interface and not tags & tag_protocols:
+            return "digital-unknown"
+        return None
+
+    sensor_protocols = {_protocol_of(s) for s in sensors if _protocol_of(s)}
+    sensor_protocols.discard(None)
+    sensor_protocols.discard("digital-unknown")
+    if len(sensor_protocols) > 1:
+        issues.append(
+            f"Mixed video ecosystem detected: {', '.join(sorted(sensor_protocols))}. "
+            f"VTXes and goggles must share one protocol (analog / walksnail / DJI / HDZero)."
+        )
+
+    # Antenna polarization sanity: if any antenna accessory is in the
+    # build, its polarization tag (rhcp / lhcp) should appear on the
+    # paired VTX accessory or radio. Otherwise flag a likely mismatch.
+    accessories = [p for p in parts if p["_category"] == "accessories"]
+    antennas = [a for a in accessories if "antenna" in (a.get("category") or "").lower()
+                or any("antenna" in (t or "").lower() for t in (a.get("tags") or []))]
+    pol_tags = {"rhcp", "lhcp"}
+    if antennas:
+        antenna_pols = set()
+        for a in antennas:
+            for tag in (a.get("tags") or []):
+                if tag.lower() in pol_tags:
+                    antenna_pols.add(tag.lower())
+        if len(antenna_pols) > 1:
+            issues.append(
+                f"Mixed antenna polarizations: {sorted(antenna_pols)}. "
+                f"TX and RX antennas should share polarization (both RHCP or both LHCP)."
+            )
+
+    # Battery C-rating vs sustained current. Sustained current ≈ peak ÷ 2
+    # for typical FPV builds. If battery max_discharge_a (= C × Ah)
+    # can't cover the per-motor peak × motor_count × 0.5, flag.
+    if battery and motors and airframe:
+        max_discharge_a = battery.get("max_discharge_a")
+        if not max_discharge_a:
+            c_rating = battery.get("c_rating")
+            capacity_mah = battery.get("capacity_mah")
+            if c_rating and capacity_mah:
+                max_discharge_a = float(c_rating) * float(capacity_mah) / 1000.0
+        if max_discharge_a:
+            n_motors_expected = int(airframe.get("motor_count") or len(motors) or 1)
+            peak_per_motor = max((m.get("max_current_a") or 0) for m in motors)
+            sustained_estimate_a = peak_per_motor * n_motors_expected * 0.5
+            if sustained_estimate_a > max_discharge_a:
+                issues.append(
+                    f"Battery sustained discharge ({max_discharge_a:.0f}A) likely "
+                    f"insufficient for build (estimated ~{sustained_estimate_a:.0f}A "
+                    f"sustained = {peak_per_motor:.0f}A peak × {n_motors_expected} motors × 0.5)."
+                )
+
     # Control vs video radio band overlap
     control_radios = [p for p in radios if p.get("type") == "control"]
     video_radios = [p for p in radios if p.get("type") == "video"]

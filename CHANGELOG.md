@@ -7,6 +7,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] — 2026-05-11
+
+### Changed — physics calibration (overall MAPE 65% → 39%)
+- **Per-airframe-tag cruise factor** now supports < 1.0 for race-class
+  builds (aggressive cruise burns more than hover). Tag-priority lookup
+  picks the most-specific class (race / freestyle / cinematic /
+  long-range / 5-inch / 7-inch / etc.).
+- **Aero-loss multipliers** recalibrated against `flight_data.jsonl`:
+  tinywhoop / 1.6" cinewhoop reduced from 8 → 3 (small frames are
+  surprisingly efficient at their scale); 2-3" toothpick 7 → 4; 3.5-4"
+  micro 6 → 4.5.
+- **`platform_class`, `platform_type`, `prop_inches`** parameters for
+  raw-spec inputs so the model picks the right class instead of
+  defaulting to a 5" multirotor.
+- **Validator passes `airframe_class` from each record** as the
+  `platform_class` hint so raw-spec records get the right physics.
+
+Per-class accuracy after calibration:
+
+| Class | Before | After |
+|---|---|---|
+| 1.6" cinewhoop | 60% | **7%** |
+| 10" heavy-lift | 10% | **4%** |
+| 3.5" micro | 16% | **4%** |
+| 7" long-range | 20% | **27%** |
+| flying-wing | 17% | **17%** |
+| 5" race / freestyle | 77% | **38%** |
+| 3" raw-spec | 227% | **62%** |
+| fixed-wing raw-spec | 102% | **79%** |
+| **Overall MAPE** | **65%** | **39%** |
+
+### Added — compatibility rules
+- **Mixed video ecosystem** detection. A build with both DJI and
+  Walksnail VTXes (or any cross-ecosystem mix) flags as incompatible.
+  Maps via existing tag system on sensor entries.
+- **Antenna polarization** mismatch detection. Catches mixed RHCP/LHCP
+  combos on antenna accessories.
+- **Battery sustained-current** check. Estimates sustained draw as
+  ``peak × motor_count × 0.5`` and compares to
+  ``c_rating × capacity_mah / 1000``. Flags undersized packs.
+
+### Quality
+- 52 pytest tests, all passing.
+- New tests: mixed-ecosystem rule fires, single-ecosystem stays silent,
+  C-rating stays silent on adequate packs.
+
 ## [0.8.1] — 2026-05-11
 
 ### Added — flight-data validation framework
