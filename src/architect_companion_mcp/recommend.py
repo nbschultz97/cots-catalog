@@ -13,20 +13,28 @@ from .catalog import list_components
 
 # Ranked tag preferences per mission_type → category
 MISSION_TAG_PREFS: Dict[str, Dict[str, List[str]]] = {
-    "recon": {
-        "airframes": ["long-range", "isr", "long-endurance", "7-inch", "fixed-wing"],
+    "long_range": {
+        "airframes": ["long-range", "long-endurance", "7-inch", "fixed-wing", "flying-wing", "cruise"],
         "batteries": ["li-ion", "long-range", "endurance"],
     },
-    "strike": {
-        "airframes": ["5-inch", "freestyle", "race"],
+    "endurance_survey": {
+        "airframes": ["fixed-wing", "flying-wing", "long-endurance", "heavy-lift", "cargo", "10-inch"],
+        "batteries": ["li-ion", "endurance"],
+    },
+    "freestyle": {
+        "airframes": ["5-inch", "freestyle", "true-x"],
         "batteries": ["6s", "high-discharge"],
     },
-    "relay": {
-        "airframes": ["fixed-wing", "long-endurance", "flying-wing"],
-        "batteries": ["li-ion"],
+    "racing": {
+        "airframes": ["5-inch", "race", "true-x"],
+        "batteries": ["6s", "high-discharge"],
     },
-    "sustainment": {
-        "airframes": ["isr", "cargo", "10-inch"],
+    "cinematic": {
+        "airframes": ["5-inch", "7-inch", "long-range", "cruise"],
+        "batteries": ["6s", "li-ion"],
+    },
+    "cold_weather": {
+        "airframes": ["7-inch", "long-range", "cruise"],
         "batteries": ["li-ion"],
     },
 }
@@ -61,7 +69,7 @@ def _pick(category: str, preferred_tags: List[str], budget_usd: Optional[float])
 
 def recommend_configuration(
     compute_tier: str = "pi5",
-    mission_type: str = "recon",
+    mission_type: str = "long_range",
     *,
     budget_usd: Optional[float] = None,
 ) -> Dict[str, Any]:
@@ -77,7 +85,7 @@ def recommend_configuration(
             f"Unknown compute_tier '{compute_tier}'. Valid: {', '.join(COMPUTE_TIER_TAGS)}"
         )
 
-    prefs = MISSION_TAG_PREFS.get(mission_type, MISSION_TAG_PREFS["recon"])
+    prefs = MISSION_TAG_PREFS.get(mission_type, MISSION_TAG_PREFS["long_range"])
     picks: Dict[str, Optional[Dict[str, Any]]] = {
         "airframe": _pick("airframes", prefs.get("airframes", []), budget_usd),
         "motor": _pick("motors", [], budget_usd),

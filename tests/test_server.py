@@ -35,8 +35,8 @@ def _clear_catalog_cache():
     reset_cache()
 
 
-def test_version_is_03x():
-    assert __version__.startswith("0.3")
+def test_version_is_04x():
+    assert __version__.startswith("0.4")
 
 
 def test_health_reports_catalog():
@@ -79,7 +79,7 @@ def test_check_compatibility_unknown_part():
 
 
 def test_check_compatibility_weight_budget_violation():
-    # 5" airframe with a 10" ISR battery (heavy) should bust the budget.
+    # 5" airframe with a 10" heavy-lift battery should bust the budget.
     library_5in = list_components(category="airframes", tag="5-inch", limit=1)
     heavy_battery = list_components(category="batteries", limit=1)
     assert library_5in and heavy_battery
@@ -140,8 +140,8 @@ def test_generate_mission_blueprint_default():
 
 
 def test_generate_mission_blueprint_uses_known_preset():
-    bp = generate_mission_blueprint(operation_type="urban_high_ew")
-    assert bp["meta"]["seed_preset"] == "preset_urban_high_ew.json"
+    bp = generate_mission_blueprint(operation_type="urban_congested")
+    assert bp["meta"]["seed_preset"] == "preset_urban_congested.json"
 
 
 def test_generate_mission_blueprint_unknown_operation_falls_back():
@@ -152,17 +152,17 @@ def test_generate_mission_blueprint_unknown_operation_falls_back():
 def test_list_presets_and_operations():
     presets = list_presets()
     assert {p["file"] for p in presets} == {
-        "preset_low_infrastructure.json",
-        "preset_partner_sustainment.json",
-        "preset_urban_high_ew.json",
-        "preset_whitefrost.json",
+        "preset_long_range_relay.json",
+        "preset_endurance_survey.json",
+        "preset_urban_congested.json",
+        "preset_cold_weather.json",
     }
     ops = list_operation_types()
-    assert "recon" in ops and "sustainment" in ops
+    assert "long_range" in ops and "endurance" in ops and "cold_weather" in ops
 
 
 def test_recommend_configuration_picks_parts():
-    rec = recommend_configuration(compute_tier="pi5", mission_type="recon")
+    rec = recommend_configuration(compute_tier="pi5", mission_type="long_range")
     assert rec["compute_tier"] == "pi5"
     assert rec["picks"]["airframe"] is not None
     assert rec["totals"]["cost_usd"] > 0
@@ -174,7 +174,7 @@ def test_recommend_configuration_rejects_bad_tier():
 
 
 def test_recommend_configuration_budget_caps():
-    rec = recommend_configuration(compute_tier="pi5", mission_type="recon", budget_usd=20)
+    rec = recommend_configuration(compute_tier="pi5", mission_type="long_range", budget_usd=20)
     # Every picked part should be at or below the budget, or None.
     for slot, part in rec["picks"].items():
         if part is not None:

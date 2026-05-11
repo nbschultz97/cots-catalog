@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectId": "preset-urban-congested",
+  "meta": {
+    "name": "Urban congested-RF flight",
+    "description": "Urban or race-park flight environment with high VTX density and congested 2.4 / 5.8 GHz bands. Tighter link margin, channel-planning matters.",
+    "durationHours": 4,
+    "origin_tool": "hub",
+    "scenario": "Race park or urban congested RF",
+    "inventoryReference": "DEMO-URBAN-CONGESTED",
+    "missionType": "urban_congested",
+    "team": { "size": 3, "roles": ["Pilot in command", "Spotter", "Race director / safety"] }
+  },
+  "environment": [
+    {
+      "id": "env-urban",
+      "name": "Urban / race park",
+      "band": "urban",
+      "altitudeBand": "0-500m",
+      "temperatureBand": "10-25C",
+      "weather": "Variable",
+      "terrain": "urban",
+      "origin_tool": "hub",
+      "notes": "20+ pilots on 5.8 GHz; tight channel allocation"
+    }
+  ],
+  "constraints": [
+    { "id": "c-rf", "type": "RF", "description": "Congested 5.8 GHz spectrum; channel coordination required", "severity": "high", "origin_tool": "mission" }
+  ],
+  "nodes": [
+    { "id": "node-spotter", "name": "Spotter station", "role": "ground station", "rf": { "band": "5.8GHz", "powerW": 0.2 }, "origin_tool": "node" }
+  ],
+  "platforms": [
+    { "id": "platform-5in", "name": "5-inch race / freestyle", "role": "FPV pilot", "origin_tool": "uxs" }
+  ],
+  "mesh_links": [],
+  "kits": [],
+  "mission": {
+    "tasks": [
+      { "id": "task-heats", "name": "Heat coordination", "description": "Run race heats with rotating channel allocations", "origin_tool": "mission" }
+    ],
+    "phases": [
+      { "id": "phase-setup", "name": "Channel plan", "durationHours": 1, "focus": "Assign VTX channels, walk the course", "origin_tool": "mission" },
+      { "id": "phase-heats", "name": "Heats", "durationHours": 3, "focus": "Rotate pilots through heats", "origin_tool": "mission" }
+    ],
+    "assignments": [
+      { "phaseId": "phase-heats", "nodeIds": ["node-spotter"], "platformIds": ["platform-5in"] }
+    ],
+    "mission_cards": []
+  },
+  "sustainment": {
+    "sustainmentHours": 4,
+    "batteryCounts": 8,
+    "feasibility": {},
+    "notes": "Battery cooldown between heats matters in summer",
+    "power_plan": "",
+    "packing_lists": []
+  },
+  "meshPlan": {
+    "relayCount": 0,
+    "criticalLinks": 1,
+    "rf_bands": ["2.4GHz", "5.8GHz"],
+    "rf_environment": "high-noise"
+  },
+  "kitsSummary": {
+    "perOperatorLoads": [],
+    "perOperatorLoadKg": 8,
+    "perOperatorLimitKg": 15
+  },
+  "exports": { "links": [], "notes": "" }
+}

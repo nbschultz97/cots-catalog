@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectId": "preset-long-range-relay",
+  "meta": {
+    "name": "Long-range FPV relay over open terrain",
+    "description": "Sparse-relay long-range FPV / fixed-wing flying across open terrain. One or two relay nodes maintain control + video link beyond direct line-of-sight.",
+    "durationHours": 8,
+    "origin_tool": "hub",
+    "scenario": "Long-range cruise with relay support",
+    "inventoryReference": "DEMO-LONG-RANGE",
+    "missionType": "long_range_relay",
+    "team": { "size": 3, "roles": ["Pilot in command", "Spotter / VLOS observer", "Charger / pit boss"] }
+  },
+  "environment": [
+    {
+      "id": "env-open-steppe",
+      "name": "Open terrain",
+      "band": "open",
+      "altitudeBand": "1500-2500m",
+      "temperatureBand": "10-25C",
+      "weather": "Dry, variable winds",
+      "terrain": "open",
+      "origin_tool": "hub",
+      "notes": "Long-range hops between sparse relay points"
+    }
+  ],
+  "constraints": [
+    { "id": "c-power", "type": "Power", "description": "Limited charging access along route", "severity": "medium", "origin_tool": "mission" }
+  ],
+  "nodes": [
+    { "id": "node-relay", "name": "Long-range relay", "role": "relay node", "rf": { "band": "UHF", "powerW": 4 }, "origin_tool": "node" }
+  ],
+  "platforms": [
+    { "id": "platform-fw-cruise", "name": "Fixed-wing cruise platform", "role": "Long-haul cruise", "origin_tool": "uxs" }
+  ],
+  "mesh_links": [
+    { "id": "mesh-relay", "name": "Relay hop", "role": "backhaul", "origin_tool": "mesh" }
+  ],
+  "kits": [],
+  "mission": {
+    "tasks": [
+      { "id": "task-route-scout", "name": "Route scout", "description": "Confirm route and relay placement", "origin_tool": "mission" }
+    ],
+    "phases": [
+      { "id": "phase-survey", "name": "Survey", "durationHours": 2, "focus": "Scout routes and relay points", "origin_tool": "mission" },
+      { "id": "phase-operate", "name": "Cruise operations", "durationHours": 6, "focus": "Long-range hops", "origin_tool": "mission" }
+    ],
+    "assignments": [
+      { "phaseId": "phase-operate", "nodeIds": ["node-relay"], "platformIds": ["platform-fw-cruise"] }
+    ],
+    "mission_cards": []
+  },
+  "sustainment": {
+    "sustainmentHours": 8,
+    "batteryCounts": 6,
+    "feasibility": {},
+    "notes": "Solar assist optional for extended sessions",
+    "power_plan": "",
+    "packing_lists": []
+  },
+  "meshPlan": {
+    "relayCount": 1,
+    "criticalLinks": 2,
+    "rf_bands": ["UHF", "L-band"],
+    "rf_environment": "permissive"
+  },
+  "kitsSummary": {
+    "perOperatorLoads": [],
+    "perOperatorLoadKg": 12,
+    "perOperatorLimitKg": 18
+  },
+  "exports": { "links": [], "notes": "" }
+}

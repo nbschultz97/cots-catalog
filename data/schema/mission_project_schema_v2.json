@@ -218,7 +218,7 @@
         "relayCount": { "type": "number" },
         "criticalLinks": { "type": "number" },
         "rf_bands": { "type": "array", "items": { "type": "string" } },
-        "ew_profile": { "type": "string" }
+        "rf_environment": { "type": "string", "description": "RF environment label, e.g., permissive | congested | high-noise" }
       }
     },
     "kitsSummary": {

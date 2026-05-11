@@ -87,7 +87,6 @@
           "stl_file": { "type": "string", "description": "Path to STL file if printable" },
           "manufacturer": { "type": "string" },
           "part_number": { "type": "string" },
-          "nsn": { "type": "string", "description": "NATO Stock Number" },
           "cost_usd": { "type": "number", "minimum": 0 },
           "availability": {
             "type": "string",

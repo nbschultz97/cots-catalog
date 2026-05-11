@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectId": "preset-endurance-survey",
+  "meta": {
+    "name": "Multi-day endurance survey",
+    "description": "Multi-day mapping / endurance survey using a fixed-wing or heavy-lift multirotor with a charging pit and a small ground crew.",
+    "durationHours": 72,
+    "origin_tool": "hub",
+    "scenario": "Multi-day endurance survey",
+    "inventoryReference": "DEMO-ENDURANCE",
+    "missionType": "endurance_survey",
+    "team": { "size": 4, "roles": ["Pilot in command", "Charger lead", "Logistics", "Spotter"] }
+  },
+  "environment": [
+    {
+      "id": "env-rural",
+      "name": "Rural / mixed terrain",
+      "band": "rural",
+      "altitudeBand": "500-1500m",
+      "temperatureBand": "10-25C",
+      "weather": "Variable",
+      "terrain": "mixed",
+      "origin_tool": "hub",
+      "notes": "Survey grid coverage with charging pit on-site"
+    }
+  ],
+  "constraints": [
+    { "id": "c-charging", "type": "Power", "description": "Pit-level charging only, no grid", "severity": "medium", "origin_tool": "mission" }
+  ],
+  "nodes": [
+    { "id": "node-pit", "name": "Charging pit / ground station", "role": "ground station", "rf": { "band": "L-band", "powerW": 5 }, "origin_tool": "node" }
+  ],
+  "platforms": [
+    { "id": "platform-fw-survey", "name": "Fixed-wing survey platform", "role": "Long-endurance mapping", "origin_tool": "uxs" }
+  ],
+  "mesh_links": [
+    { "id": "mesh-pit", "name": "Pit downlink", "role": "downlink", "origin_tool": "mesh" }
+  ],
+  "kits": [],
+  "mission": {
+    "tasks": [
+      { "id": "task-grid", "name": "Grid coverage", "description": "Run photogrammetry grid", "origin_tool": "mission" }
+    ],
+    "phases": [
+      { "id": "phase-setup", "name": "Pit setup", "durationHours": 2, "focus": "Establish charging and downlink", "origin_tool": "mission" },
+      { "id": "phase-survey", "name": "Survey", "durationHours": 64, "focus": "Continuous mapping flights", "origin_tool": "mission" },
+      { "id": "phase-pack", "name": "Pack-out", "durationHours": 6, "focus": "Battery cooldown, data backup, pack", "origin_tool": "mission" }
+    ],
+    "assignments": [
+      { "phaseId": "phase-survey", "nodeIds": ["node-pit"], "platformIds": ["platform-fw-survey"] }
+    ],
+    "mission_cards": []
+  },
+  "sustainment": {
+    "sustainmentHours": 72,
+    "batteryCounts": 12,
+    "feasibility": {},
+    "notes": "Pit charging cycle is the bottleneck",
+    "power_plan": "Pit-level charging only",
+    "packing_lists": []
+  },
+  "meshPlan": {
+    "relayCount": 0,
+    "criticalLinks": 1,
+    "rf_bands": ["L-band"],
+    "rf_environment": "permissive"
+  },
+  "kitsSummary": {
+    "perOperatorLoads": [],
+    "perOperatorLoadKg": 14,
+    "perOperatorLimitKg": 20
+  },
+  "exports": { "links": [], "notes": "" }
+}

@@ -3,7 +3,7 @@
   "catalogId": "sample-fpv-001",
   "meta": {
     "name": "Sample COTS FPV Catalog",
-    "description": "Realistic off-the-shelf FPV / small-UAS hardware catalog. Flight controllers, ESCs, motors, batteries, VTXes with switchable power levels, ELRS TX/RX, goggles, and GPS modules that operators actually field. Demonstrates the full engine stack: physics and compatibility validation, operator-drone link budget, EMCON footprint, density-altitude derating, and sustainment math.",
+    "description": "Realistic off-the-shelf FPV / small-UAS hardware catalog: flight controllers, ESCs, motors, batteries, VTXes with switchable power levels, ELRS TX/RX, goggles, and GPS modules. Built for hobbyist and commercial sUAS builders. Demonstrates compatibility validation, link-budget math, density-altitude derating, and endurance estimation.",
     "unit": "Sample / Demo",
     "lastUpdated": "2026-04-21T04:40:36.153848+00:00",
     "inventoryReference": "SAMPLE-FPV-001"
@@ -65,8 +65,8 @@
       ]
     },
     {
-      "id": "airframe-10in-isr",
-      "name": "10\" ISR/Cargo X-Frame (MultiRotorMania Dragonfly / equivalent)",
+      "id": "airframe-10in-heavy",
+      "name": "10\" Heavy-Lift / Mapping X-Frame (MultiRotorMania Dragonfly / equivalent)",
       "type": "multi-rotor",
       "weight_g": 340,
       "max_payload_g": 3000,
@@ -81,13 +81,13 @@
       "material": "carbon fiber",
       "printable": false,
       "manufacturer": "MultiRotorMania / iFlight / Armattan",
-      "part_number": "FRAME-10IN-ISR",
+      "part_number": "FRAME-10IN-HEAVY",
       "cost_usd": 135.0,
       "availability": "in-stock",
-      "notes": "10\" X-frame for ISR / thermal / heavy-lift builds. Supports long-range link and higher-capacity packs.",
+      "notes": "10\" X-frame for heavy-lift, mapping, and cinematography builds. Supports long-range link and higher-capacity packs.",
       "tags": [
         "10-inch",
-        "isr",
+        "heavy-lift",
         "cargo",
         "cruise"
       ]
@@ -140,12 +140,12 @@
       "part_number": "FRAME-FW-FLYING-WING",
       "cost_usd": 185.0,
       "availability": "in-stock",
-      "notes": "Flying-wing platform for 2+ hour ISR endurance with Li-ion.",
+      "notes": "Flying-wing platform for 2+ hour endurance / mapping flights with Li-ion.",
       "tags": [
         "fixed-wing",
         "flying-wing",
         "long-endurance",
-        "isr"
+        "heavy-lift"
       ]
     }
   ],
@@ -444,7 +444,7 @@
     },
     {
       "id": "battery-6s-3000mah-35c",
-      "name": "6S 3000mAh 35C (10\" ISR endurance pack)",
+      "name": "6S 3000mAh 35C (10\" heavy-lift endurance pack)",
       "chemistry": "LiPo",
       "cells": 6,
       "voltage_nominal_v": 22.2,
@@ -467,11 +467,11 @@
       "part_number": "LiPo-6S-3000-35C",
       "cost_usd": 62.0,
       "availability": "in-stock",
-      "notes": "Endurance pack for 10\" ISR platforms with Avenger 3110 motors. ~15-20 min cruise.",
+      "notes": "Endurance pack for 10\" heavy-lift platforms with Avenger 3110 motors. ~15-20 min cruise.",
       "tags": [
         "endurance",
         "10-inch",
-        "isr",
+        "heavy-lift",
         "lipo"
       ]
     },
@@ -1124,33 +1124,6 @@
         "digital-hd",
         "walksnail",
         "gyroflow"
-      ]
-    },
-    {
-      "id": "sensor-caddx-infra-thermal",
-      "name": "Caddx Infra Thermal Camera",
-      "type": "camera",
-      "weight_g": 10,
-      "power_consumption_w": 0.8,
-      "voltage_input_v": {
-        "min": 4.5,
-        "max": 5.5
-      },
-      "resolution": "256x192",
-      "fov_degrees": 56,
-      "interface": "Analog NTSC/PAL",
-      "data_rate_mbps": 1,
-      "manufacturer": "Caddx",
-      "part_number": "TR1-211SL",
-      "cost_usd": 250.0,
-      "availability": "in-stock",
-      "notes": "Thermal imaging for night ISR. Analog output; pair with Atlatl HV V2 or Reaper Extreme V2 VTX. ITAR/EAR 6A003 considerations on int'l transfer.",
-      "tags": [
-        "camera",
-        "thermal",
-        "infra",
-        "night-ops",
-        "export-controlled"
       ]
     },
     {
@@ -1836,12 +1809,12 @@
       "part_number": "GOPRO-HERO-11-BLACK",
       "cost_usd": 399.0,
       "availability": "in-stock",
-      "notes": "5.3K60 HDR action cam. Common secondary recording payload for ISR missions. Mount on top of frame; adds ~160g AUW.",
+      "notes": "5.3K60 HDR action cam. Common secondary recording payload for cinematography and survey flights. Mount on top of frame; adds ~160g AUW.",
       "tags": [
         "camera",
         "action-cam",
         "payload",
-        "isr-recording"
+        "cine-recording"
       ]
     },
     {
@@ -1995,13 +1968,13 @@
       "part_number": "PROP-10-TRI",
       "cost_usd": 9.99,
       "availability": "in-stock",
-      "notes": "Heavy-lift / ISR 10\" tri-blade. Paired with 3110 motors on 10\" X-frames.",
+      "notes": "Heavy-lift 10\" tri-blade for mapping and cinematography builds. Paired with 3110 motors on 10\" X-frames.",
       "tags": [
         "propeller",
         "10-inch",
         "tri-blade",
         "cargo",
-        "isr"
+        "heavy-lift"
       ]
     }
   ]

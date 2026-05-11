@@ -19,15 +19,15 @@
     { "value": "10-25C", "label": "10 to 25°C" },
     { "value": "25-40C", "label": "25 to 40°C" }
   ],
-  "ewLevels": [
-    { "value": "permissive", "label": "Permissive" },
-    { "value": "contested", "label": "Contested" },
-    { "value": "high-ew", "label": "High-EW" }
+  "rfEnvironments": [
+    { "value": "permissive", "label": "Permissive (low RF noise)" },
+    { "value": "congested", "label": "Congested (race park, urban)" },
+    { "value": "high-noise", "label": "High RF noise (industrial / many VTXes)" }
   ],
   "missionTypes": [
-    { "value": "mesh_recon", "label": "Mesh reconnaissance" },
-    { "value": "urban_lane", "label": "Urban mesh lane" },
-    { "value": "sustainment", "label": "Partner sustainment" },
-    { "value": "low_infrastructure", "label": "Low-infrastructure mesh" }
+    { "value": "long_range_relay", "label": "Long-range relay" },
+    { "value": "endurance_survey", "label": "Endurance / mapping survey" },
+    { "value": "urban_congested", "label": "Urban / congested RF" },
+    { "value": "cold_weather", "label": "Cold-weather flying" }
   ]
 }

@@ -28,10 +28,10 @@ PART_CATEGORIES = (
 )
 
 PRESET_FILES = (
-    "preset_low_infrastructure.json",
-    "preset_partner_sustainment.json",
-    "preset_urban_high_ew.json",
-    "preset_whitefrost.json",
+    "preset_long_range_relay.json",
+    "preset_endurance_survey.json",
+    "preset_urban_congested.json",
+    "preset_cold_weather.json",
 )
 
 

@@ -51,13 +51,26 @@ python -m pytest -q
 
 ### Operation types
 
-`recon`, `mesh_recon`, `low_infrastructure`, `sustainment`,
-`partner_sustainment`, `urban_lane`, `urban_high_ew`, `winter`,
-`cold_weather`.
+`long_range`, `long_range_relay`, `relay`, `endurance`, `endurance_survey`,
+`survey`, `mapping`, `urban`, `urban_congested`, `race`, `racing`,
+`cold_weather`, `winter`. Unknown types fall back to `long_range_relay`.
+
+### Mission types (recommend_configuration)
+
+`long_range`, `endurance_survey`, `freestyle`, `racing`, `cinematic`,
+`cold_weather`. Unknown types fall back to `long_range`.
 
 ### Compute tiers
 
 `pi-zero`, `pi4`, `pi5`, `jetson-nano`, `jetson-orin-nano`, `x86`.
+
+### Bring your own catalog
+
+The bundled `data/` directory is a hobby / COTS FPV reference pack you
+can use out of the box. Point `ARCHITECT_DATA_DIR` at a different
+directory to swap in your own parts library and presets — useful for
+race clubs, mapping shops, fleet operators, or anyone running an
+internal inventory.
 
 ## Data directory
 

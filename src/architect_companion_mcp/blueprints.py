@@ -14,17 +14,21 @@ from typing import Any, Dict, List, Optional
 from .catalog import all_presets, load_environment_taxonomy
 
 # Map operation type → bundled preset filename. Kept loose so unknown
-# operation types fall back to the urban_high_ew preset.
+# operation types fall back to the long_range_relay preset.
 OPERATION_PRESET_MAP = {
-    "recon": "preset_low_infrastructure.json",
-    "mesh_recon": "preset_low_infrastructure.json",
-    "low_infrastructure": "preset_low_infrastructure.json",
-    "sustainment": "preset_partner_sustainment.json",
-    "partner_sustainment": "preset_partner_sustainment.json",
-    "urban_lane": "preset_urban_high_ew.json",
-    "urban_high_ew": "preset_urban_high_ew.json",
-    "winter": "preset_whitefrost.json",
-    "cold_weather": "preset_whitefrost.json",
+    "long_range": "preset_long_range_relay.json",
+    "long_range_relay": "preset_long_range_relay.json",
+    "relay": "preset_long_range_relay.json",
+    "endurance": "preset_endurance_survey.json",
+    "endurance_survey": "preset_endurance_survey.json",
+    "survey": "preset_endurance_survey.json",
+    "mapping": "preset_endurance_survey.json",
+    "urban": "preset_urban_congested.json",
+    "urban_congested": "preset_urban_congested.json",
+    "race": "preset_urban_congested.json",
+    "racing": "preset_urban_congested.json",
+    "cold_weather": "preset_cold_weather.json",
+    "winter": "preset_cold_weather.json",
 }
 
 
@@ -78,7 +82,7 @@ def _select_environment(env_id: Optional[str]) -> Dict[str, Any]:
 
 
 def generate_mission_blueprint(
-    operation_type: str = "recon",
+    operation_type: str = "long_range",
     duration_hours: float = 24.0,
     environment_id: Optional[str] = None,
     team_size: int = 4,
@@ -90,7 +94,7 @@ def generate_mission_blueprint(
     (COTS-Architect, KitSmith, Node) fill in platforms/kits/mesh/etc.
     """
 
-    preset_file = OPERATION_PRESET_MAP.get(operation_type, "preset_urban_high_ew.json")
+    preset_file = OPERATION_PRESET_MAP.get(operation_type, "preset_long_range_relay.json")
     presets = all_presets()
     preset = presets.get(preset_file) or next(iter(presets.values()))
 

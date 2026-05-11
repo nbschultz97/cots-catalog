@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectId": "preset-cold-weather",
+  "meta": {
+    "name": "Cold-weather flight ops",
+    "description": "Sub-freezing flight ops with battery-heat management, condensation control, and reduced lift from cold-dense air offset by reduced battery performance.",
+    "durationHours": 6,
+    "origin_tool": "hub",
+    "scenario": "Cold-weather (winter) flying",
+    "inventoryReference": "DEMO-COLD-WEATHER",
+    "missionType": "cold_weather",
+    "team": { "size": 3, "roles": ["Pilot in command", "Battery / warming", "Spotter"] }
+  },
+  "environment": [
+    {
+      "id": "env-cold",
+      "name": "Cold-weather alpine",
+      "band": "rural",
+      "altitudeBand": "1500-2500m",
+      "temperatureBand": "-30--10C",
+      "weather": "Cold, dry, occasional snow",
+      "terrain": "alpine",
+      "origin_tool": "hub",
+      "notes": "Battery warming required between flights"
+    }
+  ],
+  "constraints": [
+    { "id": "c-temp", "type": "Thermal", "description": "Batteries below 10C lose capacity; warming required", "severity": "high", "origin_tool": "mission" }
+  ],
+  "nodes": [
+    { "id": "node-warming", "name": "Battery warming station", "role": "ground station", "rf": { "band": "L-band", "powerW": 2 }, "origin_tool": "node" }
+  ],
+  "platforms": [
+    { "id": "platform-cold-quad", "name": "Cold-weather quad", "role": "Cold-weather lift", "origin_tool": "uxs" }
+  ],
+  "mesh_links": [
+    { "id": "mesh-warming", "name": "Warming-station downlink", "role": "downlink", "origin_tool": "mesh" }
+  ],
+  "kits": [],
+  "mission": {
+    "tasks": [
+      { "id": "task-recovery", "name": "Recovery practice", "description": "Practice cold-weather landings and recovery", "origin_tool": "mission" }
+    ],
+    "phases": [
+      { "id": "phase-warm", "name": "Pre-heat", "durationHours": 1, "focus": "Warm batteries, dew-point check", "origin_tool": "mission" },
+      { "id": "phase-fly", "name": "Flight", "durationHours": 4, "focus": "Cold-weather flying", "origin_tool": "mission" },
+      { "id": "phase-cooldown", "name": "Cooldown / dry", "durationHours": 1, "focus": "Battery cooldown, condensation drying", "origin_tool": "mission" }
+    ],
+    "assignments": [
+      { "phaseId": "phase-fly", "nodeIds": ["node-warming"], "platformIds": ["platform-cold-quad"] }
+    ],
+    "mission_cards": []
+  },
+  "sustainment": {
+    "sustainmentHours": 6,
+    "batteryCounts": 8,
+    "feasibility": {},
+    "notes": "Plan ~2x battery rotation due to cold capacity loss",
+    "power_plan": "",
+    "packing_lists": []
+  },
+  "meshPlan": {
+    "relayCount": 0,
+    "criticalLinks": 1,
+    "rf_bands": ["L-band"],
+    "rf_environment": "permissive"
+  },
+  "kitsSummary": {
+    "perOperatorLoads": [],
+    "perOperatorLoadKg": 10,
+    "perOperatorLimitKg": 16
+  },
+  "exports": { "links": [], "notes": "" }
+}

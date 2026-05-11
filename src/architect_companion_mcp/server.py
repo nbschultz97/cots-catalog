@@ -106,15 +106,17 @@ def check_compatibility(part_ids: List[str]) -> Dict[str, Any]:
 
 @mcp.tool()
 def generate_mission_blueprint(
-    operation_type: str = "recon",
+    operation_type: str = "long_range",
     duration_hours: float = 24.0,
     environment_id: Optional[str] = None,
     team_size: int = 4,
 ) -> Dict[str, Any]:
     """Generate a MissionProject v2 stub for a given operation type.
 
-    ``operation_type``: recon, mesh_recon, low_infrastructure, sustainment,
-    partner_sustainment, urban_lane, urban_high_ew, winter, cold_weather.
+    ``operation_type``: long_range, long_range_relay, relay, endurance,
+    endurance_survey, survey, mapping, urban, urban_congested, race,
+    racing, cold_weather, winter. Unknown types fall back to
+    long_range_relay.
 
     ``environment_id`` is one of the environmentBands values
     (indoor, dense_urban, urban, suburban, rural, open).
@@ -155,14 +157,16 @@ def estimate_flight_time(
 @mcp.tool()
 def recommend_configuration(
     compute_tier: str = "pi5",
-    mission_type: str = "recon",
+    mission_type: str = "long_range",
     budget_usd: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Pick a candidate kit (airframe, motor, ESC, battery, FC, radio) for
     a compute tier and mission type.
 
     Compute tiers: pi-zero, pi4, pi5, jetson-nano, jetson-orin-nano, x86.
-    Mission types: recon, strike, relay, sustainment.
+    Mission types: long_range, endurance_survey, freestyle, racing,
+    cinematic, cold_weather. Unknown mission types fall back to
+    long_range.
     """
     return _recommend_configuration(
         compute_tier=compute_tier,
